@@ -598,6 +598,87 @@ input[type="range"] {
   transform: translateX(-50%) translateY(0);
 }
 
+/* 图生图新布局 */
+.i2i-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.i2i-upload-row {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.i2i-upload-right { display: flex; flex-direction: column; gap: 16px; }
+
+.i2i-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.i2i-style-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.i2i-style-label {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+}
+
+.i2i-style-result {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.i2i-style-result img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.i2i-placeholder {
+  color: #555;
+  font-size: 13px;
+}
+
+.i2i-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.i2i-done-actions {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 8px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .i2i-upload-row { grid-template-columns: 1fr; }
+  .i2i-results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 .back-btn {
   display: inline-flex;
   align-items: center;

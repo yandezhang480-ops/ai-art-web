@@ -107,51 +107,62 @@ async function generateText2Img() {
   document.querySelector('#page-text2img .btn-generate').disabled = false;
 }
 
-// 图生图生成
-async function generateImg2Img() {
+// 图生图 - 一键生成全部6种风格
+async function generateImg2ImgAll() {
   const input = document.getElementById('imgInput');
   if (!input.files[0]) { showToast('请先上传参考图片'); return; }
 
-  const cost = 12;
+  const cost = 60;
   if (userCredits < cost) { showToast('积分不足，请先充值'); showRecharge(); return; }
 
   const btn = document.getElementById('i2i-btn-text');
-  const resultArea = document.getElementById('i2i-result');
-
-  btn.textContent = '转换中...';
+  btn.textContent = '生成中，请稍候...';
   document.querySelector('#page-img2img .btn-generate').disabled = true;
 
-  resultArea.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <div class="loading-text">AI 正在转换风格...</div>
-      <div class="loading-progress">预计需要 15-40 秒</div>
-    </div>`;
+  const styles = ['国画', '油画', '水彩', '版画', '动漫', '写实'];
+  const prompt = document.getElementById('i2i-prompt').value.trim();
+  const file = document.getElementById('imgInput').files[0];
+  const imageBase64 = await toBase64(file);
 
-  try {
-    const prompt = document.getElementById('i2i-prompt').value.trim() || '风格转换';
-    const style = document.querySelector('#page-img2img .style-option.selected')?.dataset?.style || '';
-    const file = document.getElementById('imgInput').files[0];
-    const imageBase64 = await toBase64(file);
-    const response = await fetch('/api/img2img', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageBase64, prompt, style }),
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || '转换失败');
+  // 每个风格卡片显示加载状态
+  styles.forEach(style => {
+    const card = document.querySelector(`#i2i-${style} .i2i-style-result`);
+    card.innerHTML = `<div class="i2i-loading"><div class="spinner"></div><span>生成中...</span></div>`;
+  });
 
-    userCredits -= cost;
-    updateCredits();
-    showResults(resultArea, [data.url], 1);
-    saveHistory(data.url, '图生图', prompt);
-    showToast(`转换成功！消耗 ${cost} 积分`);
-  } catch (err) {
-    resultArea.innerHTML = `<div class="result-placeholder"><div class="placeholder-icon">❌</div><p>${err.message}</p></div>`;
-  }
+  // 并行请求全部6种风格
+  const results = await Promise.allSettled(
+    styles.map(style =>
+      fetch('/api/img2img', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64, prompt, style }),
+      }).then(r => r.json())
+    )
+  );
 
-  btn.textContent = '🎨 开始转换';
+  userCredits -= cost;
+  updateCredits();
+
+  results.forEach((result, i) => {
+    const style = styles[i];
+    const card = document.querySelector(`#i2i-${style} .i2i-style-result`);
+    if (result.status === 'fulfilled' && result.value.url) {
+      const url = result.value.url;
+      card.innerHTML = `
+        <img src="${url}" alt="${style}">
+        <div class="i2i-done-actions">
+          <button class="img-action-btn" onclick="downloadImg('${url}', '${style}')">下载</button>
+        </div>`;
+      saveHistory(url, `图生图-${style}`, prompt);
+    } else {
+      card.innerHTML = `<div class="i2i-placeholder">❌ 生成失败</div>`;
+    }
+  });
+
+  btn.textContent = '🎨 一键生成全部风格（消耗 60 积分）';
   document.querySelector('#page-img2img .btn-generate').disabled = false;
+  showToast('全部风格生成完成！消耗 60 积分');
 }
 
 // 画质提升

@@ -178,58 +178,58 @@
 
   <!-- 图生图页面 -->
   <div id="page-img2img" class="page">
-    <div class="tool-page">
-      <div class="tool-left">
-        <button class="back-btn" onclick="showPage('home')">← 返回首页</button>
-        <h2 class="tool-title">图生图</h2>
-        <p class="tool-desc">上传参考图片，结合文字描述生成新作品</p>
+    <div class="i2i-page">
+      <button class="back-btn" onclick="showPage('home')">← 返回首页</button>
+      <h2 class="tool-title">图生图</h2>
+      <p class="tool-desc">上传一张图片，同时生成全部 6 种艺术风格</p>
 
-        <div class="form-group">
-          <label>上传参考图片</label>
-          <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgInput').click()">
-            <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="previewImage(this)">
-            <div id="uploadPlaceholder">
-              <div class="upload-icon">📷</div>
-              <p>点击上传图片</p>
-              <span>支持 JPG、PNG，最大 10MB</span>
-            </div>
-            <img id="uploadPreview" style="display:none; max-width:100%; border-radius:8px;">
+      <div class="i2i-upload-row">
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgInput').click()">
+          <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="previewImage(this)">
+          <div id="uploadPlaceholder">
+            <div class="upload-icon">📷</div>
+            <p>点击上传图片</p>
+            <span>支持 JPG、PNG，最大 10MB</span>
           </div>
+          <img id="uploadPreview" style="display:none;max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;">
         </div>
 
-        <div class="form-group">
-          <label>转换描述（可选）</label>
-          <textarea id="i2i-prompt" placeholder="例如：转换为水彩画风格，保留原图构图..." rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>目标风格</label>
-          <div class="style-select">
-            <div class="style-option selected" data-style="国画" onclick="selectStyle(this)">国画</div>
-            <div class="style-option" data-style="油画" onclick="selectStyle(this)">油画</div>
-            <div class="style-option" data-style="水彩" onclick="selectStyle(this)">水彩</div>
-            <div class="style-option" data-style="版画" onclick="selectStyle(this)">版画</div>
-            <div class="style-option" data-style="动漫" onclick="selectStyle(this)">动漫</div>
-            <div class="style-option" data-style="写实" onclick="selectStyle(this)">写实</div>
+        <div class="i2i-upload-right">
+          <div class="form-group">
+            <label>补充描述（可选）</label>
+            <textarea id="i2i-prompt" placeholder="例如：保留构图，色彩更鲜艳..." rows="3"></textarea>
           </div>
+          <button class="btn-generate" onclick="generateImg2ImgAll()">
+            <span id="i2i-btn-text">🎨 一键生成全部风格（消耗 60 积分）</span>
+          </button>
         </div>
-
-        <div class="form-group">
-          <label>相似度：<span id="strengthVal">70</span>%</label>
-          <input type="range" min="10" max="90" value="70" oninput="document.getElementById('strengthVal').textContent=this.value">
-        </div>
-
-        <button class="btn-generate" onclick="generateImg2Img()">
-          <span id="i2i-btn-text">🎨 开始转换</span>
-        </button>
       </div>
 
-      <div class="tool-right">
-        <div class="result-area" id="i2i-result">
-          <div class="result-placeholder">
-            <div class="placeholder-icon">🖼️</div>
-            <p>转换后的图片将显示在这里</p>
-          </div>
+      <!-- 6种风格结果 -->
+      <div class="i2i-results-grid" id="i2i-results-grid">
+        <div class="i2i-style-card" id="i2i-国画">
+          <div class="i2i-style-label">国画</div>
+          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
+        </div>
+        <div class="i2i-style-card" id="i2i-油画">
+          <div class="i2i-style-label">油画</div>
+          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
+        </div>
+        <div class="i2i-style-card" id="i2i-水彩">
+          <div class="i2i-style-label">水彩</div>
+          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
+        </div>
+        <div class="i2i-style-card" id="i2i-版画">
+          <div class="i2i-style-label">版画</div>
+          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
+        </div>
+        <div class="i2i-style-card" id="i2i-动漫">
+          <div class="i2i-style-label">动漫</div>
+          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
+        </div>
+        <div class="i2i-style-card" id="i2i-写实">
+          <div class="i2i-style-label">写实</div>
+          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
         </div>
       </div>
     </div>
