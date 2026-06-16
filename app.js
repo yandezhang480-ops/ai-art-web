@@ -129,10 +129,12 @@ async function generateImg2Img() {
   try {
     const prompt = document.getElementById('i2i-prompt').value.trim() || '风格转换';
     const style = document.querySelector('#page-img2img .style-option.selected')?.dataset?.style || '';
-    const response = await fetch('/api/generate', {
+    const file = document.getElementById('imgInput').files[0];
+    const imageBase64 = await toBase64(file);
+    const response = await fetch('/api/img2img', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, style, type: 'img2img' }),
+      body: JSON.stringify({ imageBase64, prompt, style }),
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || '转换失败');
@@ -248,4 +250,13 @@ function showToast(msg) {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
