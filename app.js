@@ -81,18 +81,24 @@ async function generateText2Img() {
     }
   }, 1800);
 
-  // 模拟 2~4 秒后返回结果（接入真实 API 时替换此处）
-  await sleep(Math.random() * 2000 + 2000);
-  clearInterval(interval);
+  try {
+    const style = document.querySelector('#page-text2img .style-option.selected')?.dataset?.style || '';
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, style, type: 'text2img' }),
+    });
+    clearInterval(interval);
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || '生成失败');
 
-  // 扣除积分
-  userCredits -= cost;
-  updateCredits();
-
-  // 展示模拟图片
-  const seeds = Array.from({ length: count }, () => Math.floor(Math.random() * 9000) + 1000);
-  const imgs = seeds.map(seed => `https://picsum.photos/seed/${seed}/512/512`);
-  showResults(resultArea, imgs, count);
+    userCredits -= cost;
+    updateCredits();
+    showResults(resultArea, [data.url], 1);
+  } catch (err) {
+    clearInterval(interval);
+    resultArea.innerHTML = `<div class="result-placeholder"><div class="placeholder-icon">❌</div><p>${err.message}</p></div>`;
+  }
 
   btn.textContent = '🎨 开始生成';
   document.querySelector('#page-text2img .btn-generate').disabled = false;
@@ -120,17 +126,27 @@ async function generateImg2Img() {
       <div class="loading-progress">预计需要 15-40 秒</div>
     </div>`;
 
-  await sleep(Math.random() * 2000 + 2500);
+  try {
+    const prompt = document.getElementById('i2i-prompt').value.trim() || '风格转换';
+    const style = document.querySelector('#page-img2img .style-option.selected')?.dataset?.style || '';
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, style, type: 'img2img' }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || '转换失败');
 
-  userCredits -= cost;
-  updateCredits();
-
-  const seed = Math.floor(Math.random() * 9000) + 1000;
-  showResults(resultArea, [`https://picsum.photos/seed/${seed}/512/512`], 1);
+    userCredits -= cost;
+    updateCredits();
+    showResults(resultArea, [data.url], 1);
+    showToast(`转换成功！消耗 ${cost} 积分`);
+  } catch (err) {
+    resultArea.innerHTML = `<div class="result-placeholder"><div class="placeholder-icon">❌</div><p>${err.message}</p></div>`;
+  }
 
   btn.textContent = '🎨 开始转换';
   document.querySelector('#page-img2img .btn-generate').disabled = false;
-  showToast(`转换成功！消耗 ${cost} 积分`);
 }
 
 // 画质提升
