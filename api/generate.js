@@ -10,17 +10,17 @@ export default async function handler(req, res) {
     : `${prompt}，高质量艺术作品`;
 
   try {
-    const response = await fetch('https://open.bigmodel.cn/api/paas/v4/images/generations', {
+    const response = await fetch('https://api.siliconflow.cn/v1/images/generations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.ZHIPU_API_KEY}`,
+        'Authorization': `Bearer sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj`,
       },
       body: JSON.stringify({
-        model: 'cogview-3-flash',
+        model: 'black-forest-labs/FLUX.1-schnell',
         prompt: fullPrompt,
         n: 1,
-        size: '1024x1024',
+        image_size: '1024x1024',
       }),
     });
 
