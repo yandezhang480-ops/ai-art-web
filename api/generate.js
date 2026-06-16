@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj`,
       },
       body: JSON.stringify({
-        model: 'black-forest-labs/FLUX.1-schnell',
+        model: 'Tongyi-MAI/Z-Image-Turbo',
         prompt: fullPrompt,
         n: 1,
         image_size: '1024x1024',
