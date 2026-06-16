@@ -7,9 +7,10 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const map = { home: 0, text2img: 1, img2img: 2, enhance: 3, gallery: 4 };
+  const map = { home: 0, text2img: 1, img2img: 2, enhance: 3, gallery: 4, history: 5 };
   const links = document.querySelectorAll('.nav-link');
   if (links[map[name]]) links[map[name]].classList.add('active');
+  if (name === 'history') loadHistory();
   window.scrollTo(0, 0);
 }
 
@@ -95,6 +96,8 @@ async function generateText2Img() {
     userCredits -= cost;
     updateCredits();
     showResults(resultArea, [data.url], 1);
+    saveHistory(data.url, '文生图', prompt);
+    showToast(`生成成功！消耗 ${cost} 积分`);
   } catch (err) {
     clearInterval(interval);
     resultArea.innerHTML = `<div class="result-placeholder"><div class="placeholder-icon">❌</div><p>${err.message}</p></div>`;
@@ -102,7 +105,6 @@ async function generateText2Img() {
 
   btn.textContent = '🎨 开始生成';
   document.querySelector('#page-text2img .btn-generate').disabled = false;
-  showToast(`生成成功！消耗 ${cost} 积分`);
 }
 
 // 图生图生成
@@ -142,6 +144,7 @@ async function generateImg2Img() {
     userCredits -= cost;
     updateCredits();
     showResults(resultArea, [data.url], 1);
+    saveHistory(data.url, '图生图', prompt);
     showToast(`转换成功！消耗 ${cost} 积分`);
   } catch (err) {
     resultArea.innerHTML = `<div class="result-placeholder"><div class="placeholder-icon">❌</div><p>${err.message}</p></div>`;
@@ -250,6 +253,40 @@ function showToast(msg) {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// 历史记录
+function saveHistory(url, type, prompt) {
+  const history = JSON.parse(localStorage.getItem('aiHistory') || '[]');
+  history.unshift({ url, type, prompt, time: Date.now() });
+  if (history.length > 50) history.pop();
+  localStorage.setItem('aiHistory', JSON.stringify(history));
+}
+
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('aiHistory') || '[]');
+  const grid = document.getElementById('historyGrid');
+  const empty = document.getElementById('historyEmpty');
+  if (history.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.innerHTML = history.map((item, i) => `
+    <div class="gallery-item">
+      <img src="${item.url}" alt="历史图片${i+1}">
+      <div class="gallery-overlay">
+        <span>${item.type} · ${new Date(item.time).toLocaleDateString()}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function clearHistory() {
+  if (!confirm('确定清空所有历史记录？')) return;
+  localStorage.removeItem('aiHistory');
+  loadHistory();
+  showToast('已清空历史记录');
 }
 
 function toBase64(file) {
