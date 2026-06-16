@@ -21,9 +21,19 @@ function selectStyle(el) {
 }
 
 // 风格广场套用
-function useStyle(styleName) {
+function useStyle(styleName, styleType) {
   showPage('text2img');
   document.getElementById('t2i-prompt').value = styleName + '，';
+  // 自动选中对应风格
+  if (styleType) {
+    const styleMap = { '国画': '国画', '油画': '油画', '水彩': '水彩', '版画': '版画', '动漫': '动漫', '综合创意': '写实' };
+    const target = styleMap[styleType];
+    if (target) {
+      document.querySelectorAll('#page-text2img .style-option').forEach(el => {
+        el.classList.toggle('selected', el.dataset.style === target);
+      });
+    }
+  }
   showToast('已套用风格：' + styleName);
 }
 
