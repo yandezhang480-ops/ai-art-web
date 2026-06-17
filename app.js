@@ -51,6 +51,13 @@ const ICON = {
   mine: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
 };
 
+// ===== 真实名画图片（维基共享资源稳定接口，失败自动回退SVG）=====
+const WIKI = f => 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(f) + '?width=600';
+function pic(file, art, fit) {
+  if (!file) return ART[art] || '';
+  return `<img src="${WIKI(file)}" loading="lazy" style="width:100%;height:100%;object-fit:${fit||'cover'};display:block;background:#e7ddc8" onerror="this.parentElement.innerHTML=ART['${art}']||''">`;
+}
+
 const navPages = ['home', 'create', 'library', 'draft', 'mine'];
 const titles = { home:'丹青坊', create:'创作', library:'画库', draft:'画稿', mine:'我的', enhance:'画质提升', history:'我的作品' };
 
@@ -101,50 +108,50 @@ function libChip(el, t, c) {
   renderLib(t, c);
 }
 
-// 画库数据
+// 画库数据（file=真实名画文件名，art=回退SVG）
 const LIB = {
   guozhan: [
-    { name:'簪花仕女', artist:'国展 · 工笔人物', art:'shinv', cat:'人物', prompt:'工笔仕女，国展风格，唐代簪花仕女，精细描绘，富丽典雅' },
-    { name:'盛世繁花', artist:'国展 · 工笔花鸟', art:'gongbi', cat:'花鸟', prompt:'工笔花鸟，国展获奖风格，繁花似锦，鸟雀灵动，精工细作' },
-    { name:'万壑松风', artist:'国展 · 写意山水', art:'shanshui', cat:'山水', prompt:'写意山水，国展风格，崇山峻岭，松风流云，雄浑大气' },
-    { name:'劳动者', artist:'国展 · 水墨人物', art:'guozhan', cat:'人物', prompt:'国展水墨人物，现实主义，劳动者群像，笔墨厚重，时代气息' },
-    { name:'墨竹清风', artist:'国展 · 写意花鸟', art:'zhu', cat:'花鸟', prompt:'写意墨竹，国展风格，竹影婆娑，清风高节，水墨淋漓' },
-    { name:'临池学书', artist:'国展 · 书法', art:'shufa', cat:'书法', prompt:'书法作品，国展行楷，笔力遒劲，章法严谨' },
-    { name:'荷塘清趣', artist:'国展 · 没骨花鸟', art:'lotus', cat:'花鸟', prompt:'没骨荷花，国展风格，荷塘清趣，色彩雅致' },
-    { name:'瑞鹤呈祥', artist:'国展 · 工笔花鸟', art:'ruihe', cat:'花鸟', prompt:'工笔仙鹤，国展风格，瑞鹤呈祥，祥云缭绕，工整富丽' },
+    { name:'簪花仕女图', artist:'唐 · 工笔人物', art:'shinv', file:'唐周昉簪花仕女图.jpg', cat:'人物', prompt:'工笔仕女，唐代簪花仕女，丰腴华贵，线条圆润，精细描绘' },
+    { name:'瑞鹤图', artist:'宋徽宗 · 工笔花鸟', art:'ruihe', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', cat:'花鸟', prompt:'工笔仙鹤，瑞鹤呈祥，祥云缭绕，工整富丽，皇家气象' },
+    { name:'溪山行旅图', artist:'范宽 · 写意山水', art:'shanshui', file:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg', cat:'山水', prompt:'范宽溪山行旅，全景山水，高远构图，雄强浑厚，崇山峻岭' },
+    { name:'竹兰石图', artist:'郑板桥 · 写意花鸟', art:'zhu', file:'郑燮竹兰石图轴.jpg', cat:'花鸟', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节，书画一体，水墨淋漓' },
+    { name:'墨虾图', artist:'齐白石 · 写意花鸟', art:'lotus', file:'QiBaishiGarnelen.jpg', cat:'花鸟', prompt:'齐白石写意虾趣，简练生动，妙趣横生，水墨淋漓' },
+    { name:'兰亭序', artist:'王羲之 · 书法', art:'shufa', file:'神龍蘭亭序全.JPG', cat:'书法', prompt:'王羲之兰亭序行书，飘逸俊秀，遒媚劲健，天下第一行书' },
+    { name:'富春山居图', artist:'黄公望 · 写意山水', art:'shanshui', file:'沈周仿黄公望富春山居图卷.png', cat:'山水', prompt:'黄公望富春山居图，元代文人山水，平淡天真，烟云供养' },
+    { name:'红白芙蓉', artist:'宋人 · 工笔花鸟', art:'gongbi', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', cat:'花鸟', prompt:'宋代工笔花卉，芙蓉锦鸡，精致细腻，宋人审美' },
   ],
   masters: [
-    { name:'溪山行旅图', artist:'范宽 · 北宋', art:'shanshui', cat:'宋元', prompt:'范宽溪山行旅图，北宋全景山水，高远构图，雄强浑厚' },
-    { name:'瑞鹤图', artist:'赵佶 · 北宋', art:'ruihe', cat:'宋元', prompt:'宋徽宗瑞鹤图，工笔重彩，群鹤翔空，皇家气象' },
-    { name:'墨葡萄', artist:'徐渭 · 明', art:'lotus', cat:'明清', prompt:'徐渭大写意，水墨淋漓，狂放洒脱，文人意趣' },
-    { name:'墨竹图', artist:'郑板桥 · 清', art:'zhu', cat:'明清', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节，书画一体' },
-    { name:'虾趣', artist:'齐白石 · 近现代', art:'lotus', cat:'近现代', prompt:'齐白石写意，水墨虾趣，简练生动，妙趣横生' },
-    { name:'奔马图', artist:'徐悲鸿 · 近现代', art:'guozhan', cat:'近现代', prompt:'徐悲鸿奔马，中西结合，笔墨酣畅，骨骼雄健' },
-    { name:'簪花仕女图', artist:'周昉 · 唐', art:'shinv', cat:'宋元', prompt:'周昉簪花仕女图，唐代工笔人物，丰腴华贵，线条圆润' },
-    { name:'行书帖', artist:'王羲之 · 东晋', art:'shufa', cat:'明清', prompt:'王羲之行书，飘逸俊秀，遒媚劲健，天下行书' },
+    { name:'溪山行旅图', artist:'范宽 · 北宋', art:'shanshui', file:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg', cat:'宋元', prompt:'范宽溪山行旅图，北宋全景山水，高远构图，雄强浑厚' },
+    { name:'瑞鹤图', artist:'赵佶 · 北宋', art:'ruihe', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', cat:'宋元', prompt:'宋徽宗瑞鹤图，工笔重彩，群鹤翔空，皇家气象' },
+    { name:'簪花仕女图', artist:'周昉 · 唐', art:'shinv', file:'唐周昉簪花仕女图.jpg', cat:'宋元', prompt:'周昉簪花仕女图，唐代工笔人物，丰腴华贵，线条圆润' },
+    { name:'竹兰石图', artist:'郑板桥 · 清', art:'zhu', file:'郑燮竹兰石图轴.jpg', cat:'明清', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节，书画一体' },
+    { name:'富春山居图', artist:'黄公望 · 元', art:'shanshui', file:'沈周仿黄公望富春山居图卷.png', cat:'明清', prompt:'黄公望富春山居图，元代文人山水，平淡天真' },
+    { name:'墨虾图', artist:'齐白石 · 近现代', art:'lotus', file:'QiBaishiGarnelen.jpg', cat:'近现代', prompt:'齐白石写意虾趣，简练生动，妙趣横生' },
+    { name:'兰亭序', artist:'王羲之 · 东晋', art:'shufa', file:'神龍蘭亭序全.JPG', cat:'近现代', prompt:'王羲之兰亭序行书，飘逸俊秀，遒媚劲健' },
   ],
   world: [
-    { name:'蒙娜丽莎', artist:'达·芬奇 · 文艺复兴', art:'mona', cat:'文艺复兴', prompt:'达芬奇蒙娜丽莎，文艺复兴肖像，神秘微笑，晕涂技法' },
-    { name:'戴珍珠耳环的少女', artist:'维米尔 · 巴洛克', art:'pearl', cat:'文艺复兴', prompt:'维米尔戴珍珠耳环少女，黄金分割光影，神秘回眸' },
-    { name:'星月夜', artist:'梵·高 · 后印象', art:'starry', cat:'后印象', prompt:'梵高星月夜，旋转笔触，浓烈深蓝，表现主义' },
-    { name:'向日葵', artist:'梵·高 · 后印象', art:'sunflower', cat:'后印象', prompt:'梵高向日葵，厚涂笔触，灿烂明黄，生命礼赞' },
-    { name:'睡莲', artist:'莫奈 · 印象派', art:'monet', cat:'印象派', prompt:'莫奈睡莲，印象派光色，朦胧水波，柔和笔触' },
-    { name:'神奈川冲浪里', artist:'葛饰北斋 · 浮世绘', art:'hokusai', cat:'浮世绘', prompt:'葛饰北斋神奈川冲浪里，浮世绘版画，巨浪富士' },
+    { name:'蒙娜丽莎', artist:'达·芬奇 · 文艺复兴', art:'mona', file:'Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg', cat:'文艺复兴', prompt:'达芬奇蒙娜丽莎，文艺复兴肖像，神秘微笑，晕涂技法' },
+    { name:'戴珍珠耳环的少女', artist:'维米尔 · 巴洛克', art:'pearl', file:'1665 Girl with a Pearl Earring.jpg', cat:'文艺复兴', prompt:'维米尔戴珍珠耳环少女，黄金分割光影，神秘回眸' },
+    { name:'星月夜', artist:'梵·高 · 后印象', art:'starry', file:'Van Gogh - Starry Night - Google Art Project.jpg', cat:'后印象', prompt:'梵高星月夜，旋转笔触，浓烈深蓝，表现主义' },
+    { name:'向日葵', artist:'梵·高 · 后印象', art:'sunflower', file:'Vincent van Gogh - Sunflowers - VGM F458.jpg', cat:'后印象', prompt:'梵高向日葵，厚涂笔触，灿烂明黄，生命礼赞' },
+    { name:'睡莲', artist:'莫奈 · 印象派', art:'monet', file:'Claude Monet 044.jpg', cat:'印象派', prompt:'莫奈睡莲，印象派光色，朦胧水波，柔和笔触' },
+    { name:'神奈川冲浪里', artist:'葛饰北斋 · 浮世绘', art:'hokusai', file:'Great Wave off Kanagawa2.jpg', cat:'浮世绘', prompt:'葛饰北斋神奈川冲浪里，浮世绘版画，巨浪富士' },
+    { name:'凯风快晴·赤富士', artist:'葛饰北斋 · 浮世绘', art:'hokusai', file:'Red Fuji southern wind clear morning.jpg', cat:'浮世绘', prompt:'葛饰北斋赤富士，浮世绘，晴空红富士，简约壮丽' },
   ],
 };
 
 function renderLib(t, cat) {
   const items = cat==='全部' ? LIB[t] : LIB[t].filter(i=>i.cat===cat);
-  document.getElementById('libGrid').innerHTML = items.map(it => {
+  document.getElementById('libGrid').innerHTML = items.map((it, idx) => {
     const p = it.prompt.replace(/'/g,"\\'");
     return `
-    <div class="lib-card" onclick="viewLib('${it.name}','${it.artist}','${it.art}','${p}')">
-      <div class="lib-thumb">${ART[it.art]}</div>
+    <div class="lib-card" onclick="viewLibIdx('${t}',${LIB[t].indexOf(it)})">
+      <div class="lib-thumb">${pic(it.file, it.art)}</div>
       <div class="lib-info">
         <div class="lib-name">${it.name}</div>
         <div class="lib-artist">${it.artist}</div>
         <div class="lib-acts">
-          <button class="lib-btn" onclick="event.stopPropagation();viewLib('${it.name}','${it.artist}','${it.art}','${p}')">查看</button>
+          <button class="lib-btn" onclick="event.stopPropagation();viewLibIdx('${t}',${LIB[t].indexOf(it)})">查看</button>
           <button class="lib-btn primary" onclick="event.stopPropagation();useLib('${p}')">临摹创作</button>
         </div>
       </div>
@@ -152,11 +159,12 @@ function renderLib(t, cat) {
   }).join('');
 }
 let viewPrompt = '';
-function viewLib(name, artist, art, prompt) {
-  document.getElementById('viewArt').innerHTML = ART[art] || '';
-  document.getElementById('viewName').textContent = name;
-  document.getElementById('viewArtist').textContent = artist;
-  viewPrompt = prompt || '';
+function viewLibIdx(t, idx) {
+  const it = LIB[t][idx]; if (!it) return;
+  document.getElementById('viewArt').innerHTML = pic(it.file, it.art, 'contain');
+  document.getElementById('viewName').textContent = it.name;
+  document.getElementById('viewArtist').textContent = it.artist;
+  viewPrompt = it.prompt || '';
   document.getElementById('viewModal').classList.add('show');
 }
 function closeView() { document.getElementById('viewModal').classList.remove('show'); }
@@ -171,16 +179,16 @@ function useLib(prompt) {
 
 // ===== 首页 =====
 const HOME_WORKS = [
-  { art:'gongbi', name:'盛世繁花', sub:'工笔花鸟', cat:'国画', h:200 },
-  { art:'starry', name:'星月夜', sub:'梵高·油画', cat:'油画', h:230 },
-  { art:'shanshui', name:'万壑松风', sub:'写意山水', cat:'国画', h:210 },
-  { art:'monet', name:'睡莲', sub:'莫奈·印象派', cat:'油画', h:190 },
-  { art:'hokusai', name:'神奈川冲浪', sub:'浮世绘版画', cat:'版画', h:200 },
-  { art:'shinv', name:'簪花仕女', sub:'工笔人物', cat:'国画', h:230 },
-  { art:'pearl', name:'珍珠耳环少女', sub:'维米尔·油画', cat:'油画', h:210 },
-  { art:'lotus', name:'荷塘清趣', sub:'没骨花鸟', cat:'国画', h:195 },
-  { art:'sunflower', name:'向日葵', sub:'梵高·油画', cat:'油画', h:185 },
-  { art:'ruihe', name:'瑞鹤呈祥', sub:'工笔花鸟', cat:'国画', h:215 },
+  { art:'ruihe', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', name:'瑞鹤图', sub:'宋徽宗·工笔', cat:'国画', prompt:'工笔仙鹤，瑞鹤呈祥，祥云缭绕，工整富丽' },
+  { art:'starry', file:'Van Gogh - Starry Night - Google Art Project.jpg', name:'星月夜', sub:'梵高·油画', cat:'油画', prompt:'梵高星月夜，旋转笔触，浓烈深蓝' },
+  { art:'shanshui', file:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg', name:'溪山行旅', sub:'范宽·山水', cat:'国画', prompt:'范宽溪山行旅，全景山水，雄强浑厚' },
+  { art:'monet', file:'Claude Monet 044.jpg', name:'睡莲', sub:'莫奈·印象派', cat:'油画', prompt:'莫奈睡莲，印象派光色，柔和笔触' },
+  { art:'hokusai', file:'Great Wave off Kanagawa2.jpg', name:'神奈川冲浪', sub:'北斋·版画', cat:'版画', prompt:'浮世绘，神奈川冲浪里，巨浪富士' },
+  { art:'shinv', file:'唐周昉簪花仕女图.jpg', name:'簪花仕女', sub:'周昉·工笔', cat:'国画', prompt:'工笔仕女，唐代簪花，丰腴华贵' },
+  { art:'pearl', file:'1665 Girl with a Pearl Earring.jpg', name:'珍珠耳环少女', sub:'维米尔·油画', cat:'油画', prompt:'维米尔戴珍珠耳环少女，神秘回眸' },
+  { art:'sunflower', file:'Vincent van Gogh - Sunflowers - VGM F458.jpg', name:'向日葵', sub:'梵高·油画', cat:'油画', prompt:'梵高向日葵，厚涂笔触，灿烂明黄' },
+  { art:'zhu', file:'郑燮竹兰石图轴.jpg', name:'竹兰石图', sub:'郑板桥·写意', cat:'国画', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节' },
+  { art:'hokusai', file:'Red Fuji southern wind clear morning.jpg', name:'赤富士', sub:'北斋·版画', cat:'版画', prompt:'葛饰北斋赤富士，晴空红富士，简约壮丽' },
 ];
 function homeTab(el, cat) {
   el.closest('.chip-row').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
@@ -195,15 +203,17 @@ function renderHome(cat) {
     const div = document.createElement('div');
     div.className = 'wf-item';
     div.onclick = () => quickUse(it);
-    div.innerHTML = `<div class="wf-thumb" style="height:${it.h}px">${ART[it.art]}</div>
+    const img = it.file
+      ? `<img src="${WIKI(it.file)}" loading="lazy" style="width:100%;display:block;background:#e7ddc8;min-height:120px" onerror="this.parentElement.innerHTML=ART['${it.art}']||''">`
+      : (ART[it.art]||'');
+    div.innerHTML = `<div class="wf-thumb">${img}</div>
       <div class="wf-cap">${it.name} <span class="dot">· ${it.sub}</span></div>`;
     (i%2===0?c1:c2).appendChild(div);
   });
 }
 function quickUse(it) {
-  const m = { '盛世繁花':'工笔花鸟，繁花似锦，精工细作','星月夜':'梵高星月夜风格，旋转笔触','万壑松风':'写意山水，崇山峻岭，雄浑大气','睡莲':'莫奈睡莲，印象派光色','神奈川冲浪':'浮世绘，神奈川冲浪里','簪花仕女':'工笔仕女，唐代簪花，富丽典雅','珍珠耳环少女':'维米尔风格，神秘光影','荷塘清趣':'没骨荷花，荷塘清趣','向日葵':'梵高向日葵，厚涂笔触','瑞鹤呈祥':'工笔仙鹤，瑞鹤呈祥' };
   showPage('create');
-  document.getElementById('t2i-prompt').value = (m[it.name]||it.name) + '，';
+  document.getElementById('t2i-prompt').value = (it.prompt||it.name) + '，';
   showToast('已填入描述，可继续创作');
 }
 
@@ -362,13 +372,13 @@ function showToast(msg){ const t=document.getElementById('toast'); t.textContent
 
 // 横向风格画廊数据
 const ART_SCROLL = [
-  { art:'gongbi', name:'工笔花鸟', sub:'精勾细染', prompt:'工笔花鸟，繁花似锦，精工细作，富丽典雅' },
-  { art:'shanshui', name:'写意山水', sub:'气势雄浑', prompt:'写意山水，崇山峻岭，松风流云，雄浑大气' },
-  { art:'shinv', name:'工笔仕女', sub:'富丽典雅', prompt:'工笔仕女，唐代簪花，线条圆润，富丽典雅' },
-  { art:'starry', name:'梵高油画', sub:'表现主义', prompt:'梵高星月夜风格，旋转笔触，浓烈深蓝' },
-  { art:'hokusai', name:'浮世绘', sub:'东瀛版画', prompt:'浮世绘，神奈川冲浪里，葛饰北斋风格' },
-  { art:'monet', name:'印象睡莲', sub:'光色朦胧', prompt:'莫奈睡莲，印象派光色，柔和笔触' },
-  { art:'zhu', name:'墨竹文人', sub:'清瘦有节', prompt:'写意墨竹，竹影婆娑，清风高节，水墨淋漓' },
+  { art:'ruihe', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', name:'工笔花鸟', sub:'宋徽宗·瑞鹤', prompt:'工笔花鸟，瑞鹤呈祥，精工细作，富丽典雅' },
+  { art:'shanshui', file:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg', name:'写意山水', sub:'范宽·溪山行旅', prompt:'写意山水，崇山峻岭，松风流云，雄浑大气' },
+  { art:'shinv', file:'唐周昉簪花仕女图.jpg', name:'工笔仕女', sub:'周昉·簪花', prompt:'工笔仕女，唐代簪花，线条圆润，富丽典雅' },
+  { art:'starry', file:'Van Gogh - Starry Night - Google Art Project.jpg', name:'梵高油画', sub:'星月夜', prompt:'梵高星月夜风格，旋转笔触，浓烈深蓝' },
+  { art:'hokusai', file:'Great Wave off Kanagawa2.jpg', name:'浮世绘', sub:'神奈川冲浪', prompt:'浮世绘，神奈川冲浪里，葛饰北斋风格' },
+  { art:'monet', file:'Claude Monet 044.jpg', name:'印象睡莲', sub:'莫奈', prompt:'莫奈睡莲，印象派光色，柔和笔触' },
+  { art:'zhu', file:'郑燮竹兰石图轴.jpg', name:'墨竹文人', sub:'郑板桥', prompt:'写意墨竹，竹影婆娑，清风高节，水墨淋漓' },
 ];
 
 // 风格卡缩略图（创作页）
@@ -381,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 横向风格画廊
   document.getElementById('artScroll').innerHTML = ART_SCROLL.map(a => `
     <div class="art-card" onclick="useLib('${a.prompt.replace(/'/g,"\\'")}')">
-      <div class="art-thumb">${ART[a.art]}</div>
+      <div class="art-thumb">${pic(a.file, a.art)}</div>
       <div class="art-meta"><div class="art-name">${a.name}</div><div class="art-sub">${a.sub}</div></div>
     </div>`).join('');
   // 创作页风格卡缩略图
