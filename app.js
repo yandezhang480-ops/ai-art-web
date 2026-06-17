@@ -135,22 +135,32 @@ const LIB = {
 
 function renderLib(t, cat) {
   const items = cat==='全部' ? LIB[t] : LIB[t].filter(i=>i.cat===cat);
-  document.getElementById('libGrid').innerHTML = items.map(it => `
-    <div class="lib-card">
+  document.getElementById('libGrid').innerHTML = items.map(it => {
+    const p = it.prompt.replace(/'/g,"\\'");
+    return `
+    <div class="lib-card" onclick="viewLib('${it.name}','${it.artist}','${it.art}','${p}')">
       <div class="lib-thumb">${ART[it.art]}</div>
       <div class="lib-info">
         <div class="lib-name">${it.name}</div>
         <div class="lib-artist">${it.artist}</div>
         <div class="lib-acts">
-          <button class="lib-btn" onclick="event.stopPropagation();viewLib('${it.name}','${it.artist}','${it.art}')">查看</button>
-          <button class="lib-btn primary" onclick="event.stopPropagation();useLib('${it.prompt.replace(/'/g,"\\'")}')">临摹创作</button>
+          <button class="lib-btn" onclick="event.stopPropagation();viewLib('${it.name}','${it.artist}','${it.art}','${p}')">查看</button>
+          <button class="lib-btn primary" onclick="event.stopPropagation();useLib('${p}')">临摹创作</button>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
-function viewLib(name, artist, art) {
-  showToast(`${name} · ${artist}`);
+let viewPrompt = '';
+function viewLib(name, artist, art, prompt) {
+  document.getElementById('viewArt').innerHTML = ART[art] || '';
+  document.getElementById('viewName').textContent = name;
+  document.getElementById('viewArtist').textContent = artist;
+  viewPrompt = prompt || '';
+  document.getElementById('viewModal').classList.add('show');
 }
+function closeView() { document.getElementById('viewModal').classList.remove('show'); }
+function useFromView() { closeView(); if (viewPrompt) useLib(viewPrompt); }
 function useLib(prompt) {
   showPage('create');
   document.querySelectorAll('#page-create .seg')[0].classList.add('active');

@@ -395,6 +395,19 @@
     </div>
   </div>
 
+  <!-- 画作查看弹窗 -->
+  <div class="overlay" id="viewModal" onclick="closeView()" style="align-items:center">
+    <div class="view-box" onclick="event.stopPropagation()">
+      <button class="sheet-close" onclick="closeView()" style="top:10px;right:10px;z-index:2">✕</button>
+      <div class="view-art" id="viewArt"></div>
+      <div class="view-info">
+        <div class="view-name" id="viewName"></div>
+        <div class="view-artist" id="viewArtist"></div>
+        <button class="pay-btn" style="margin-top:14px" onclick="useFromView()">临摹创作此画</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
