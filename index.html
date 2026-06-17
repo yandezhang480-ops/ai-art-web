@@ -124,30 +124,227 @@
         <div class="section-title">热门风格</div>
       </div>
       <div class="art-styles-scroll">
-        <div class="art-style-card" onclick="applyStyleHome('水墨山水，高山云雾，意境深远')">
-          <div class="art-bg guohua"></div>
+
+        <!-- 水墨国画 -->
+        <div class="art-style-card" onclick="applyStyleHome('水墨山水，高山云雾，意境深远，传统国画')">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <linearGradient id="g-ink-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f0ece0"/>
+                <stop offset="60%" stop-color="#d8d0bc"/>
+                <stop offset="100%" stop-color="#b0a890"/>
+              </linearGradient>
+              <filter id="f-blur"><feGaussianBlur stdDeviation="1.5"/></filter>
+            </defs>
+            <rect width="140" height="180" fill="url(#g-ink-sky)"/>
+            <!-- 远山 -->
+            <ellipse cx="70" cy="130" rx="90" ry="55" fill="rgba(60,50,40,0.18)" filter="url(#f-blur)"/>
+            <path d="M0,140 Q20,95 45,105 Q60,90 75,80 Q90,68 105,90 Q120,100 140,95 L140,180 L0,180Z" fill="rgba(40,32,24,0.55)"/>
+            <!-- 近山 -->
+            <path d="M0,160 Q30,130 55,140 Q70,120 85,132 Q105,118 130,135 Q136,138 140,140 L140,180 L0,180Z" fill="rgba(25,20,15,0.80)"/>
+            <!-- 雾气 -->
+            <rect x="0" y="148" width="140" height="12" fill="rgba(240,235,220,0.45)" filter="url(#f-blur)"/>
+            <rect x="0" y="155" width="90" height="8" fill="rgba(240,235,220,0.35)" filter="url(#f-blur)"/>
+            <!-- 树 -->
+            <line x1="28" y1="162" x2="28" y2="175" stroke="rgba(20,15,10,0.9)" stroke-width="1.5"/>
+            <path d="M22,162 Q28,148 34,162Z" fill="rgba(20,15,10,0.85)"/>
+            <line x1="42" y1="158" x2="42" y2="173" stroke="rgba(20,15,10,0.9)" stroke-width="1.5"/>
+            <path d="M36,158 Q42,143 48,158Z" fill="rgba(20,15,10,0.85)"/>
+            <!-- 印章红点 -->
+            <rect x="110" y="18" width="18" height="18" rx="2" fill="rgba(180,30,30,0.8)"/>
+            <text x="119" y="30" text-anchor="middle" font-size="9" fill="white" font-family="serif">墨</text>
+          </svg>
           <div class="art-style-label"><div class="asl-name">水墨国画</div><div class="asl-sub">传统水墨</div></div>
         </div>
-        <div class="art-style-card" onclick="applyStyleHome('印象派油画，莫奈风格，光影斑驳')">
-          <div class="art-bg youhua"></div>
-          <div class="art-style-label"><div class="asl-name">印象油画</div><div class="asl-sub">西方油画</div></div>
+
+        <!-- 印象油画（梵高星空） -->
+        <div class="art-style-card" onclick="applyStyleHome('梵高星空风格，旋转笔触，表现主义油画')">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <radialGradient id="g-moon" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fff8c0"/>
+                <stop offset="60%" stop-color="#f0d840"/>
+                <stop offset="100%" stop-color="#d4a020" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- 夜空 -->
+            <rect width="140" height="180" fill="#0a1540"/>
+            <!-- 旋涡笔触 -->
+            <path d="M5,30 Q35,10 65,30 Q95,50 125,25" stroke="#1a3a8a" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <path d="M0,50 Q30,28 62,48 Q94,68 130,42" stroke="#1e4498" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <path d="M5,68 Q38,48 70,66 Q102,84 135,60" stroke="#2250a8" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M0,84 Q35,65 68,83 Q101,101 138,78" stroke="#1a3a88" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M5,100 Q40,82 72,98 Q104,114 138,93" stroke="#203090" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <path d="M0,114 Q38,97 70,113 Q102,129 138,108" stroke="#1a2878" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <!-- 月亮光晕 -->
+            <circle cx="105" cy="35" r="22" fill="rgba(255,230,80,0.25)"/>
+            <circle cx="105" cy="35" r="14" fill="url(#g-moon)"/>
+            <!-- 星星 -->
+            <circle cx="30" cy="22" r="3" fill="#fff8a0" opacity="0.9"/>
+            <circle cx="58" cy="15" r="2.5" fill="#fff8a0" opacity="0.85"/>
+            <circle cx="15" cy="45" r="2" fill="#fffbc0" opacity="0.7"/>
+            <circle cx="80" cy="20" r="2" fill="#fffbc0" opacity="0.75"/>
+            <!-- 村庄 -->
+            <rect x="0" y="138" width="140" height="42" fill="#0d1f0d"/>
+            <path d="M10,138 L22,120 L34,138Z" fill="#1a2e1a"/>
+            <path d="M30,138 L42,122 L54,138Z" fill="#1a2e1a"/>
+            <path d="M80,138 L95,115 L110,138Z" fill="#1a2e1a"/>
+            <rect x="60" y="125" width="14" height="13" fill="#1a2e1a"/>
+            <!-- 柏树 -->
+            <path d="M125,138 Q128,115 131,138Z" fill="#0d1a0d"/>
+            <path d="M123,138 Q128,108 133,138Z" fill="#0d1a0d"/>
+          </svg>
+          <div class="art-style-label"><div class="asl-name">印象油画</div><div class="asl-sub">梵高星夜</div></div>
         </div>
-        <div class="art-style-card" onclick="applyStyleHome('水彩风景，通透淡雅，色彩柔和')">
-          <div class="art-bg shuicai"></div>
+
+        <!-- 水彩粉画 -->
+        <div class="art-style-card" onclick="applyStyleHome('水彩花卉，晕染效果，柔和色彩，少女感')">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <filter id="f-wc"><feGaussianBlur stdDeviation="3"/></filter>
+              <filter id="f-wc2"><feGaussianBlur stdDeviation="1.5"/></filter>
+            </defs>
+            <rect width="140" height="180" fill="#fdf0f5"/>
+            <!-- 水彩晕染背景 -->
+            <ellipse cx="55" cy="70" rx="55" ry="55" fill="rgba(240,160,190,0.35)" filter="url(#f-wc)"/>
+            <ellipse cx="95" cy="100" rx="50" ry="50" fill="rgba(180,140,220,0.3)" filter="url(#f-wc)"/>
+            <ellipse cx="30" cy="130" rx="45" ry="40" fill="rgba(140,190,240,0.3)" filter="url(#f-wc)"/>
+            <ellipse cx="110" cy="50" rx="35" ry="35" fill="rgba(255,200,150,0.35)" filter="url(#f-wc)"/>
+            <!-- 花朵1 大红花 -->
+            <circle cx="52" cy="72" r="22" fill="rgba(230,100,130,0.25)" filter="url(#f-wc2)"/>
+            <ellipse cx="52" cy="55" rx="9" ry="14" fill="rgba(220,80,110,0.7)" transform="rotate(-20,52,55)"/>
+            <ellipse cx="65" cy="68" rx="9" ry="14" fill="rgba(225,90,120,0.65)" transform="rotate(35,65,68)"/>
+            <ellipse cx="60" cy="84" rx="9" ry="13" fill="rgba(215,75,105,0.7)" transform="rotate(70,60,84)"/>
+            <ellipse cx="42" cy="82" rx="9" ry="13" fill="rgba(220,85,115,0.65)" transform="rotate(-60,42,82)"/>
+            <ellipse cx="38" cy="66" rx="8" ry="13" fill="rgba(225,95,125,0.7)" transform="rotate(-110,38,66)"/>
+            <circle cx="52" cy="72" r="6" fill="rgba(255,220,100,0.9)"/>
+            <!-- 花朵2 小紫花 -->
+            <ellipse cx="100" cy="105" rx="7" ry="11" fill="rgba(160,100,210,0.7)" transform="rotate(-15,100,105)"/>
+            <ellipse cx="110" cy="100" rx="7" ry="11" fill="rgba(170,110,220,0.65)" transform="rotate(30,110,100)"/>
+            <ellipse cx="112" cy="112" rx="7" ry="11" fill="rgba(155,95,205,0.7)" transform="rotate(80,112,112)"/>
+            <ellipse cx="100" cy="116" rx="7" ry="11" fill="rgba(165,105,215,0.65)" transform="rotate(-80,100,116)"/>
+            <circle cx="106" cy="108" r="4" fill="rgba(255,240,150,0.9)"/>
+            <!-- 叶子 -->
+            <path d="M52,88 Q40,110 30,120" stroke="rgba(80,150,80,0.6)" stroke-width="2" fill="none"/>
+            <ellipse cx="36" cy="112" rx="10" ry="6" fill="rgba(80,150,80,0.45)" transform="rotate(-40,36,112)"/>
+            <ellipse cx="46" cy="100" rx="9" ry="5" fill="rgba(90,160,90,0.4)" transform="rotate(20,46,100)"/>
+          </svg>
           <div class="art-style-label"><div class="asl-name">水彩粉画</div><div class="asl-sub">透明晕染</div></div>
         </div>
-        <div class="art-style-card" onclick="applyStyleHome('浮世绘版画，日式风格，线条细腻')">
-          <div class="art-bg banhua"></div>
+
+        <!-- 版画 浮世绘 -->
+        <div class="art-style-card" onclick="applyStyleHome('浮世绘版画，神奈川冲浪里，葛饰北斋风格')">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <!-- 天空 -->
+            <rect width="140" height="180" fill="#d8eef8"/>
+            <rect x="0" y="0" width="140" height="70" fill="#c0dff5"/>
+            <!-- 富士山 -->
+            <path d="M50,110 L85,45 L120,110Z" fill="white" stroke="#aac8e0" stroke-width="0.5"/>
+            <path d="M60,110 L85,55 L110,110Z" fill="#e8f4fc"/>
+            <path d="M73,75 L85,55 L97,75Z" fill="white"/>
+            <!-- 波浪大 -->
+            <path d="M0,120 Q18,95 35,115 Q52,135 70,108 Q88,82 105,108 Q122,132 140,115 L140,180 L0,180Z" fill="#2266aa"/>
+            <path d="M0,130 Q20,108 38,125 Q56,142 74,118 Q92,95 110,118 Q128,140 140,125 L140,180 L0,180Z" fill="#1a5599"/>
+            <!-- 浪花白 -->
+            <path d="M0,120 Q8,112 18,120" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M35,115 Q45,106 55,114" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M70,108 Q80,99 90,107" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M105,108 Q115,100 125,108" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- 浪尖爪 -->
+            <path d="M18,120 Q14,108 20,106 Q24,108 22,115" fill="white"/>
+            <path d="M55,114 Q51,102 57,100 Q61,102 59,109" fill="white"/>
+            <path d="M90,107 Q86,96 92,93 Q96,95 94,102" fill="white"/>
+            <!-- 小船 -->
+            <path d="M58,148 Q70,143 82,148 L80,155 L60,155Z" fill="#5a3a1a"/>
+            <!-- 近景海浪 -->
+            <path d="M0,155 Q25,145 50,155 Q75,165 100,153 Q120,143 140,155 L140,180 L0,180Z" fill="#1a4d88"/>
+          </svg>
           <div class="art-style-label"><div class="asl-name">版画刻印</div><div class="asl-sub">浮世绘</div></div>
         </div>
-        <div class="art-style-card" onclick="applyStyleHome('动漫插画，唯美风格，精细线条')">
-          <div class="art-bg dongman"></div>
+
+        <!-- 动漫插画 -->
+        <div class="art-style-card" onclick="applyStyleHome('日系动漫风格，唯美天空，樱花飘落，治愈系')">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <linearGradient id="g-anime-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7ab8f5"/>
+                <stop offset="50%" stop-color="#f5c8e0"/>
+                <stop offset="100%" stop-color="#fde8c0"/>
+              </linearGradient>
+              <filter id="f-glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <rect width="140" height="180" fill="url(#g-anime-sky)"/>
+            <!-- 云朵 -->
+            <ellipse cx="35" cy="40" rx="28" ry="12" fill="rgba(255,255,255,0.85)"/>
+            <ellipse cx="25" cy="42" rx="16" ry="10" fill="rgba(255,255,255,0.85)"/>
+            <ellipse cx="48" cy="42" rx="16" ry="10" fill="rgba(255,255,255,0.85)"/>
+            <ellipse cx="110" cy="28" rx="22" ry="9" fill="rgba(255,255,255,0.75)"/>
+            <ellipse cx="100" cy="30" rx="14" ry="8" fill="rgba(255,255,255,0.75)"/>
+            <!-- 太阳 -->
+            <circle cx="110" cy="55" r="16" fill="rgba(255,230,100,0.7)" filter="url(#f-glow)"/>
+            <circle cx="110" cy="55" r="10" fill="#fff8a0"/>
+            <!-- 樱花树 -->
+            <rect x="62" y="110" width="8" height="70" fill="#8b5a2b" rx="2"/>
+            <rect x="55" y="95" width="6" height="40" fill="#8b5a2b" rx="2" transform="rotate(-25,58,115)"/>
+            <rect x="74" y="95" width="6" height="38" fill="#8b5a2b" rx="2" transform="rotate(20,77,113)"/>
+            <!-- 花簇 -->
+            <circle cx="66" cy="100" r="22" fill="rgba(255,160,190,0.75)"/>
+            <circle cx="50" cy="92" r="16" fill="rgba(255,170,195,0.7)"/>
+            <circle cx="82" cy="90" r="15" fill="rgba(255,155,185,0.7)"/>
+            <circle cx="66" cy="82" r="14" fill="rgba(255,175,200,0.75)"/>
+            <!-- 飘落花瓣 -->
+            <ellipse cx="20" cy="60" rx="4" ry="2.5" fill="rgba(255,160,185,0.8)" transform="rotate(-30,20,60)"/>
+            <ellipse cx="95" cy="75" rx="3.5" ry="2" fill="rgba(255,165,190,0.75)" transform="rotate(20,95,75)"/>
+            <ellipse cx="115" cy="100" rx="3" ry="2" fill="rgba(255,160,185,0.7)" transform="rotate(-45,115,100)"/>
+            <ellipse cx="15" cy="120" rx="4" ry="2.5" fill="rgba(255,170,195,0.7)" transform="rotate(15,15,120)"/>
+            <ellipse cx="128" cy="135" rx="3" ry="2" fill="rgba(255,160,185,0.65)" transform="rotate(-60,128,135)"/>
+            <!-- 地面 -->
+            <rect x="0" y="155" width="140" height="25" fill="#90c855"/>
+            <path d="M0,155 Q35,148 70,155 Q105,162 140,155" fill="#7ab840"/>
+          </svg>
           <div class="art-style-label"><div class="asl-name">动漫插画</div><div class="asl-sub">日系唯美</div></div>
         </div>
-        <div class="art-style-card" onclick="applyStyleHome('超写实风格，精细细节，专业摄影级')">
-          <div class="art-bg xushi"></div>
+
+        <!-- 超写实 伦勃朗光影 -->
+        <div class="art-style-card" onclick="applyStyleHome('超写实油画，伦勃朗光影，古典肖像，精细细节')">
+          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+            <defs>
+              <radialGradient id="g-rembrandt" cx="45%" cy="35%" r="55%">
+                <stop offset="0%" stop-color="#d4a060"/>
+                <stop offset="35%" stop-color="#a07030"/>
+                <stop offset="70%" stop-color="#4a2e10"/>
+                <stop offset="100%" stop-color="#180e04"/>
+              </radialGradient>
+              <radialGradient id="g-face" cx="48%" cy="40%" r="40%">
+                <stop offset="0%" stop-color="#e8c090"/>
+                <stop offset="50%" stop-color="#c89050"/>
+                <stop offset="100%" stop-color="#8a5a20" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="140" height="180" fill="#0f0804"/>
+            <rect width="140" height="180" fill="url(#g-rembrandt)"/>
+            <!-- 人物轮廓 -->
+            <!-- 身体暗部 -->
+            <ellipse cx="70" cy="155" rx="42" ry="35" fill="rgba(30,18,8,0.9)"/>
+            <!-- 衣领 -->
+            <path d="M45,120 Q70,108 95,120 Q90,140 70,145 Q50,140 45,120Z" fill="rgba(180,150,100,0.4)"/>
+            <path d="M55,118 Q70,110 85,118 Q82,130 70,133 Q58,130 55,118Z" fill="rgba(220,195,150,0.35)"/>
+            <!-- 脸部 -->
+            <ellipse cx="70" cy="85" rx="28" ry="33" fill="rgba(200,160,100,0.0)"/>
+            <ellipse cx="70" cy="85" rx="28" ry="33" fill="url(#g-face)"/>
+            <!-- 明暗分界 -->
+            <path d="M70,55 Q85,62 90,80 Q92,100 85,115 Q78,122 70,122" fill="rgba(200,160,90,0.25)"/>
+            <!-- 眼睛 -->
+            <ellipse cx="60" cy="83" rx="5.5" ry="3.5" fill="rgba(30,20,10,0.8)"/>
+            <ellipse cx="78" cy="81" rx="5" ry="3" fill="rgba(30,20,10,0.6)"/>
+            <circle cx="61" cy="82" r="1.5" fill="rgba(200,180,120,0.5)"/>
+            <!-- 帽子暗影 -->
+            <ellipse cx="70" cy="55" rx="32" ry="12" fill="rgba(20,12,4,0.85)"/>
+            <path d="M38,55 Q70,42 102,55 Q98,35 70,30 Q42,35 38,55Z" fill="rgba(15,8,2,0.9)"/>
+          </svg>
           <div class="art-style-label"><div class="asl-name">超写实</div><div class="asl-sub">极致细节</div></div>
         </div>
+
       </div>
 
       <!-- 推广 -->
