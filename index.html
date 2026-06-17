@@ -3,776 +3,395 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>墨韵AI · 让创作变简单</title>
+  <title>丹青坊 · AI 国画创作与学习</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- 顶部导航 -->
-  <header class="topbar" id="topbar">
+  <!-- 顶栏 -->
+  <header class="topbar">
     <div class="topbar-left">
       <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none">←</button>
-      <span class="topbar-logo" id="topbarLogo">墨韵AI</span>
-      <span class="topbar-title" id="topbarTitle" style="display:none"></span>
-    </div>
-    <div class="topbar-right">
-      <div class="credits-chip" onclick="showRecharge()">
-        <span class="icon">⚡</span>
-        <span id="userCredits">100</span>
+      <div class="brand" id="brand">
+        <div class="brand-seal">丹</div>
+        <div>
+          <div class="brand-name">丹青坊</div>
+          <div class="brand-en">DANQING · ART AI</div>
+        </div>
       </div>
+      <div class="topbar-title" id="tbTitle" style="display:none"></div>
     </div>
+    <div class="credits-chip" onclick="showRecharge()">⚡ <span id="userCredits">100</span></div>
   </header>
 
   <main class="main-content">
 
-    <!-- ===== 首页 ===== -->
+    <!-- ============ 首页 ============ -->
     <div id="page-home" class="page active">
-
-      <!-- Hero -->
       <div class="hero">
-        <div class="hero-ink"></div>
+        <svg class="hero-brush" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 75 Q35 30 55 45 Q70 56 80 28" stroke="#b23a2c" stroke-width="9" fill="none" stroke-linecap="round" opacity="0.85"/>
+          <circle cx="82" cy="22" r="6" fill="#b23a2c" opacity="0.7"/>
+        </svg>
         <div class="hero-inner">
-          <div class="hero-badge">✦ AI 艺术创作平台 ✦</div>
-          <div class="hero-title">墨韵 AI</div>
-          <div class="hero-sub">用文字唤醒一幅画，用 AI 重新定义艺术</div>
+          <div class="hero-tag">✦ 丹青妙笔 · 古今同辉 ✦</div>
+          <div class="hero-title">墨韵<span class="accent">丹青</span></div>
+          <div class="hero-poem">以工笔写意入画，以国展名家为师<br>AI 助你研习传统、独创风格</div>
           <div class="hero-btns">
-            <button class="hero-btn-main" onclick="showPage('text2img')">立即创作</button>
-            <button class="hero-btn-sec" onclick="showPage('gallery')">浏览风格</button>
-          </div>
-          <div class="hero-stats">
-            <div class="hs-item"><div class="hs-num">30+</div><div class="hs-label">艺术风格</div></div>
-            <div class="hs-item"><div class="hs-num">万+</div><div class="hs-label">作品生成</div></div>
-            <div class="hs-item"><div class="hs-num">4K</div><div class="hs-label">画质输出</div></div>
+            <button class="hero-btn-main" onclick="showPage('create')">开始创作</button>
+            <button class="hero-btn-sec" onclick="showPage('library')">观摩画库</button>
           </div>
         </div>
       </div>
 
-      <!-- 主功能入口 -->
+      <!-- 功能宫格 -->
       <div class="home-section">
-        <div class="section-title">核心功能</div>
-        <div class="main-features">
-          <div class="main-feat f-t2i" onclick="showPage('text2img')">
-            <div class="feat-top">
-              <div class="feat-icon2">🎨</div>
-              <span class="feat-tag">热门</span>
-            </div>
-            <div>
-              <div class="feat-name">文生图</div>
-              <div class="feat-desc">输入文字，AI生成画作</div>
-            </div>
+        <div class="section-head"><div class="section-title">丹青六艺</div></div>
+        <div class="feature-grid">
+          <div class="fcard span2" onclick="showPage('create')">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="3" fill="#f3ecd8" stroke="#b23a2c" stroke-width="2"/><path d="M14 32l6-2 12-12-4-4-12 12-2 6z" fill="#b23a2c"/></svg>
+            <div><div class="fcard-name">文生图 · 图生图</div><div class="fcard-desc">输入文字或上传参考，AI 成画</div></div>
+            <span class="fcard-tag">核心</span>
           </div>
-          <div class="main-feat f-i2i" onclick="showPage('img2img')">
-            <div class="feat-top">
-              <div class="feat-icon2">🖼️</div>
-              <span class="feat-tag">6种风格</span>
-            </div>
-            <div>
-              <div class="feat-name">图生图</div>
-              <div class="feat-desc">上传图片变换风格</div>
-            </div>
+          <div class="fcard" onclick="showPage('create')">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="20" r="9" fill="#f3ecd8" stroke="#2f6b5c" stroke-width="2"/><path d="M10 40c0-7 6-11 14-11s14 4 14 11" stroke="#2f6b5c" stroke-width="2" fill="none"/><circle cx="24" cy="20" r="3" fill="#2f6b5c"/></svg>
+            <div class="fcard-name">风格训练</div>
+            <div class="fcard-desc">工笔/写意/国展</div>
           </div>
-        </div>
-        <div class="sub-features">
-          <div class="sub-feat" onclick="showPage('enhance')">
-            <div class="sub-icon">✨</div>
-            <div class="sub-name">画质提升</div>
+          <div class="fcard" onclick="showPage('library')">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><rect x="8" y="10" width="12" height="28" rx="1" fill="#f3ecd8" stroke="#a8842c" stroke-width="2"/><rect x="26" y="10" width="12" height="28" rx="1" fill="#f3ecd8" stroke="#a8842c" stroke-width="2"/></svg>
+            <div class="fcard-name">名作画库</div>
+            <div class="fcard-desc">国展·名家·世界</div>
           </div>
-          <div class="sub-feat" onclick="showPage('gallery')">
-            <div class="sub-icon">🎭</div>
-            <div class="sub-name">风格广场</div>
+          <div class="fcard" onclick="showPage('draft')">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><rect x="10" y="8" width="28" height="32" rx="2" fill="#f3ecd8" stroke="#b23a2c" stroke-width="2"/><path d="M16 18h16M16 24h16M16 30h10" stroke="#b23a2c" stroke-width="2"/></svg>
+            <div class="fcard-name">画稿拆解</div>
+            <div class="fcard-desc">线描·黑白·色彩</div>
           </div>
-          <div class="sub-feat" onclick="showPage('train')">
-            <div class="sub-icon">🧠</div>
-            <div class="sub-name">模型训练</div>
+          <div class="fcard" onclick="showPage('enhance')">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><path d="M24 8l4 12 12 4-12 4-4 12-4-12-12-4 12-4z" fill="#f3ecd8" stroke="#a8842c" stroke-width="2"/></svg>
+            <div class="fcard-name">画质提升</div>
+            <div class="fcard-desc">高清重绘</div>
           </div>
-          <div class="sub-feat" onclick="showRecharge()">
-            <div class="sub-icon">💎</div>
-            <div class="sub-name">会员充值</div>
+          <div class="fcard" onclick="showRecharge()">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><path d="M12 18l12-8 12 8-4 18H16z" fill="#f3ecd8" stroke="#2f6b5c" stroke-width="2"/><path d="M20 26h8" stroke="#2f6b5c" stroke-width="2"/></svg>
+            <div class="fcard-name">算力充值</div>
+            <div class="fcard-desc">会员特惠</div>
           </div>
         </div>
       </div>
 
-      <!-- 创作步骤 -->
-      <div class="how-section">
-        <div class="section-title">如何使用</div>
-        <div class="steps-row">
-          <div class="step-item">
-            <div class="step-num">1</div>
-            <div class="step-icon">✍️</div>
-            <div class="step-label">输入描述<br>或上传图片</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">2</div>
-            <div class="step-icon">🎨</div>
-            <div class="step-label">选择艺术<br>风格样式</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">3</div>
-            <div class="step-icon">⚡</div>
-            <div class="step-label">AI 秒速<br>智能生成</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">4</div>
-            <div class="step-icon">💾</div>
-            <div class="step-label">保存下载<br>高清作品</div>
-          </div>
+      <!-- 创作流程 -->
+      <div class="home-section">
+        <div class="section-head"><div class="section-title">研习四步</div></div>
+        <div class="steps">
+          <div class="step"><div class="step-num">一</div><div class="step-label">观摩名作<br>研习画理</div></div>
+          <div class="step"><div class="step-num">二</div><div class="step-label">拆解画稿<br>领会思路</div></div>
+          <div class="step"><div class="step-num">三</div><div class="step-label">输入描述<br>AI 成画</div></div>
+          <div class="step"><div class="step-num">四</div><div class="step-label">训练风格<br>独成一家</div></div>
         </div>
       </div>
 
-      <!-- 艺术风格横滑 -->
+      <!-- 横向风格 -->
       <div class="home-section" style="padding-bottom:0">
-        <div class="section-title">热门风格</div>
+        <div class="section-head"><div class="section-title">画苑风格</div><span class="section-more" onclick="showPage('library')">全部 ›</span></div>
       </div>
-      <div class="art-styles-scroll">
-
-        <!-- 水墨国画 -->
-        <div class="art-style-card" onclick="applyStyleHome('水墨山水，高山云雾，意境深远，传统国画')">
-          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <defs>
-              <linearGradient id="g-ink-sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#f0ece0"/>
-                <stop offset="60%" stop-color="#d8d0bc"/>
-                <stop offset="100%" stop-color="#b0a890"/>
-              </linearGradient>
-              <filter id="f-blur"><feGaussianBlur stdDeviation="1.5"/></filter>
-            </defs>
-            <rect width="140" height="180" fill="url(#g-ink-sky)"/>
-            <!-- 远山 -->
-            <ellipse cx="70" cy="130" rx="90" ry="55" fill="rgba(60,50,40,0.18)" filter="url(#f-blur)"/>
-            <path d="M0,140 Q20,95 45,105 Q60,90 75,80 Q90,68 105,90 Q120,100 140,95 L140,180 L0,180Z" fill="rgba(40,32,24,0.55)"/>
-            <!-- 近山 -->
-            <path d="M0,160 Q30,130 55,140 Q70,120 85,132 Q105,118 130,135 Q136,138 140,140 L140,180 L0,180Z" fill="rgba(25,20,15,0.80)"/>
-            <!-- 雾气 -->
-            <rect x="0" y="148" width="140" height="12" fill="rgba(240,235,220,0.45)" filter="url(#f-blur)"/>
-            <rect x="0" y="155" width="90" height="8" fill="rgba(240,235,220,0.35)" filter="url(#f-blur)"/>
-            <!-- 树 -->
-            <line x1="28" y1="162" x2="28" y2="175" stroke="rgba(20,15,10,0.9)" stroke-width="1.5"/>
-            <path d="M22,162 Q28,148 34,162Z" fill="rgba(20,15,10,0.85)"/>
-            <line x1="42" y1="158" x2="42" y2="173" stroke="rgba(20,15,10,0.9)" stroke-width="1.5"/>
-            <path d="M36,158 Q42,143 48,158Z" fill="rgba(20,15,10,0.85)"/>
-            <!-- 印章红点 -->
-            <rect x="110" y="18" width="18" height="18" rx="2" fill="rgba(180,30,30,0.8)"/>
-            <text x="119" y="30" text-anchor="middle" font-size="9" fill="white" font-family="serif">墨</text>
-          </svg>
-          <div class="art-style-label"><div class="asl-name">水墨国画</div><div class="asl-sub">传统水墨</div></div>
-        </div>
-
-        <!-- 印象油画（梵高星空） -->
-        <div class="art-style-card" onclick="applyStyleHome('梵高星空风格，旋转笔触，表现主义油画')">
-          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <defs>
-              <radialGradient id="g-moon" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#fff8c0"/>
-                <stop offset="60%" stop-color="#f0d840"/>
-                <stop offset="100%" stop-color="#d4a020" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <!-- 夜空 -->
-            <rect width="140" height="180" fill="#0a1540"/>
-            <!-- 旋涡笔触 -->
-            <path d="M5,30 Q35,10 65,30 Q95,50 125,25" stroke="#1a3a8a" stroke-width="12" fill="none" stroke-linecap="round"/>
-            <path d="M0,50 Q30,28 62,48 Q94,68 130,42" stroke="#1e4498" stroke-width="10" fill="none" stroke-linecap="round"/>
-            <path d="M5,68 Q38,48 70,66 Q102,84 135,60" stroke="#2250a8" stroke-width="9" fill="none" stroke-linecap="round"/>
-            <path d="M0,84 Q35,65 68,83 Q101,101 138,78" stroke="#1a3a88" stroke-width="8" fill="none" stroke-linecap="round"/>
-            <path d="M5,100 Q40,82 72,98 Q104,114 138,93" stroke="#203090" stroke-width="7" fill="none" stroke-linecap="round"/>
-            <path d="M0,114 Q38,97 70,113 Q102,129 138,108" stroke="#1a2878" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <!-- 月亮光晕 -->
-            <circle cx="105" cy="35" r="22" fill="rgba(255,230,80,0.25)"/>
-            <circle cx="105" cy="35" r="14" fill="url(#g-moon)"/>
-            <!-- 星星 -->
-            <circle cx="30" cy="22" r="3" fill="#fff8a0" opacity="0.9"/>
-            <circle cx="58" cy="15" r="2.5" fill="#fff8a0" opacity="0.85"/>
-            <circle cx="15" cy="45" r="2" fill="#fffbc0" opacity="0.7"/>
-            <circle cx="80" cy="20" r="2" fill="#fffbc0" opacity="0.75"/>
-            <!-- 村庄 -->
-            <rect x="0" y="138" width="140" height="42" fill="#0d1f0d"/>
-            <path d="M10,138 L22,120 L34,138Z" fill="#1a2e1a"/>
-            <path d="M30,138 L42,122 L54,138Z" fill="#1a2e1a"/>
-            <path d="M80,138 L95,115 L110,138Z" fill="#1a2e1a"/>
-            <rect x="60" y="125" width="14" height="13" fill="#1a2e1a"/>
-            <!-- 柏树 -->
-            <path d="M125,138 Q128,115 131,138Z" fill="#0d1a0d"/>
-            <path d="M123,138 Q128,108 133,138Z" fill="#0d1a0d"/>
-          </svg>
-          <div class="art-style-label"><div class="asl-name">印象油画</div><div class="asl-sub">梵高星夜</div></div>
-        </div>
-
-        <!-- 水彩粉画 -->
-        <div class="art-style-card" onclick="applyStyleHome('水彩花卉，晕染效果，柔和色彩，少女感')">
-          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <defs>
-              <filter id="f-wc"><feGaussianBlur stdDeviation="3"/></filter>
-              <filter id="f-wc2"><feGaussianBlur stdDeviation="1.5"/></filter>
-            </defs>
-            <rect width="140" height="180" fill="#fdf0f5"/>
-            <!-- 水彩晕染背景 -->
-            <ellipse cx="55" cy="70" rx="55" ry="55" fill="rgba(240,160,190,0.35)" filter="url(#f-wc)"/>
-            <ellipse cx="95" cy="100" rx="50" ry="50" fill="rgba(180,140,220,0.3)" filter="url(#f-wc)"/>
-            <ellipse cx="30" cy="130" rx="45" ry="40" fill="rgba(140,190,240,0.3)" filter="url(#f-wc)"/>
-            <ellipse cx="110" cy="50" rx="35" ry="35" fill="rgba(255,200,150,0.35)" filter="url(#f-wc)"/>
-            <!-- 花朵1 大红花 -->
-            <circle cx="52" cy="72" r="22" fill="rgba(230,100,130,0.25)" filter="url(#f-wc2)"/>
-            <ellipse cx="52" cy="55" rx="9" ry="14" fill="rgba(220,80,110,0.7)" transform="rotate(-20,52,55)"/>
-            <ellipse cx="65" cy="68" rx="9" ry="14" fill="rgba(225,90,120,0.65)" transform="rotate(35,65,68)"/>
-            <ellipse cx="60" cy="84" rx="9" ry="13" fill="rgba(215,75,105,0.7)" transform="rotate(70,60,84)"/>
-            <ellipse cx="42" cy="82" rx="9" ry="13" fill="rgba(220,85,115,0.65)" transform="rotate(-60,42,82)"/>
-            <ellipse cx="38" cy="66" rx="8" ry="13" fill="rgba(225,95,125,0.7)" transform="rotate(-110,38,66)"/>
-            <circle cx="52" cy="72" r="6" fill="rgba(255,220,100,0.9)"/>
-            <!-- 花朵2 小紫花 -->
-            <ellipse cx="100" cy="105" rx="7" ry="11" fill="rgba(160,100,210,0.7)" transform="rotate(-15,100,105)"/>
-            <ellipse cx="110" cy="100" rx="7" ry="11" fill="rgba(170,110,220,0.65)" transform="rotate(30,110,100)"/>
-            <ellipse cx="112" cy="112" rx="7" ry="11" fill="rgba(155,95,205,0.7)" transform="rotate(80,112,112)"/>
-            <ellipse cx="100" cy="116" rx="7" ry="11" fill="rgba(165,105,215,0.65)" transform="rotate(-80,100,116)"/>
-            <circle cx="106" cy="108" r="4" fill="rgba(255,240,150,0.9)"/>
-            <!-- 叶子 -->
-            <path d="M52,88 Q40,110 30,120" stroke="rgba(80,150,80,0.6)" stroke-width="2" fill="none"/>
-            <ellipse cx="36" cy="112" rx="10" ry="6" fill="rgba(80,150,80,0.45)" transform="rotate(-40,36,112)"/>
-            <ellipse cx="46" cy="100" rx="9" ry="5" fill="rgba(90,160,90,0.4)" transform="rotate(20,46,100)"/>
-          </svg>
-          <div class="art-style-label"><div class="asl-name">水彩粉画</div><div class="asl-sub">透明晕染</div></div>
-        </div>
-
-        <!-- 版画 浮世绘 -->
-        <div class="art-style-card" onclick="applyStyleHome('浮世绘版画，神奈川冲浪里，葛饰北斋风格')">
-          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- 天空 -->
-            <rect width="140" height="180" fill="#d8eef8"/>
-            <rect x="0" y="0" width="140" height="70" fill="#c0dff5"/>
-            <!-- 富士山 -->
-            <path d="M50,110 L85,45 L120,110Z" fill="white" stroke="#aac8e0" stroke-width="0.5"/>
-            <path d="M60,110 L85,55 L110,110Z" fill="#e8f4fc"/>
-            <path d="M73,75 L85,55 L97,75Z" fill="white"/>
-            <!-- 波浪大 -->
-            <path d="M0,120 Q18,95 35,115 Q52,135 70,108 Q88,82 105,108 Q122,132 140,115 L140,180 L0,180Z" fill="#2266aa"/>
-            <path d="M0,130 Q20,108 38,125 Q56,142 74,118 Q92,95 110,118 Q128,140 140,125 L140,180 L0,180Z" fill="#1a5599"/>
-            <!-- 浪花白 -->
-            <path d="M0,120 Q8,112 18,120" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M35,115 Q45,106 55,114" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M70,108 Q80,99 90,107" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M105,108 Q115,100 125,108" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <!-- 浪尖爪 -->
-            <path d="M18,120 Q14,108 20,106 Q24,108 22,115" fill="white"/>
-            <path d="M55,114 Q51,102 57,100 Q61,102 59,109" fill="white"/>
-            <path d="M90,107 Q86,96 92,93 Q96,95 94,102" fill="white"/>
-            <!-- 小船 -->
-            <path d="M58,148 Q70,143 82,148 L80,155 L60,155Z" fill="#5a3a1a"/>
-            <!-- 近景海浪 -->
-            <path d="M0,155 Q25,145 50,155 Q75,165 100,153 Q120,143 140,155 L140,180 L0,180Z" fill="#1a4d88"/>
-          </svg>
-          <div class="art-style-label"><div class="asl-name">版画刻印</div><div class="asl-sub">浮世绘</div></div>
-        </div>
-
-        <!-- 动漫插画 -->
-        <div class="art-style-card" onclick="applyStyleHome('日系动漫风格，唯美天空，樱花飘落，治愈系')">
-          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <defs>
-              <linearGradient id="g-anime-sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#7ab8f5"/>
-                <stop offset="50%" stop-color="#f5c8e0"/>
-                <stop offset="100%" stop-color="#fde8c0"/>
-              </linearGradient>
-              <filter id="f-glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            </defs>
-            <rect width="140" height="180" fill="url(#g-anime-sky)"/>
-            <!-- 云朵 -->
-            <ellipse cx="35" cy="40" rx="28" ry="12" fill="rgba(255,255,255,0.85)"/>
-            <ellipse cx="25" cy="42" rx="16" ry="10" fill="rgba(255,255,255,0.85)"/>
-            <ellipse cx="48" cy="42" rx="16" ry="10" fill="rgba(255,255,255,0.85)"/>
-            <ellipse cx="110" cy="28" rx="22" ry="9" fill="rgba(255,255,255,0.75)"/>
-            <ellipse cx="100" cy="30" rx="14" ry="8" fill="rgba(255,255,255,0.75)"/>
-            <!-- 太阳 -->
-            <circle cx="110" cy="55" r="16" fill="rgba(255,230,100,0.7)" filter="url(#f-glow)"/>
-            <circle cx="110" cy="55" r="10" fill="#fff8a0"/>
-            <!-- 樱花树 -->
-            <rect x="62" y="110" width="8" height="70" fill="#8b5a2b" rx="2"/>
-            <rect x="55" y="95" width="6" height="40" fill="#8b5a2b" rx="2" transform="rotate(-25,58,115)"/>
-            <rect x="74" y="95" width="6" height="38" fill="#8b5a2b" rx="2" transform="rotate(20,77,113)"/>
-            <!-- 花簇 -->
-            <circle cx="66" cy="100" r="22" fill="rgba(255,160,190,0.75)"/>
-            <circle cx="50" cy="92" r="16" fill="rgba(255,170,195,0.7)"/>
-            <circle cx="82" cy="90" r="15" fill="rgba(255,155,185,0.7)"/>
-            <circle cx="66" cy="82" r="14" fill="rgba(255,175,200,0.75)"/>
-            <!-- 飘落花瓣 -->
-            <ellipse cx="20" cy="60" rx="4" ry="2.5" fill="rgba(255,160,185,0.8)" transform="rotate(-30,20,60)"/>
-            <ellipse cx="95" cy="75" rx="3.5" ry="2" fill="rgba(255,165,190,0.75)" transform="rotate(20,95,75)"/>
-            <ellipse cx="115" cy="100" rx="3" ry="2" fill="rgba(255,160,185,0.7)" transform="rotate(-45,115,100)"/>
-            <ellipse cx="15" cy="120" rx="4" ry="2.5" fill="rgba(255,170,195,0.7)" transform="rotate(15,15,120)"/>
-            <ellipse cx="128" cy="135" rx="3" ry="2" fill="rgba(255,160,185,0.65)" transform="rotate(-60,128,135)"/>
-            <!-- 地面 -->
-            <rect x="0" y="155" width="140" height="25" fill="#90c855"/>
-            <path d="M0,155 Q35,148 70,155 Q105,162 140,155" fill="#7ab840"/>
-          </svg>
-          <div class="art-style-label"><div class="asl-name">动漫插画</div><div class="asl-sub">日系唯美</div></div>
-        </div>
-
-        <!-- 超写实 伦勃朗光影 -->
-        <div class="art-style-card" onclick="applyStyleHome('超写实油画，伦勃朗光影，古典肖像，精细细节')">
-          <svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <defs>
-              <radialGradient id="g-rembrandt" cx="45%" cy="35%" r="55%">
-                <stop offset="0%" stop-color="#d4a060"/>
-                <stop offset="35%" stop-color="#a07030"/>
-                <stop offset="70%" stop-color="#4a2e10"/>
-                <stop offset="100%" stop-color="#180e04"/>
-              </radialGradient>
-              <radialGradient id="g-face" cx="48%" cy="40%" r="40%">
-                <stop offset="0%" stop-color="#e8c090"/>
-                <stop offset="50%" stop-color="#c89050"/>
-                <stop offset="100%" stop-color="#8a5a20" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <rect width="140" height="180" fill="#0f0804"/>
-            <rect width="140" height="180" fill="url(#g-rembrandt)"/>
-            <!-- 人物轮廓 -->
-            <!-- 身体暗部 -->
-            <ellipse cx="70" cy="155" rx="42" ry="35" fill="rgba(30,18,8,0.9)"/>
-            <!-- 衣领 -->
-            <path d="M45,120 Q70,108 95,120 Q90,140 70,145 Q50,140 45,120Z" fill="rgba(180,150,100,0.4)"/>
-            <path d="M55,118 Q70,110 85,118 Q82,130 70,133 Q58,130 55,118Z" fill="rgba(220,195,150,0.35)"/>
-            <!-- 脸部 -->
-            <ellipse cx="70" cy="85" rx="28" ry="33" fill="rgba(200,160,100,0.0)"/>
-            <ellipse cx="70" cy="85" rx="28" ry="33" fill="url(#g-face)"/>
-            <!-- 明暗分界 -->
-            <path d="M70,55 Q85,62 90,80 Q92,100 85,115 Q78,122 70,122" fill="rgba(200,160,90,0.25)"/>
-            <!-- 眼睛 -->
-            <ellipse cx="60" cy="83" rx="5.5" ry="3.5" fill="rgba(30,20,10,0.8)"/>
-            <ellipse cx="78" cy="81" rx="5" ry="3" fill="rgba(30,20,10,0.6)"/>
-            <circle cx="61" cy="82" r="1.5" fill="rgba(200,180,120,0.5)"/>
-            <!-- 帽子暗影 -->
-            <ellipse cx="70" cy="55" rx="32" ry="12" fill="rgba(20,12,4,0.85)"/>
-            <path d="M38,55 Q70,42 102,55 Q98,35 70,30 Q42,35 38,55Z" fill="rgba(15,8,2,0.9)"/>
-          </svg>
-          <div class="art-style-label"><div class="asl-name">超写实</div><div class="asl-sub">极致细节</div></div>
-        </div>
-
-      </div>
+      <div class="art-scroll" id="artScroll"></div>
 
       <!-- 推广 -->
-      <div class="promo-banner" onclick="showRecharge()">
-        <div class="pb-icon">🎁</div>
-        <div class="pb-info">
-          <div class="pb-title">新用户专享 · 首充立享双倍算力</div>
-          <div class="pb-sub">限时优惠，充值即送额外算力</div>
-        </div>
-        <button class="pb-btn">立即领取</button>
+      <div class="promo" onclick="showRecharge()">
+        <svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="12" width="26" height="18" rx="2" fill="#b23a2c"/><rect x="4" y="12" width="26" height="6" fill="#8c2a20"/><path d="M17 12V8M12 8a3 3 0 016 0M22 8a3 3 0 00-5-2" stroke="#b23a2c" stroke-width="2" fill="none"/></svg>
+        <div class="promo-info"><div class="promo-title">新友首充 · 算力翻倍</div><div class="promo-sub">限时优惠，充值即送等额算力</div></div>
+        <button class="promo-btn">领取</button>
       </div>
 
-      <!-- 作品瀑布流 -->
+      <!-- 精选瀑布流 -->
       <div class="home-section" style="padding-bottom:0">
-        <div class="section-title">精选作品</div>
-        <div class="style-tabs">
-          <span class="stab active" onclick="switchHomeTab(this,'全部')">全部</span>
-          <span class="stab" onclick="switchHomeTab(this,'国画')">国画</span>
-          <span class="stab" onclick="switchHomeTab(this,'油画')">油画</span>
-          <span class="stab" onclick="switchHomeTab(this,'版画')">版画</span>
-          <span class="stab" onclick="switchHomeTab(this,'水彩')">水彩</span>
-        </div>
+        <div class="section-head"><div class="section-title">丹青精选</div></div>
       </div>
-      <div class="waterfall" id="homeWaterfall">
-        <div class="wf-col" id="homeCol1"></div>
-        <div class="wf-col" id="homeCol2"></div>
+      <div class="chip-row">
+        <span class="chip active" onclick="homeTab(this,'全部')">全部</span>
+        <span class="chip" onclick="homeTab(this,'国画')">国画</span>
+        <span class="chip" onclick="homeTab(this,'油画')">油画</span>
+        <span class="chip" onclick="homeTab(this,'版画')">版画</span>
       </div>
+      <div class="waterfall"><div class="wf-col" id="homeCol1"></div><div class="wf-col" id="homeCol2"></div></div>
       <div style="height:20px"></div>
     </div>
 
-    <!-- ===== 文生图 ===== -->
-    <div id="page-text2img" class="page">
-      <div class="tool-container">
-        <div class="form-block">
-          <div class="form-label">描述你想创作的画面</div>
-          <textarea id="t2i-prompt" class="text-input" placeholder="例如：荷花盛开的池塘，晨雾弥漫，水墨国画风格，意境幽远……" rows="4"></textarea>
-        </div>
+    <!-- ============ 创作 ============ -->
+    <div id="page-create" class="page">
+      <div class="seg-tabs">
+        <div class="seg active" onclick="createTab(this,'t2i')">文生图</div>
+        <div class="seg" onclick="createTab(this,'i2i')">图生图</div>
+        <div class="seg" onclick="createTab(this,'train')">风格训练</div>
+      </div>
 
-        <div class="form-block">
-          <div class="selector-row" onclick="showModelPicker()">
-            <span class="form-label" style="margin:0">基础模型</span>
-            <span class="selector-val">通义MAI · 极速版 <span class="arrow">›</span></span>
+      <!-- 文生图 -->
+      <div id="ct-t2i">
+        <div class="tool">
+          <div class="fblock">
+            <span class="flabel">画面描述</span>
+            <textarea id="t2i-prompt" class="t-input" rows="4" placeholder="例：荷塘月色，残荷数枝，水墨写意，意境清远；勿含敏感内容"></textarea>
           </div>
-        </div>
-
-        <div class="form-block">
-          <div class="form-label">艺术风格 <span class="form-hint">（可多选，最多5个）</span></div>
-          <div class="style-tabs2">
-            <span class="stab2 active">推荐</span>
-            <span class="stab2">我的</span>
-            <span class="stab2">收藏</span>
+          <div class="fblock">
+            <div class="sel-row" onclick="showToast('更多模型开发中')"><span class="flabel" style="margin:0">基础画派</span><span class="sel-val">国画 · 通用 ›</span></div>
           </div>
-          <div class="style-cards">
-            <div class="style-card-s active" onclick="toggleStyleCard(this)" data-style="工笔人物">
-              <div class="sc-art s-gongbi"></div>
-              <div class="sc-name">工笔人物</div>
+          <div class="fblock">
+            <span class="flabel">风格选择 <span class="fhint">（可多选，最多5个）</span></span>
+            <div class="style-row">
+              <div class="scard active" data-style="工笔人物" onclick="toggleStyle(this)"><div class="scard-thumb" id="st1"></div><div class="scard-name">工笔人物</div></div>
+              <div class="scard" data-style="工笔花鸟" onclick="toggleStyle(this)"><div class="scard-thumb" id="st2"></div><div class="scard-name">工笔花鸟</div></div>
+              <div class="scard" data-style="写意山水" onclick="toggleStyle(this)"><div class="scard-thumb" id="st3"></div><div class="scard-name">写意山水</div></div>
+              <div class="scard" data-style="水墨荷花" onclick="toggleStyle(this)"><div class="scard-thumb" id="st4"></div><div class="scard-name">水墨写意</div></div>
+              <div class="scard" data-style="墨竹" onclick="toggleStyle(this)"><div class="scard-thumb" id="st5"></div><div class="scard-name">墨竹文人</div></div>
+              <div class="scard" data-style="国展人物" onclick="toggleStyle(this)"><div class="scard-thumb" id="st6"></div><div class="scard-name">国展人物</div></div>
+              <div class="scard" data-style="工笔花鸟" onclick="toggleStyle(this)"><div class="scard-thumb" id="st7"></div><div class="scard-name">瑞鹤工笔</div></div>
+              <div class="scard" data-style="书法" onclick="toggleStyle(this)"><div class="scard-thumb" id="st8"></div><div class="scard-name">书法题字</div></div>
             </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="国展人物">
-              <div class="sc-art s-guozhan"></div>
-              <div class="sc-name">国展人物</div>
+          </div>
+          <div class="fblock">
+            <span class="flabel">生成张数</span>
+            <div class="opt-btns">
+              <button class="opt-btn active" onclick="selCnt(this,1)">1 张</button>
+              <button class="opt-btn" onclick="selCnt(this,2)">2 张</button>
+              <button class="opt-btn" onclick="selCnt(this,3)">3 张</button>
+              <button class="opt-btn" onclick="selCnt(this,4)">4 张</button>
             </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="国展花鸟">
-              <div class="sc-art s-huaniao"></div>
-              <div class="sc-name">国展花鸟</div>
+          </div>
+          <div class="fblock">
+            <span class="flabel">画幅</span>
+            <div class="opt-btns">
+              <button class="opt-btn" onclick="selRatio(this,'1:1')">斗方 1:1</button>
+              <button class="opt-btn active" onclick="selRatio(this,'3:4')">立轴 3:4</button>
+              <button class="opt-btn" onclick="selRatio(this,'4:3')">横披 4:3</button>
+              <button class="opt-btn" onclick="selRatio(this,'9:16')">条幅 9:16</button>
             </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="水墨山水">
-              <div class="sc-art s-shanshui"></div>
-              <div class="sc-name">水墨山水</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="写意花鸟">
-              <div class="sc-art s-xieyi"></div>
-              <div class="sc-name">写意花鸟</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="泼墨山水">
-              <div class="sc-art s-pomo"></div>
-              <div class="sc-name">泼墨山水</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="印象派油画">
-              <div class="sc-art s-youhua"></div>
-              <div class="sc-name">印象油画</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="水彩">
-              <div class="sc-art s-shuicai"></div>
-              <div class="sc-name">水彩风景</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="版画">
-              <div class="sc-art s-banhua"></div>
-              <div class="sc-name">版画刻印</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="动漫">
-              <div class="sc-art s-dongman"></div>
-              <div class="sc-name">动漫插画</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="赛博朋克">
-              <div class="sc-art s-saibo"></div>
-              <div class="sc-name">赛博朋克</div>
-            </div>
-            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="洛可可">
-              <div class="sc-art s-luoke"></div>
-              <div class="sc-name">洛可可</div>
+          </div>
+          <div class="result" id="t2i-result">
+            <div class="result-empty">
+              <svg class="re-svg" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="2" stroke="#9a8e78" stroke-width="2"/><path d="M14 30l6-7 5 5 4-6 5 8" stroke="#9a8e78" stroke-width="2" fill="none"/><circle cx="18" cy="16" r="3" stroke="#9a8e78" stroke-width="2"/></svg>
+              <p>画作将呈现于此 · 支持1-4张</p>
             </div>
           </div>
         </div>
-
-        <div class="form-block">
-          <div class="form-label">生成张数</div>
-          <div class="count-btns">
-            <button class="count-btn active" onclick="selectCount(this,1)">1 张</button>
-            <button class="count-btn" onclick="selectCount(this,2)">2 张</button>
-            <button class="count-btn" onclick="selectCount(this,3)">3 张</button>
-            <button class="count-btn" onclick="selectCount(this,4)">4 张</button>
-          </div>
-        </div>
-
-        <div class="form-block">
-          <div class="form-label">画面比例</div>
-          <div class="size-btns">
-            <button class="size-btn active" onclick="selectSize(this,'1:1')">1:1 方</button>
-            <button class="size-btn" onclick="selectSize(this,'3:4')">3:4 竖</button>
-            <button class="size-btn" onclick="selectSize(this,'4:3')">4:3 横</button>
-            <button class="size-btn" onclick="selectSize(this,'9:16')">9:16 长</button>
-          </div>
-        </div>
-
-        <div class="result-box" id="t2i-result">
-          <div class="result-empty">
-            <div class="re-icon">🖼️</div>
-            <p>生成的画作将展示在这里</p>
-            <p style="font-size:12px;margin-top:6px;color:#444">支持1-4张并行生成</p>
-          </div>
+        <div class="bottom-bar">
+          <button class="btn-sec" onclick="showPage('history')">作品</button>
+          <button class="btn-main" id="t2iBtn" onclick="genT2I()"><span id="t2iBtnText">生成 · 耗80算力</span></button>
         </div>
       </div>
 
-      <div class="bottom-actions">
-        <button class="action-btn-sec" onclick="showPage('history')">历史</button>
-        <button class="action-btn-sec" onclick="showToast('高级设置开发中')">高级</button>
-        <button class="action-btn-main" onclick="generateT2I()">
-          <span id="t2i-btn-text">⚡ AI 生成（80算力）</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- ===== 图生图 ===== -->
-    <div id="page-img2img" class="page">
-      <div class="tool-container">
-        <div class="form-block">
-          <div class="form-label">上传参考图片</div>
-          <div class="upload-box" onclick="document.getElementById('imgInput').click()">
-            <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="previewUpload(this)">
-            <div id="uploadPH">
-              <div class="upload-icon">🖼️</div>
-              <p>点击上传参考图片</p>
-              <span>支持 JPG、PNG，最大 10MB</span>
+      <!-- 图生图 -->
+      <div id="ct-i2i" style="display:none">
+        <div class="tool">
+          <div class="fblock">
+            <span class="flabel">上传参考图</span>
+            <div class="upload" onclick="document.getElementById('i2iInput').click()">
+              <input type="file" id="i2iInput" accept="image/*" style="display:none" onchange="previewI2I(this)">
+              <div id="i2iPH">
+                <svg class="upload-svg" viewBox="0 0 48 48" fill="none"><rect x="6" y="10" width="36" height="28" rx="2" stroke="#9a8e78" stroke-width="2"/><path d="M6 32l10-9 7 6 6-7 13 12" stroke="#9a8e78" stroke-width="2" fill="none"/><circle cx="17" cy="20" r="3" stroke="#9a8e78" stroke-width="2"/></svg>
+                <p>点击上传参考图片</p><span>JPG / PNG，最大 10MB</span>
+              </div>
+              <img id="i2iPreview" style="display:none;max-width:100%;max-height:220px;border-radius:6px;object-fit:contain">
             </div>
-            <img id="uploadPreview" style="display:none;max-width:100%;max-height:220px;border-radius:10px;object-fit:contain;">
+          </div>
+          <div class="fblock">
+            <span class="flabel">补充描述 <span class="fhint">（留空则自动识别）</span></span>
+            <textarea id="i2i-prompt" class="t-input" rows="2" placeholder="例：保留构图，转为水墨写意，增添留白意境"></textarea>
+          </div>
+          <div class="fblock">
+            <span class="flabel">一键生成六种画风</span>
+            <div class="sp-grid">
+              <div class="sp-item" id="sp-国画"><div class="sp-label">国画</div><div class="sp-img"><span class="sp-ph">待生成</span></div></div>
+              <div class="sp-item" id="sp-油画"><div class="sp-label">油画</div><div class="sp-img"><span class="sp-ph">待生成</span></div></div>
+              <div class="sp-item" id="sp-水彩"><div class="sp-label">水彩</div><div class="sp-img"><span class="sp-ph">待生成</span></div></div>
+              <div class="sp-item" id="sp-版画"><div class="sp-label">版画</div><div class="sp-img"><span class="sp-ph">待生成</span></div></div>
+              <div class="sp-item" id="sp-动漫"><div class="sp-label">动漫</div><div class="sp-img"><span class="sp-ph">待生成</span></div></div>
+              <div class="sp-item" id="sp-写实"><div class="sp-label">写实</div><div class="sp-img"><span class="sp-ph">待生成</span></div></div>
+            </div>
           </div>
         </div>
-
-        <div class="form-block">
-          <div class="form-label">补充描述 <span class="form-hint">（可选，留空则自动分析）</span></div>
-          <textarea id="i2i-prompt" class="text-input" placeholder="例如：保留构图，色彩更鲜艳，增加山水韵味…" rows="2"></textarea>
-        </div>
-
-        <div class="form-block">
-          <div class="form-label">一键生成 6 种艺术风格</div>
-          <div class="styles-preview">
-            <div class="sp-item" id="sp-国画"><div class="sp-label">🖌 国画</div><div class="sp-img"><div class="sp-ph">待生成</div></div></div>
-            <div class="sp-item" id="sp-油画"><div class="sp-label">🎨 油画</div><div class="sp-img"><div class="sp-ph">待生成</div></div></div>
-            <div class="sp-item" id="sp-水彩"><div class="sp-label">💧 水彩</div><div class="sp-img"><div class="sp-ph">待生成</div></div></div>
-            <div class="sp-item" id="sp-版画"><div class="sp-label">🪶 版画</div><div class="sp-img"><div class="sp-ph">待生成</div></div></div>
-            <div class="sp-item" id="sp-动漫"><div class="sp-label">✨ 动漫</div><div class="sp-img"><div class="sp-ph">待生成</div></div></div>
-            <div class="sp-item" id="sp-写实"><div class="sp-label">📷 写实</div><div class="sp-img"><div class="sp-ph">待生成</div></div></div>
-          </div>
+        <div class="bottom-bar">
+          <button class="btn-main" id="i2iBtn" onclick="genI2I()"><span id="i2iBtnText">一键生成六种风格 · 耗60算力</span></button>
         </div>
       </div>
-      <div class="bottom-actions">
-        <button class="action-btn-main" onclick="generateI2IAll()" style="flex:1">
-          <span id="i2i-btn-text">🎨 一键生成全部风格（60算力）</span>
-        </button>
+
+      <!-- 风格训练 -->
+      <div id="ct-train" style="display:none">
+        <div class="tool">
+          <div class="note"><span class="note-icon">🖌</span><p>上传 10-100 张同类风格作品，训练你的<b>专属国画模型</b>。以工笔、写意、国展创作为主，训练约需 3-4 小时，完成后在「我的风格」调用。每次消耗 <b>3000 算力</b>。</p></div>
+          <div class="fblock">
+            <div class="sel-row"><span class="flabel" style="margin:0">模型命名</span><input class="inline-input" placeholder="如：我的工笔花鸟"></div>
+          </div>
+          <div class="fblock">
+            <span class="flabel">创作方向</span>
+            <div class="train-types">
+              <div class="ttype active" onclick="selTrainType(this,'写意')"><div class="ttype-name">写意画</div><div class="ttype-desc">挥洒泼墨，重神韵气势</div></div>
+              <div class="ttype" onclick="selTrainType(this,'工笔')"><div class="ttype-name">工笔画</div><div class="ttype-desc">精勾细染，重形神兼备</div></div>
+              <div class="ttype" onclick="selTrainType(this,'国展')"><div class="ttype-name">国展创作</div><div class="ttype-desc">主题创作，重构图立意</div></div>
+              <div class="ttype" onclick="selTrainType(this,'书法')"><div class="ttype-name">书法题款</div><div class="ttype-desc">行楷篆隶，重笔法章法</div></div>
+            </div>
+          </div>
+          <div class="fblock">
+            <span class="flabel">训练素材 <span class="fhint" id="trainCount">（0/100）</span></span>
+            <div class="train-grid" id="trainGrid">
+              <div class="train-add" onclick="document.getElementById('trainInput').click()">
+                <input type="file" id="trainInput" accept="image/*" multiple style="display:none" onchange="addTrain(this)">
+                <div class="plus">+</div><div class="t">添加</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-bar">
+          <button class="btn-main" onclick="startTrain()">开始训练 · 耗3000算力</button>
+        </div>
       </div>
     </div>
 
-    <!-- ===== 模型训练 ===== -->
-    <div id="page-train" class="page">
-      <div class="tool-container">
-        <div class="form-block">
-          <div class="selector-row">
-            <span class="form-label" style="margin:0">模型名称</span>
-            <input type="text" class="inline-input" placeholder="给你的风格起个名字…">
-          </div>
-        </div>
-        <div class="form-block">
-          <div class="selector-row" onclick="showModelPicker()">
-            <span class="form-label" style="margin:0">基础模型</span>
-            <span class="selector-val">国画风格 <span class="arrow">›</span></span>
-          </div>
-        </div>
-        <div class="train-tip">
-          <span class="tip-icon">🔔</span>
-          <p>上传 10-100 张同类风格图片训练专属 AI 模型，训练约需 3-4 小时，完成后在「我的风格」中使用。每次训练消耗 <b style="color:var(--gold)">3000 算力</b>。</p>
-        </div>
-        <div class="form-block">
-          <div class="form-label">上传训练素材 <span class="form-hint" id="trainCount">（0/100）</span></div>
-          <div class="train-upload-grid" id="trainGrid">
-            <div class="train-upload-btn" onclick="document.getElementById('trainInput').click()">
-              <input type="file" id="trainInput" accept="image/*" multiple style="display:none" onchange="addTrainImages(this)">
-              <div class="tub-icon">➕</div>
-              <div class="tub-count">添加图片</div>
+    <!-- ============ 画库 ============ -->
+    <div id="page-library" class="page">
+      <div class="seg-tabs">
+        <div class="seg active" onclick="libTab(this,'guozhan')">国展作品</div>
+        <div class="seg" onclick="libTab(this,'masters')">中国名家</div>
+        <div class="seg" onclick="libTab(this,'world')">世界名画</div>
+      </div>
+      <div class="chip-row" id="libChips">
+        <span class="chip active" onclick="libChip(this,'guozhan','全部')">全部</span>
+        <span class="chip" onclick="libChip(this,'guozhan','人物')">人物</span>
+        <span class="chip" onclick="libChip(this,'guozhan','花鸟')">花鸟</span>
+        <span class="chip" onclick="libChip(this,'guozhan','山水')">山水</span>
+        <span class="chip" onclick="libChip(this,'guozhan','书法')">书法</span>
+      </div>
+      <div class="lib-grid" id="libGrid"></div>
+      <div style="height:20px"></div>
+    </div>
+
+    <!-- ============ 画稿 ============ -->
+    <div id="page-draft" class="page">
+      <div class="tool">
+        <div class="note"><span class="note-icon">📐</span><p>上传一幅大师作品或优秀范画，AI 自动拆解为<b>线描稿 → 黑白灰稿 → 色彩稿</b>三个阶段，还原创作思路，助你研习构图、素描关系与设色。每次消耗 <b>90 算力</b>。</p></div>
+        <div class="fblock">
+          <span class="flabel">上传范画</span>
+          <div class="upload" onclick="document.getElementById('draftInput').click()">
+            <input type="file" id="draftInput" accept="image/*" style="display:none" onchange="previewDraft(this)">
+            <div id="draftPH">
+              <svg class="upload-svg" viewBox="0 0 48 48" fill="none"><rect x="8" y="6" width="32" height="36" rx="2" stroke="#9a8e78" stroke-width="2"/><path d="M15 16h18M15 23h18M15 30h12" stroke="#9a8e78" stroke-width="2"/></svg>
+              <p>点击上传大师作品 / 范画</p><span>越清晰拆解越准确</span>
             </div>
+            <img id="draftPreview" style="display:none;max-width:100%;max-height:220px;border-radius:6px;object-fit:contain">
           </div>
         </div>
-        <div class="form-block">
-          <div class="form-label">训练说明</div>
-          <textarea class="text-input" placeholder="描述你的风格特点，帮助AI更好地学习（选填）" rows="3"></textarea>
+        <div class="fblock">
+          <span class="flabel">拆解三稿</span>
+          <div class="draft-row">
+            <div class="draft-col"><div class="draft-num">1</div><div class="draft-head">线描稿</div><div class="draft-box" id="draft-line"><span class="sp-ph">白描线稿</span></div></div>
+            <div class="draft-col"><div class="draft-num">2</div><div class="draft-head">黑白灰稿</div><div class="draft-box" id="draft-value"><span class="sp-ph">素描关系</span></div></div>
+            <div class="draft-col"><div class="draft-num">3</div><div class="draft-head">色彩稿</div><div class="draft-box" id="draft-color"><span class="sp-ph">设色关系</span></div></div>
+          </div>
         </div>
       </div>
-      <div class="bottom-actions">
-        <button class="action-btn-main" onclick="startTraining()" style="flex:1">🧠 开始训练（消耗3000算力）</button>
+      <div class="bottom-bar">
+        <button class="btn-main" id="draftBtn" onclick="genDrafts()">一键拆解三稿 · 耗90算力</button>
       </div>
     </div>
 
-    <!-- ===== 画质提升 ===== -->
+    <!-- ============ 画质提升 ============ -->
     <div id="page-enhance" class="page">
-      <div class="tool-container">
-        <div class="form-block">
-          <div class="form-label">上传需要提升的图片</div>
-          <div class="upload-box" onclick="document.getElementById('enhanceInput').click()">
-            <input type="file" id="enhanceInput" accept="image/*" style="display:none" onchange="previewEnhance(this)">
-            <div id="enhancePH">
-              <div class="upload-icon">✨</div>
-              <p>点击上传图片</p>
-              <span>AI 分析内容后重绘，画质更清晰</span>
+      <div class="tool">
+        <div class="fblock">
+          <span class="flabel">上传待提升图片</span>
+          <div class="upload" onclick="document.getElementById('enhInput').click()">
+            <input type="file" id="enhInput" accept="image/*" style="display:none" onchange="previewEnh(this)">
+            <div id="enhPH">
+              <svg class="upload-svg" viewBox="0 0 48 48" fill="none"><path d="M24 8l3 10 10 3-10 3-3 10-3-10-10-3 10-3z" stroke="#9a8e78" stroke-width="2" fill="none"/></svg>
+              <p>点击上传图片</p><span>AI 分析后重绘，画质更清晰</span>
             </div>
-            <img id="enhancePreview" style="display:none;max-width:100%;max-height:220px;border-radius:10px;object-fit:contain;">
+            <img id="enhPreview" style="display:none;max-width:100%;max-height:220px;border-radius:6px;object-fit:contain">
           </div>
         </div>
-        <div class="form-block">
-          <div class="form-label">提升倍数</div>
-          <div class="count-btns">
-            <button class="count-btn active" onclick="selectEnhance(this,'2x')">2x 高清</button>
-            <button class="count-btn" onclick="selectEnhance(this,'4x')">4x 超清</button>
+        <div class="fblock">
+          <span class="flabel">提升倍数</span>
+          <div class="opt-btns">
+            <button class="opt-btn active" onclick="selEnh(this,'2x')">2x 高清</button>
+            <button class="opt-btn" onclick="selEnh(this,'4x')">4x 超清</button>
           </div>
         </div>
-        <div class="result-box" id="enhance-result">
+        <div class="result" id="enh-result">
           <div class="result-empty">
-            <div class="re-icon">✨</div>
-            <p>提升后的画作将展示在这里</p>
+            <svg class="re-svg" viewBox="0 0 48 48" fill="none"><path d="M24 8l3 10 10 3-10 3-3 10-3-10-10-3 10-3z" stroke="#9a8e78" stroke-width="2"/></svg>
+            <p>提升后画作将呈现于此</p>
           </div>
         </div>
       </div>
-      <div class="bottom-actions">
-        <button class="action-btn-main" onclick="generateEnhance()" style="flex:1">✨ 开始提升（消耗30算力）</button>
+      <div class="bottom-bar">
+        <button class="btn-main" id="enhBtn" onclick="genEnh()">开始提升 · 耗30算力</button>
       </div>
     </div>
 
-    <!-- ===== 风格广场 ===== -->
-    <div id="page-gallery" class="page">
-      <div class="tool-container">
-        <div class="style-tabs" style="margin-bottom:16px" id="galleryTabs">
-          <span class="stab active" onclick="filterGallery(this,'全部')">全部</span>
-          <span class="stab" onclick="filterGallery(this,'国画')">国画</span>
-          <span class="stab" onclick="filterGallery(this,'油画')">油画</span>
-          <span class="stab" onclick="filterGallery(this,'版画')">版画</span>
-          <span class="stab" onclick="filterGallery(this,'水彩')">水彩</span>
-          <span class="stab" onclick="filterGallery(this,'综合')">综合</span>
-        </div>
-        <div class="gallery-grid2" id="galleryGrid"></div>
-      </div>
-    </div>
-
-    <!-- ===== 历史记录 ===== -->
+    <!-- ============ 历史 ============ -->
     <div id="page-history" class="page">
-      <div class="history-header">
-        <span class="form-label" style="margin:0">共 <span id="historyCount">0</span> 张作品</span>
-        <button class="clear-btn" onclick="clearHistory()">清空记录</button>
-      </div>
-      <div class="waterfall">
-        <div class="wf-col" id="histCol1"></div>
-        <div class="wf-col" id="histCol2"></div>
-      </div>
-      <div id="historyEmpty" class="result-empty" style="padding:80px 0">
-        <div class="re-icon">🖼️</div>
-        <p>还没有生成过作品</p>
-        <p style="font-size:12px;margin-top:6px">去文生图创作你的第一幅画吧</p>
-      </div>
+      <div class="hist-head"><span class="flabel" style="margin:0">共 <span id="histCount">0</span> 幅作品</span><button class="clear-btn" onclick="clearHist()">清空</button></div>
+      <div class="waterfall"><div class="wf-col" id="histC1"></div><div class="wf-col" id="histC2"></div></div>
+      <div id="histEmpty" class="result-empty" style="padding:70px 0"><p>尚无作品 · 去创作第一幅画吧</p></div>
     </div>
 
-    <!-- ===== 我的 ===== -->
+    <!-- ============ 我的 ============ -->
     <div id="page-mine" class="page">
-      <div class="mine-page">
-        <div class="mine-hero">
-          <div class="mine-avatar-wrap">
-            <div class="mine-avatar">👤</div>
-            <div class="mine-avatar-ring"></div>
-          </div>
-          <div class="mine-name">墨韵创作者</div>
-          <div class="mine-id">登录解锁更多功能 →</div>
-        </div>
-
-        <div style="height:16px"></div>
-        <div class="mine-stats">
-          <div class="stat-item">
-            <div class="stat-num" id="statCredits">100</div>
-            <div class="stat-label">算力余额</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">0</div>
-            <div class="stat-label">我的风格</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num" id="statCount">0</div>
-            <div class="stat-label">生成作品</div>
-          </div>
-        </div>
-
-        <div class="mine-vip" onclick="showRecharge()">
-          <div class="vip-icon">👑</div>
-          <div class="vip-info">
-            <div class="vip-title">开通会员·算力加倍</div>
-            <div class="vip-sub">专属风格 · 优先队列 · 高清下载</div>
-          </div>
-          <button class="vip-btn">立即开通</button>
-        </div>
-
-        <div class="mine-menu">
-          <div class="menu-item" onclick="showRecharge()">
-            <span class="menu-icon">💎</span>
-            <span class="menu-name">算力充值</span>
-            <span class="menu-badge">特惠</span>
-            <span class="menu-arrow">›</span>
-          </div>
-          <div class="menu-item" onclick="showPage('history')">
-            <span class="menu-icon">🖼️</span>
-            <span class="menu-name">我的作品</span>
-            <span class="menu-arrow">›</span>
-          </div>
-          <div class="menu-item" onclick="showPage('train')">
-            <span class="menu-icon">🧠</span>
-            <span class="menu-name">我的风格模型</span>
-            <span class="menu-arrow">›</span>
-          </div>
-          <div class="menu-item" onclick="showPage('gallery')">
-            <span class="menu-icon">⭐</span>
-            <span class="menu-name">我的收藏</span>
-            <span class="menu-arrow">›</span>
-          </div>
-        </div>
-
-        <div class="mine-menu">
-          <div class="menu-item" onclick="showToast('邀请好友功能开发中')">
-            <span class="menu-icon">🎁</span>
-            <span class="menu-name">邀请好友 · 得算力</span>
-            <span class="menu-badge" style="background:#c0392b;color:#fff">赚钱</span>
-            <span class="menu-arrow">›</span>
-          </div>
-          <div class="menu-item" onclick="showToast('联系客服：yichuang_ai')">
-            <span class="menu-icon">💬</span>
-            <span class="menu-name">联系客服</span>
-            <span class="menu-arrow">›</span>
-          </div>
-          <div class="menu-item" onclick="showToast('关于我们')">
-            <span class="menu-icon">ℹ️</span>
-            <span class="menu-name">关于墨韵AI</span>
-            <span class="menu-arrow">›</span>
-          </div>
-        </div>
-
-        <button class="login-btn" onclick="showToast('登录功能即将上线，敬请期待')">登录 / 注册</button>
+      <div class="mine-hero">
+        <div class="mine-avatar"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="14" r="7" stroke="#b23a2c" stroke-width="2"/><path d="M7 35c0-7 6-11 13-11s13 4 13 11" stroke="#b23a2c" stroke-width="2"/></svg></div>
+        <div class="mine-name">丹青学子</div>
+        <div class="mine-id" onclick="showToast('登录功能即将上线')">登录解锁更多 ›</div>
       </div>
+      <div class="mine-stats">
+        <div class="stat"><div class="stat-num" id="statCredits">100</div><div class="stat-label">算力余额</div></div>
+        <div class="stat"><div class="stat-num">0</div><div class="stat-label">我的风格</div></div>
+        <div class="stat"><div class="stat-num" id="statWorks">0</div><div class="stat-label">创作作品</div></div>
+      </div>
+      <div class="mine-vip" onclick="showRecharge()">
+        <svg width="30" height="30" viewBox="0 0 30 30"><path d="M5 11l10-6 10 6-3 14H8z" fill="#b23a2c"/><path d="M11 18h8" stroke="#f6f0e2" stroke-width="2"/></svg>
+        <div class="vip-info"><div class="vip-title">开通会员 · 算力加倍</div><div class="vip-sub">专属风格 · 优先出图 · 高清下载</div></div>
+        <button class="vip-btn">开通</button>
+      </div>
+      <div class="mine-menu">
+        <div class="mitem" onclick="showRecharge()"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#b23a2c" stroke-width="1.8"><path d="M4 9l8-5 8 5-2 11H6z"/></svg><span class="mitem-name">算力充值</span><span class="mitem-badge">特惠</span><span class="mitem-arrow">›</span></div>
+        <div class="mitem" onclick="showPage('history')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 14l4-4 4 4 4-5 4 4"/></svg><span class="mitem-name">我的作品</span><span class="mitem-arrow">›</span></div>
+        <div class="mitem" onclick="showPage('create')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg><span class="mitem-name">我的风格模型</span><span class="mitem-arrow">›</span></div>
+        <div class="mitem" onclick="showPage('library')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><path d="M12 4l2.4 5 5.6.5-4 4 1 5.5L12 16l-5 3 1-5.5-4-4 5.6-.5z"/></svg><span class="mitem-name">我的收藏</span><span class="mitem-arrow">›</span></div>
+      </div>
+      <div class="mine-menu">
+        <div class="mitem" onclick="showToast('邀请功能开发中')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#b23a2c" stroke-width="1.8"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M12 9V6M9 6a3 3 0 016 0"/></svg><span class="mitem-name">邀请好友 · 得算力</span><span class="mitem-badge">赚钱</span><span class="mitem-arrow">›</span></div>
+        <div class="mitem" onclick="showToast('客服微信：danqing_ai')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg><span class="mitem-name">联系客服</span><span class="mitem-arrow">›</span></div>
+        <div class="mitem" onclick="showToast('丹青坊 v2.0')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h0"/></svg><span class="mitem-name">关于丹青坊</span><span class="mitem-arrow">›</span></div>
+      </div>
+      <button class="login-btn" onclick="showToast('登录功能即将上线，敬请期待')">登 录 / 注 册</button>
+      <div style="height:20px"></div>
     </div>
 
   </main>
 
   <!-- 底部导航 -->
   <nav class="bottom-nav">
-    <div class="bnav-item active" onclick="switchNav(this,'home')">
-      <div class="bnav-icon">🏠</div>
-      <div class="bnav-label">首页</div>
-    </div>
-    <div class="bnav-item" onclick="switchNav(this,'text2img')">
-      <div class="bnav-icon">🎨</div>
-      <div class="bnav-label">文生图</div>
-    </div>
-    <div class="bnav-item" onclick="switchNav(this,'train')">
-      <div class="bnav-icon">🧠</div>
-      <div class="bnav-label">训练</div>
-    </div>
-    <div class="bnav-item" onclick="switchNav(this,'img2img')">
-      <div class="bnav-icon">🖼️</div>
-      <div class="bnav-label">图生图</div>
-    </div>
-    <div class="bnav-item" onclick="switchNav(this,'mine')">
-      <div class="bnav-icon">👤</div>
-      <div class="bnav-label">我的</div>
-    </div>
+    <div class="bnav active" data-icon="home" onclick="switchNav('home')"><div class="bnav-svg"></div><div class="bnav-label">首页</div></div>
+    <div class="bnav" data-icon="create" onclick="switchNav('create')"><div class="bnav-svg"></div><div class="bnav-label">创作</div></div>
+    <div class="bnav" data-icon="lib" onclick="switchNav('library')"><div class="bnav-svg"></div><div class="bnav-label">画库</div></div>
+    <div class="bnav" data-icon="draft" onclick="switchNav('draft')"><div class="bnav-svg"></div><div class="bnav-label">画稿</div></div>
+    <div class="bnav" data-icon="mine" onclick="switchNav('mine')"><div class="bnav-svg"></div><div class="bnav-label">我的</div></div>
   </nav>
 
   <!-- 充值弹窗 -->
-  <div class="modal-overlay" id="rechargeModal" onclick="hideRecharge()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="hideRecharge()">✕</button>
-      <div class="modal-title">⚡ 算力充值</div>
-      <div class="modal-sub">当前算力：<b id="modalCredits">100</b> · 算力永久有效</div>
-      <div class="recharge-grid">
-        <div class="rg-item" onclick="selectPkg(this,6,100)">
-          <div class="rg-credits">100 算力</div>
-          <div class="rg-price">¥6</div>
-          <div class="rg-desc">约生成10张</div>
-        </div>
-        <div class="rg-item hot" onclick="selectPkg(this,28,500)">
-          <div class="rg-hot">🔥 热门</div>
-          <div class="rg-credits">500 算力</div>
-          <div class="rg-price">¥28</div>
-          <div class="rg-desc">约生成50张</div>
-        </div>
-        <div class="rg-item" onclick="selectPkg(this,68,1500)">
-          <div class="rg-credits">1500 算力</div>
-          <div class="rg-price">¥68</div>
-          <div class="rg-desc">约生成150张</div>
-        </div>
-        <div class="rg-item" onclick="selectPkg(this,128,3500)">
-          <div class="rg-credits">3500 算力</div>
-          <div class="rg-price">¥128</div>
-          <div class="rg-desc">可训练1个模型</div>
-        </div>
+  <div class="overlay" id="rechargeModal" onclick="hideRecharge()">
+    <div class="sheet" onclick="event.stopPropagation()">
+      <button class="sheet-close" onclick="hideRecharge()">✕</button>
+      <div class="sheet-title">⚡ 算力充值</div>
+      <div class="sheet-sub">当前算力：<b id="modalCredits">100</b> · 永久有效</div>
+      <div class="rg-grid">
+        <div class="rg" onclick="selPkg(this,6,100)"><div class="rg-credits">100 算力</div><div class="rg-price">¥6</div><div class="rg-desc">约画10张</div></div>
+        <div class="rg hot selected" onclick="selPkg(this,28,500)"><div class="rg-hot">🔥 热门</div><div class="rg-credits">500 算力</div><div class="rg-price">¥28</div><div class="rg-desc">约画50张</div></div>
+        <div class="rg" onclick="selPkg(this,68,1500)"><div class="rg-credits">1500 算力</div><div class="rg-price">¥68</div><div class="rg-desc">约画150张</div></div>
+        <div class="rg" onclick="selPkg(this,128,3500)"><div class="rg-credits">3500 算力</div><div class="rg-price">¥128</div><div class="rg-desc">可训练1模型</div></div>
       </div>
       <button class="pay-btn" id="payBtn" onclick="mockPay()">立即支付 ¥28</button>
-      <div class="pay-note">微信/支付宝支付功能接入中，敬请期待</div>
+      <div class="pay-note">微信 / 支付宝支付接入中，敬请期待</div>
     </div>
   </div>
 
