@@ -50,14 +50,20 @@ function goBack() {
 
 // ===== 首页 =====
 const galleryData = [
-  { seed: 'w1', label: '水墨荷花', category: '国画', prompt: '荷花池，水墨国画风格，意境清幽' },
-  { seed: 'w2', label: '印象油画', category: '油画', prompt: '田野风光，印象派油画，莫奈风格' },
-  { seed: 'w3', label: '山水写意', category: '国画', prompt: '山水画，中国传统国画，泼墨写意' },
-  { seed: 'w4', label: '版画艺术', category: '版画', prompt: '城市建筑，黑白版画风格，线条有力' },
-  { seed: 'w5', label: '工笔花鸟', category: '国画', prompt: '工笔花鸟，精细国画，色彩典雅' },
-  { seed: 'w6', label: '赛博朋克', category: '综合创意', prompt: '赛博朋克城市，霓虹灯光，未来感' },
-  { seed: 'w7', label: '水彩风景', category: '水彩粉画', prompt: '欧洲小镇，水彩画风格，清新淡雅' },
-  { seed: 'w8', label: '浮世绘', category: '版画', prompt: '日式浮世绘，富士山，樱花' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Huizong_Finches_and_Bamboo.jpg/600px-Huizong_Finches_and_Bamboo.jpg', label: '工笔花鸟 · 宋徽宗', category: '国画', prompt: '工笔花鸟，精细国画，色彩典雅' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/600px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg', label: '睡莲 · 莫奈', category: '油画', prompt: '印象派油画，莫奈睡莲，光影斑驳' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Travelers_among_Mountains_and_Streams.jpg/600px-Travelers_among_Mountains_and_Streams.jpg', label: '溪山行旅 · 范宽', category: '国画', prompt: '水墨山水，中国传统国画，泼墨写意' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/600px-Great_Wave_off_Kanagawa2.jpg', label: '神奈川冲浪 · 北斋', category: '版画', prompt: '浮世绘，神奈川冲浪里，波浪壮阔' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Zhang_Xuan_-_Court_Ladies_Preparing_Newly_Woven_Silk.jpg/600px-Zhang_Xuan_-_Court_Ladies_Preparing_Newly_Woven_Silk.jpg', label: '捣练图 · 张萱', category: '国画', prompt: '工笔仕女，唐代宫廷，华美服饰' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/600px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg', label: '星夜 · 梵高', category: '油画', prompt: '梵高星空，旋转笔触，表现主义油画' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Winslow_Homer_-_The_Blue_Boat.jpg/600px-Winslow_Homer_-_The_Blue_Boat.jpg', label: '蓝船 · 霍默', category: '水彩粉画', prompt: '水彩风景，帆船，海边晴天，通透淡雅' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Red_Fuji_southern_wind_clear_morning.jpg/600px-Red_Fuji_southern_wind_clear_morning.jpg', label: '红富士 · 葛饰北斋', category: '版画', prompt: '浮世绘，富士山，红色晴天，日式版画' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/400px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg', label: '蒙娜丽莎 · 达芬奇', category: '油画', prompt: '古典写实，文艺复兴油画，神秘微笑' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Meisje_met_de_parel.jpg/600px-Meisje_met_de_parel.jpg', label: '珍珠耳环 · 维米尔', category: '油画', prompt: '巴洛克人物，维米尔风格，窗边光线' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Huizong-Auspicious_Cranes.jpg/600px-Huizong-Auspicious_Cranes.jpg', label: '瑞鹤图 · 宋徽宗', category: '国画', prompt: '宋代工笔，瑞鹤祥云，精细典雅' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Vincent_van_Gogh_-_Sunflowers_%281888%2C_National_Gallery_London%29.jpg/600px-Vincent_van_Gogh_-_Sunflowers_%281888%2C_National_Gallery_London%29.jpg', label: '向日葵 · 梵高', category: '油画', prompt: '梵高向日葵，厚涂油画，金黄色调' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Alphonse_Mucha_-_Job_Cigarette_Papers_%281896%29.jpg/400px-Alphonse_Mucha_-_Job_Cigarette_Papers_%281896%29.jpg', label: '穆夏装饰画', category: '综合创意', prompt: '新艺术运动，穆夏风格，唯美装饰' },
+  { img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kitagawa-Utamaro.jpg/400px-Kitagawa-Utamaro.jpg', label: '浮世绘美人 · 歌川', category: '版画', prompt: '浮世绘美人，歌川国芳，细腻线条' },
 ];
 
 function switchTab(el) {
@@ -78,7 +84,7 @@ function renderHomeGallery(category) {
     const div = document.createElement('div');
     div.className = 'wf-item';
     div.onclick = () => quickCreate(item.prompt);
-    div.innerHTML = `<img src="https://picsum.photos/seed/${item.seed}/300/400" alt="" loading="lazy">
+    div.innerHTML = `<img src="${item.img}" alt="${item.label}" loading="lazy">
       <div class="wf-label">${item.label}</div>`;
     cols[i % 2 === 0 ? 0 : 1].appendChild(div);
   });
@@ -302,41 +308,38 @@ async function generateEnhance() {
 // ===== 风格广场筛选 =====
 const galleryItems = [
   // 国画
-  { prompt: '清明上河图风格，宋代工笔画，热闹街市，古典建筑', name: '清明上河图', seed: 'g1', cat: '国画' },
-  { prompt: '水墨山水，泼墨写意，高山云雾，意境深远', name: '水墨山水', seed: 'g4', cat: '国画' },
-  { prompt: '工笔花鸟，精细笔触，牡丹锦鸡，华丽典雅', name: '工笔花鸟', seed: 'g7', cat: '国画' },
-  { prompt: '仕女图，唐代美人，古典服饰，宫廷意境', name: '仕女写意', seed: 'g11', cat: '国画' },
-  { prompt: '泼墨荷花，中国水墨，荷叶田田，夏日意境', name: '泼墨荷花', seed: 'g12', cat: '国画' },
-  { prompt: '国画墨竹，文人画风格，墨竹挺拔，高洁品性', name: '墨竹文人', seed: 'g13', cat: '国画' },
-  { prompt: '宋代工笔花卉，海棠芙蓉，精致细腻，宋人审美', name: '宋代花卉', seed: 'g14', cat: '国画' },
+  { prompt: '清明上河图风格，宋代工笔画，热闹街市，古典建筑', name: '清明上河图', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Along_the_River_During_the_Qingming_Festival_%28Qing_Court_Version%29.jpg/800px-Along_the_River_During_the_Qingming_Festival_%28Qing_Court_Version%29.jpg', cat: '国画' },
+  { prompt: '水墨山水，泼墨写意，高山云雾，意境深远', name: '溪山行旅', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Travelers_among_Mountains_and_Streams.jpg/600px-Travelers_among_Mountains_and_Streams.jpg', cat: '国画' },
+  { prompt: '工笔花鸟，宋代精细笔触，牡丹锦鸡，华丽典雅', name: '工笔花鸟', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Huizong_Finches_and_Bamboo.jpg/600px-Huizong_Finches_and_Bamboo.jpg', cat: '国画' },
+  { prompt: '工笔仕女，唐代宫廷美人，华美服饰，精细描绘', name: '捣练图', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Zhang_Xuan_-_Court_Ladies_Preparing_Newly_Woven_Silk.jpg/800px-Zhang_Xuan_-_Court_Ladies_Preparing_Newly_Woven_Silk.jpg', cat: '国画' },
+  { prompt: '泼墨荷花，中国水墨，荷叶田田，夏日意境', name: '写意荷花', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Qian_Xuan_-_Wang_Xizhi_Watching_Geese.jpg/600px-Qian_Xuan_-_Wang_Xizhi_Watching_Geese.jpg', cat: '国画' },
+  { prompt: '宋代工笔花卉，芙蓉锦鸡，精致细腻，宋人审美', name: '芙蓉锦鸡', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Huizong-Auspicious_Cranes.jpg/800px-Huizong-Auspicious_Cranes.jpg', cat: '国画' },
+  { prompt: '山水长卷，元代文人画，富春山居，烟雨江南', name: '富春山居图', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Shitao_-_Landscape_with_Waterfall.jpg/600px-Shitao_-_Landscape_with_Waterfall.jpg', cat: '国画' },
   // 油画
-  { prompt: '印象派油画，莫奈睡莲，光影斑驳，色彩柔和', name: '莫奈印象', seed: 'g2', cat: '油画' },
-  { prompt: '梵高星空风格，旋转笔触，浓烈色彩，表现主义', name: '梵高星空', seed: 'g8', cat: '油画' },
-  { prompt: '巴洛克古典人物油画，伦勃朗光影，深色背景，戏剧感', name: '巴洛克肖像', seed: 'g15', cat: '油画' },
-  { prompt: '写实油画风景，欧洲田野，黄金麦田，阳光温暖', name: '田野写实', seed: 'g16', cat: '油画' },
-  { prompt: '超写实静物油画，花卉玻璃瓶，光线细腻，质感丰富', name: '超写实静物', seed: 'g17', cat: '油画' },
-  { prompt: '塞尚风格后印象派，几何感构图，苹果桌布，厚重色彩', name: '塞尚风格', seed: 'g29', cat: '油画' },
+  { prompt: '印象派油画，莫奈睡莲，光影斑驳，色彩柔和', name: '睡莲·莫奈', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/800px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg', cat: '油画' },
+  { prompt: '梵高星空风格，旋转笔触，浓烈色彩，表现主义', name: '星夜·梵高', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/800px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg', cat: '油画' },
+  { prompt: '古典写实人物油画，神秘微笑，文艺复兴风格', name: '蒙娜丽莎', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/400px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg', cat: '油画' },
+  { prompt: '维米尔风格古典人物，窗边光线，珍珠耳环，写实细腻', name: '珍珠耳环', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Meisje_met_de_parel.jpg/600px-Meisje_met_de_parel.jpg', cat: '油画' },
+  { prompt: '梵高向日葵，厚涂油画，金黄色调，生命力旺盛', name: '向日葵·梵高', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Vincent_van_Gogh_-_Sunflowers_%281888%2C_National_Gallery_London%29.jpg/600px-Vincent_van_Gogh_-_Sunflowers_%281888%2C_National_Gallery_London%29.jpg', cat: '油画' },
+  { prompt: '拉斐尔圣母像，文艺复兴，圣洁光辉，古典构图', name: '西斯廷圣母', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Raffael_-_Sixtinische_Madonna.jpg/400px-Raffael_-_Sixtinische_Madonna.jpg', cat: '油画' },
   // 版画
-  { prompt: '日式浮世绘，神奈川冲浪里，葛饰北斋风格，波浪壮阔', name: '浮世绘巨浪', seed: 'g3', cat: '版画' },
-  { prompt: '木刻版画，黑白线条，民间故事，朴拙有力', name: '民间木刻', seed: 'g18', cat: '版画' },
-  { prompt: '铜版画风格，精细线条，欧洲古典建筑，艺术感', name: '欧式铜版', seed: 'g19', cat: '版画' },
-  { prompt: '波普艺术版画，安迪沃霍尔风格，鲜艳重复，现代感', name: '波普版画', seed: 'g20', cat: '版画' },
-  { prompt: '苏联宣传画风格，强烈色块，简洁构图，力量感', name: '构成主义', seed: 'g30', cat: '版画' },
+  { prompt: '日式浮世绘，神奈川冲浪里，葛饰北斋风格，波浪壮阔', name: '神奈川冲浪里', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/800px-Great_Wave_off_Kanagawa2.jpg', cat: '版画' },
+  { prompt: '浮世绘，富士山，葛饰北斋，晴天红色富士', name: '红富士', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Red_Fuji_southern_wind_clear_morning.jpg/800px-Red_Fuji_southern_wind_clear_morning.jpg', cat: '版画' },
+  { prompt: '新艺术运动海报，穆夏风格，唯美女性，植物装饰', name: '穆夏装饰画', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Alphonse_Mucha_-_Job_Cigarette_Papers_%281896%29.jpg/400px-Alphonse_Mucha_-_Job_Cigarette_Papers_%281896%29.jpg', cat: '版画' },
+  { prompt: '木刻版画，黑白线条，民间故事，朴拙有力', name: '民间木刻', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/400px-Great_Wave_off_Kanagawa2.jpg', cat: '版画' },
+  { prompt: '浮世绘美人，歌川国芳，细腻线条，古典服饰', name: '浮世绘美人', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kitagawa-Utamaro.jpg/400px-Kitagawa-Utamaro.jpg', cat: '版画' },
   // 水彩
-  { prompt: '欧洲小镇水彩，通透淡雅，晴天阳光，温馨生活', name: '欧洲小镇', seed: 'g5', cat: '水彩' },
-  { prompt: '水彩玫瑰牡丹，柔和晕染，花瓣细腻，少女感', name: '水彩花卉', seed: 'g21', cat: '水彩' },
-  { prompt: '水彩人像，晕染效果，半抽象艺术风格', name: '水彩人像', seed: 'g22', cat: '水彩' },
-  { prompt: '日系水彩插画，清新风景，温柔色调，治愈系', name: '日系治愈', seed: 'g23', cat: '水彩' },
-  { prompt: '水彩城市速写，建筑线稿加晕染，旅行日记风格', name: '城市速写', seed: 'g31', cat: '水彩' },
+  { prompt: '水彩风景，欧洲帆船，海边晴天，通透淡雅', name: '蓝船·霍默', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Winslow_Homer_-_The_Blue_Boat.jpg/800px-Winslow_Homer_-_The_Blue_Boat.jpg', cat: '水彩' },
+  { prompt: '水彩肖像，唯美晕染，色彩柔和，艺术人像', name: '水彩人像', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Winslow_Homer_-_Sloop%2C_Nassau.jpg/600px-Winslow_Homer_-_Sloop%2C_Nassau.jpg', cat: '水彩' },
+  { prompt: '水彩花卉，玫瑰牡丹，柔和晕染，花瓣细腻', name: '水彩花卉', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Winslow_Homer_-_The_Blue_Boat.jpg/400px-Winslow_Homer_-_The_Blue_Boat.jpg', cat: '水彩' },
+  { prompt: '水彩城市速写，建筑线稿加晕染，旅行日记风格', name: '城市速写', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Winslow_Homer_-_Sloop%2C_Nassau.jpg/800px-Winslow_Homer_-_Sloop%2C_Nassau.jpg', cat: '水彩' },
   // 综合
-  { prompt: '赛博朋克城市，霓虹灯光，雨夜反射，未来感十足', name: '赛博朋克', seed: 'g6', cat: '综合' },
-  { prompt: '奇幻森林，精灵世界，发光蘑菇，梦幻光效', name: '奇幻精灵', seed: 'g24', cat: '综合' },
-  { prompt: '新海诚动漫风格，唯美天空，光线通透，日系治愈', name: '新海诚风', seed: 'g25', cat: '综合' },
-  { prompt: '像素艺术风格，复古游戏感，8bit色彩，怀旧情怀', name: '像素复古', seed: 'g26', cat: '综合' },
-  { prompt: '极简主义几何抽象，莫兰迪色调，高级感设计', name: '极简抽象', seed: 'g27', cat: '综合' },
-  { prompt: '蒸汽朋克机械，齿轮管道，维多利亚风格，工业美学', name: '蒸汽朋克', seed: 'g28', cat: '综合' },
-  { prompt: '洛可可风格，宫廷奢华，粉金配色，华丽装饰', name: '洛可可宫廷', seed: 'g32', cat: '综合' },
-  { prompt: '中国风概念插画，国潮美学，龙凤图腾，金红配色', name: '国潮插画', seed: 'g33', cat: '综合' },
+  { prompt: '赛博朋克城市，霓虹灯光，雨夜反射，未来感十足', name: '赛博朋克', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/400px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg', cat: '综合' },
+  { prompt: '新海诚动漫风格，唯美天空，光线通透，日系治愈', name: '新海诚风', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Huizong_Finches_and_Bamboo.jpg/400px-Huizong_Finches_and_Bamboo.jpg', cat: '综合' },
+  { prompt: '极简主义几何抽象，莫兰迪色调，高级感设计', name: '极简抽象', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Alphonse_Mucha_-_Job_Cigarette_Papers_%281896%29.jpg/600px-Alphonse_Mucha_-_Job_Cigarette_Papers_%281896%29.jpg', cat: '综合' },
+  { prompt: '中国风概念插画，国潮美学，龙凤图腾，金红配色', name: '国潮插画', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Huizong-Auspicious_Cranes.jpg/600px-Huizong-Auspicious_Cranes.jpg', cat: '综合' },
+  { prompt: '洛可可风格，宫廷奢华，粉金配色，华丽装饰', name: '洛可可宫廷', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Raffael_-_Sixtinische_Madonna.jpg/600px-Raffael_-_Sixtinische_Madonna.jpg', cat: '综合' },
+  { prompt: '蒸汽朋克机械，齿轮管道，维多利亚风格，工业美学', name: '蒸汽朋克', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Meisje_met_de_parel.jpg/400px-Meisje_met_de_parel.jpg', cat: '综合' },
 ];
 
 function filterGallery(el, cat) {
@@ -349,8 +352,8 @@ function renderGallery(cat) {
   const items = cat ? galleryItems.filter(i => i.cat === cat) : galleryItems;
   const grid = document.querySelector('.gallery-grid2');
   grid.innerHTML = items.map(item => `
-    <div class="gc2" onclick="applyStyle('${item.prompt}','${item.style}')">
-      <img src="https://picsum.photos/seed/${item.seed}/300/200" alt="" loading="lazy">
+    <div class="gc2" onclick="applyStyle('${item.prompt}','${item.cat}')">
+      <img src="${item.img}" alt="${item.name}" loading="lazy">
       <div class="gc2-info">
         <div class="gc2-name">${item.name}</div>
         <div class="gc2-tag">${item.cat}</div>
