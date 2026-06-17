@@ -2,409 +2,541 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>艺创AI - 让创作变简单</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 导航 -->
-  <nav class="navbar">
-    <div class="nav-logo">艺创 <span class="ai-badge">AI</span></div>
-    <div class="nav-links">
-      <a href="#" class="nav-link active" onclick="showPage('home')">首页</a>
-      <a href="#" class="nav-link" onclick="showPage('text2img')">文生图</a>
-      <a href="#" class="nav-link" onclick="showPage('img2img')">图生图</a>
-      <a href="#" class="nav-link" onclick="showPage('enhance')">画质提升</a>
-      <a href="#" class="nav-link" onclick="showPage('gallery')">风格广场</a>
-      <a href="#" class="nav-link" onclick="showPage('history')">历史记录</a>
-    </div>
-    <div class="nav-user">
-      <span class="credits">积分：<b id="userCredits">100</b></span>
-      <button class="btn-recharge" onclick="showRecharge()">充值</button>
-    </div>
-  </nav>
 
-  <!-- 首页 -->
-  <div id="page-home" class="page active">
-    <!-- Banner -->
-    <div class="banner">
-      <div class="banner-content">
-        <h1>让创作变简单</h1>
-        <p>AI 驱动的艺术创作平台，一键生成专业级艺术作品</p>
-        <div class="banner-btns">
-          <button class="btn-primary" onclick="showPage('text2img')">立即创作</button>
-          <button class="btn-outline" onclick="showPage('gallery')">浏览风格</button>
+  <!-- 顶部导航 -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-left">
+      <button class="back-icon" id="backBtn" onclick="goBack()" style="display:none">←</button>
+      <span class="topbar-title" id="topbarTitle">首页</span>
+    </div>
+    <div class="topbar-right">
+      <span class="credits-chip">⚡ <span id="userCredits">100</span></span>
+    </div>
+  </header>
+
+  <!-- 页面容器 -->
+  <main class="main-content">
+
+    <!-- 首页 -->
+    <div id="page-home" class="page active">
+      <!-- Banner -->
+      <div class="banner">
+        <div class="banner-inner">
+          <div class="banner-tag">TAKING ART AI</div>
+          <h1 class="banner-title">让创作变简单</h1>
+          <p class="banner-sub">AI 驱动的艺术创作平台</p>
+        </div>
+      </div>
+
+      <!-- 主功能入口 -->
+      <div class="home-section">
+        <div class="main-features">
+          <div class="main-feat red" onclick="showPage('text2img')">
+            <div class="feat-text">
+              <div class="feat-name">文生图</div>
+              <div class="feat-desc">文字描述生成图片</div>
+            </div>
+            <div class="feat-icon">🎨</div>
+          </div>
+          <div class="main-feat gold" onclick="showPage('img2img')">
+            <div class="feat-text">
+              <div class="feat-name">图生图</div>
+              <div class="feat-desc">图片+文字生成图片</div>
+            </div>
+            <div class="feat-icon">🖼️</div>
+          </div>
+        </div>
+
+        <div class="sub-features">
+          <div class="sub-feat" onclick="showPage('enhance')">
+            <div class="sub-icon">✨</div>
+            <div class="sub-name">画质提升</div>
+          </div>
+          <div class="sub-feat" onclick="showPage('gallery')">
+            <div class="sub-icon">🎭</div>
+            <div class="sub-name">风格广场</div>
+          </div>
+          <div class="sub-feat" onclick="showPage('train')">
+            <div class="sub-icon">🧠</div>
+            <div class="sub-name">模型训练</div>
+          </div>
+          <div class="sub-feat" onclick="showRecharge()">
+            <div class="sub-icon">💎</div>
+            <div class="sub-name">会员充值</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 风格标签 -->
+      <div class="home-section">
+        <div class="style-tabs">
+          <span class="stab active" onclick="switchTab(this)">推荐</span>
+          <span class="stab" onclick="switchTab(this)">国画</span>
+          <span class="stab" onclick="switchTab(this)">油画</span>
+          <span class="stab" onclick="switchTab(this)">版画</span>
+          <span class="stab" onclick="switchTab(this)">水彩粉画</span>
+          <span class="stab" onclick="switchTab(this)">综合创意</span>
+        </div>
+      </div>
+
+      <!-- 作品瀑布流 -->
+      <div class="waterfall" id="homeWaterfall">
+        <div class="wf-col">
+          <div class="wf-item" onclick="quickCreate('荷花池，水墨国画风格')">
+            <img src="https://picsum.photos/seed/w1/300/400" alt="">
+            <div class="wf-label">水墨荷花</div>
+          </div>
+          <div class="wf-item" onclick="quickCreate('山水画，中国传统国画')">
+            <img src="https://picsum.photos/seed/w3/300/350" alt="">
+            <div class="wf-label">山水写意</div>
+          </div>
+          <div class="wf-item" onclick="quickCreate('工笔花鸟，精细国画')">
+            <img src="https://picsum.photos/seed/w5/300/300" alt="">
+            <div class="wf-label">工笔花鸟</div>
+          </div>
+        </div>
+        <div class="wf-col">
+          <div class="wf-item" onclick="quickCreate('印象派油画，莫奈风格')">
+            <img src="https://picsum.photos/seed/w2/300/350" alt="">
+            <div class="wf-label">印象油画</div>
+          </div>
+          <div class="wf-item" onclick="quickCreate('版画风格，黑白线条')">
+            <img src="https://picsum.photos/seed/w4/300/400" alt="">
+            <div class="wf-label">版画艺术</div>
+          </div>
+          <div class="wf-item" onclick="quickCreate('赛博朋克，霓虹城市')">
+            <img src="https://picsum.photos/seed/w6/300/300" alt="">
+            <div class="wf-label">赛博朋克</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 功能入口 -->
-    <div class="section">
-      <div class="feature-grid">
-        <div class="feature-card red" onclick="showPage('text2img')">
-          <div class="feature-icon">🎨</div>
-          <div class="feature-info">
-            <h3>文生图</h3>
-            <p>文字描述生成图片</p>
-          </div>
-        </div>
-        <div class="feature-card gold" onclick="showPage('img2img')">
-          <div class="feature-icon">🖼️</div>
-          <div class="feature-info">
-            <h3>图生图</h3>
-            <p>图片+文字生成图片</p>
-          </div>
-        </div>
-        <div class="feature-card dark" onclick="showPage('enhance')">
-          <div class="feature-icon">✨</div>
-          <div class="feature-info">
-            <h3>画质提升</h3>
-            <p>超分辨率修复</p>
-          </div>
-        </div>
-        <div class="feature-card dark" onclick="showPage('gallery')">
-          <div class="feature-icon">🎭</div>
-          <div class="feature-info">
-            <h3>风格广场</h3>
-            <p>国画/油画/版画</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 风格标签 -->
-    <div class="section">
-      <div class="style-tags">
-        <span class="tag active">推荐</span>
-        <span class="tag" onclick="filterGallery('国画')">国画</span>
-        <span class="tag" onclick="filterGallery('油画')">油画</span>
-        <span class="tag" onclick="filterGallery('版画')">版画</span>
-        <span class="tag" onclick="filterGallery('水彩')">水彩粉画</span>
-        <span class="tag" onclick="filterGallery('综合')">综合创意</span>
-      </div>
-    </div>
-
-    <!-- 作品展示 -->
-    <div class="section">
-      <div class="gallery-grid" id="homeGallery">
-        <div class="gallery-item">
-          <img src="https://picsum.photos/seed/art1/400/300" alt="作品1">
-          <div class="gallery-overlay"><span>国画风格</span></div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://picsum.photos/seed/art2/400/300" alt="作品2">
-          <div class="gallery-overlay"><span>油画风格</span></div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://picsum.photos/seed/art3/400/300" alt="作品3">
-          <div class="gallery-overlay"><span>水彩风格</span></div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://picsum.photos/seed/art4/400/300" alt="作品4">
-          <div class="gallery-overlay"><span>版画风格</span></div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://picsum.photos/seed/art5/400/300" alt="作品5">
-          <div class="gallery-overlay"><span>综合创意</span></div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://picsum.photos/seed/art6/400/300" alt="作品6">
-          <div class="gallery-overlay"><span>国画风格</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 文生图页面 -->
-  <div id="page-text2img" class="page">
-    <div class="tool-page">
-      <div class="tool-left">
-        <button class="back-btn" onclick="showPage('home')">← 返回首页</button>
-        <h2 class="tool-title">文生图</h2>
-        <p class="tool-desc">用文字描述你想要的画面，AI 自动生成艺术作品</p>
-
-        <div class="form-group">
-          <label>画面描述（中文/英文均可）</label>
-          <textarea id="t2i-prompt" placeholder="例如：一片宁静的荷花池，中国水墨画风格，远处有山峦，清晨薄雾..." rows="4"></textarea>
+    <!-- 文生图 -->
+    <div id="page-text2img" class="page">
+      <div class="tool-container">
+        <div class="form-block">
+          <div class="form-label">文字指令</div>
+          <textarea id="t2i-prompt" class="text-input" placeholder="请输入文字指令，不要输入涉及暴力、政治等敏感文字" rows="4"></textarea>
         </div>
 
-        <div class="form-group">
-          <label>艺术风格</label>
-          <div class="style-select">
-            <div class="style-option selected" data-style="国画" onclick="selectStyle(this)">国画</div>
-            <div class="style-option" data-style="油画" onclick="selectStyle(this)">油画</div>
-            <div class="style-option" data-style="水彩" onclick="selectStyle(this)">水彩</div>
-            <div class="style-option" data-style="版画" onclick="selectStyle(this)">版画</div>
-            <div class="style-option" data-style="动漫" onclick="selectStyle(this)">动漫</div>
-            <div class="style-option" data-style="写实" onclick="selectStyle(this)">写实</div>
+        <div class="form-block">
+          <div class="selector-row" onclick="showModelPicker()">
+            <span class="form-label">基础模型</span>
+            <span class="selector-val">国画 <span class="arrow">›</span></span>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group half">
-            <label>图片比例</label>
-            <select id="t2i-ratio">
-              <option value="1:1">1:1 正方形</option>
-              <option value="4:3">4:3 横版</option>
-              <option value="3:4">3:4 竖版</option>
-              <option value="16:9">16:9 宽屏</option>
-            </select>
+        <div class="form-block">
+          <div class="form-label">风格选择 <span class="form-hint">（可选择1-5个）</span></div>
+          <div class="style-tabs2">
+            <span class="stab2 active">推荐</span>
+            <span class="stab2">我的</span>
+            <span class="stab2">收藏</span>
           </div>
-          <div class="form-group half">
-            <label>生成数量</label>
-            <select id="t2i-count">
-              <option value="1">1 张（消耗 10 积分）</option>
-              <option value="2">2 张（消耗 18 积分）</option>
-              <option value="4">4 张（消耗 32 积分）</option>
-            </select>
+          <div class="style-cards">
+            <div class="style-card-s active" onclick="toggleStyleCard(this)" data-style="工笔人物">
+              <img src="https://picsum.photos/seed/sc1/150/150" alt="">
+              <div class="sc-name">工笔人物</div>
+            </div>
+            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="国展人物">
+              <img src="https://picsum.photos/seed/sc2/150/150" alt="">
+              <div class="sc-name">国展人物</div>
+            </div>
+            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="国展花鸟">
+              <img src="https://picsum.photos/seed/sc3/150/150" alt="">
+              <div class="sc-name">国展花鸟</div>
+            </div>
+            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="水墨山水">
+              <img src="https://picsum.photos/seed/sc4/150/150" alt="">
+              <div class="sc-name">水墨山水</div>
+            </div>
+            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="写意花鸟">
+              <img src="https://picsum.photos/seed/sc5/150/150" alt="">
+              <div class="sc-name">写意花鸟</div>
+            </div>
+            <div class="style-card-s" onclick="toggleStyleCard(this)" data-style="泼墨山水">
+              <img src="https://picsum.photos/seed/sc6/150/150" alt="">
+              <div class="sc-name">泼墨山水</div>
+            </div>
           </div>
         </div>
 
-        <button class="btn-generate" onclick="generateText2Img()">
-          <span id="t2i-btn-text">🎨 开始生成</span>
-        </button>
-      </div>
+        <div class="form-block">
+          <div class="form-label">张数</div>
+          <div class="count-btns">
+            <button class="count-btn" onclick="selectCount(this,1)">1</button>
+            <button class="count-btn" onclick="selectCount(this,2)">2</button>
+            <button class="count-btn" onclick="selectCount(this,3)">3</button>
+            <button class="count-btn active" onclick="selectCount(this,4)">4</button>
+          </div>
+        </div>
 
-      <div class="tool-right">
-        <div class="result-area" id="t2i-result">
-          <div class="result-placeholder">
-            <div class="placeholder-icon">🖼️</div>
+        <div class="form-block">
+          <div class="form-label">尺寸</div>
+          <div class="size-btns">
+            <button class="size-btn active" onclick="selectSize(this,'1:1')">1:1</button>
+            <button class="size-btn" onclick="selectSize(this,'3:4')">3:4</button>
+            <button class="size-btn" onclick="selectSize(this,'4:3')">4:3</button>
+            <button class="size-btn" onclick="selectSize(this,'9:16')">9:16</button>
+            <button class="size-btn" onclick="selectSize(this,'16:9')">16:9</button>
+          </div>
+        </div>
+
+        <!-- 结果区 -->
+        <div class="result-box" id="t2i-result">
+          <div class="result-empty">
+            <div class="re-icon">🖼️</div>
             <p>生成的图片将显示在这里</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- 图生图页面 -->
-  <div id="page-img2img" class="page">
-    <div class="i2i-page">
-      <button class="back-btn" onclick="showPage('home')">← 返回首页</button>
-      <h2 class="tool-title">图生图</h2>
-      <p class="tool-desc">上传一张图片，同时生成全部 6 种艺术风格</p>
-
-      <div class="i2i-upload-row">
-        <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgInput').click()">
-          <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="previewImage(this)">
-          <div id="uploadPlaceholder">
-            <div class="upload-icon">📷</div>
-            <p>点击上传图片</p>
-            <span>支持 JPG、PNG，最大 10MB</span>
-          </div>
-          <img id="uploadPreview" style="display:none;max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;">
-        </div>
-
-        <div class="i2i-upload-right">
-          <div class="form-group">
-            <label>补充描述（可选）</label>
-            <textarea id="i2i-prompt" placeholder="例如：保留构图，色彩更鲜艳..." rows="3"></textarea>
-          </div>
-          <button class="btn-generate" onclick="generateImg2ImgAll()">
-            <span id="i2i-btn-text">🎨 一键生成全部风格（消耗 60 积分）</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 6种风格结果 -->
-      <div class="i2i-results-grid" id="i2i-results-grid">
-        <div class="i2i-style-card" id="i2i-国画">
-          <div class="i2i-style-label">国画</div>
-          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
-        </div>
-        <div class="i2i-style-card" id="i2i-油画">
-          <div class="i2i-style-label">油画</div>
-          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
-        </div>
-        <div class="i2i-style-card" id="i2i-水彩">
-          <div class="i2i-style-label">水彩</div>
-          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
-        </div>
-        <div class="i2i-style-card" id="i2i-版画">
-          <div class="i2i-style-label">版画</div>
-          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
-        </div>
-        <div class="i2i-style-card" id="i2i-动漫">
-          <div class="i2i-style-label">动漫</div>
-          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
-        </div>
-        <div class="i2i-style-card" id="i2i-写实">
-          <div class="i2i-style-label">写实</div>
-          <div class="i2i-style-result"><div class="i2i-placeholder">等待生成</div></div>
-        </div>
+      <!-- 底部操作栏 -->
+      <div class="bottom-actions">
+        <button class="action-btn-sec" onclick="showPage('history')">历史</button>
+        <button class="action-btn-sec">高级设置</button>
+        <button class="action-btn-main" onclick="generateT2I()">
+          <span id="t2i-btn-text">AI生成（消耗80算力）</span>
+        </button>
       </div>
     </div>
-  </div>
 
-  <!-- 画质提升页面 -->
-  <div id="page-enhance" class="page">
-    <div class="tool-page">
-      <div class="tool-left">
-        <button class="back-btn" onclick="showPage('home')">← 返回首页</button>
-        <h2 class="tool-title">画质提升</h2>
-        <p class="tool-desc">AI 超分辨率技术，让模糊图片变得清晰</p>
-
-        <div class="form-group">
-          <label>上传待提升图片</label>
-          <div class="upload-area" onclick="document.getElementById('enhanceInput').click()">
-            <input type="file" id="enhanceInput" accept="image/*" style="display:none" onchange="previewEnhance(this)">
-            <div id="enhancePlaceholder">
+    <!-- 图生图 -->
+    <div id="page-img2img" class="page">
+      <div class="tool-container">
+        <div class="form-block">
+          <div class="form-label">上传参考图片</div>
+          <div class="upload-box" onclick="document.getElementById('imgInput').click()">
+            <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="previewUpload(this)">
+            <div id="uploadPH">
               <div class="upload-icon">📷</div>
               <p>点击上传图片</p>
               <span>支持 JPG、PNG，最大 10MB</span>
             </div>
-            <img id="enhancePreview" style="display:none; max-width:100%; border-radius:8px;">
+            <img id="uploadPreview" style="display:none;max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;">
           </div>
         </div>
 
-        <div class="form-group">
-          <label>放大倍数</label>
-          <div class="style-select">
-            <div class="style-option selected" onclick="selectStyle(this)">2x</div>
-            <div class="style-option" onclick="selectStyle(this)">4x</div>
-          </div>
+        <div class="form-block">
+          <div class="form-label">补充描述 <span class="form-hint">（可选）</span></div>
+          <textarea id="i2i-prompt" class="text-input" placeholder="例如：保留构图，色彩更鲜艳..." rows="2"></textarea>
         </div>
 
-        <button class="btn-generate" onclick="generateEnhance()">
-          <span>✨ 开始提升</span>
-        </button>
+        <div class="form-block">
+          <div class="form-label">一键生成全部6种风格</div>
+          <div class="styles-preview">
+            <div class="sp-item" id="sp-国画"><div class="sp-label">国画</div><div class="sp-img"><div class="sp-ph">等待</div></div></div>
+            <div class="sp-item" id="sp-油画"><div class="sp-label">油画</div><div class="sp-img"><div class="sp-ph">等待</div></div></div>
+            <div class="sp-item" id="sp-水彩"><div class="sp-label">水彩</div><div class="sp-img"><div class="sp-ph">等待</div></div></div>
+            <div class="sp-item" id="sp-版画"><div class="sp-label">版画</div><div class="sp-img"><div class="sp-ph">等待</div></div></div>
+            <div class="sp-item" id="sp-动漫"><div class="sp-label">动漫</div><div class="sp-img"><div class="sp-ph">等待</div></div></div>
+            <div class="sp-item" id="sp-写实"><div class="sp-label">写实</div><div class="sp-img"><div class="sp-ph">等待</div></div></div>
+          </div>
+        </div>
       </div>
 
-      <div class="tool-right">
-        <div class="result-area" id="enhance-result">
-          <div class="result-placeholder">
-            <div class="placeholder-icon">✨</div>
+      <div class="bottom-actions">
+        <button class="action-btn-main" onclick="generateI2IAll()" style="flex:1">
+          <span id="i2i-btn-text">🎨 一键生成全部风格（消耗60算力）</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 模型训练 -->
+    <div id="page-train" class="page">
+      <div class="tool-container">
+        <div class="form-block">
+          <div class="selector-row">
+            <span class="form-label">模型名称</span>
+            <input type="text" class="inline-input" placeholder="请输入...">
+          </div>
+        </div>
+
+        <div class="form-block">
+          <div class="selector-row" onclick="showModelPicker()">
+            <span class="form-label">基础模型</span>
+            <span class="selector-val">国画 <span class="arrow">›</span></span>
+          </div>
+        </div>
+
+        <div class="train-tip">
+          <span class="tip-icon">🔔</span>
+          <p>每个数据模块上传10-100张图片，训练大约3-4小时，请您耐心等待，训练完成后会在"我的风格"显示。每个数据模块训练需消耗3000算力</p>
+        </div>
+
+        <div class="form-block">
+          <div class="form-label">上传素材</div>
+          <div class="train-upload-grid" id="trainGrid">
+            <div class="train-upload-btn" onclick="document.getElementById('trainInput').click()">
+              <input type="file" id="trainInput" accept="image/*" multiple style="display:none" onchange="addTrainImages(this)">
+              <div class="tub-icon">📷</div>
+              <div class="tub-count" id="trainCount">0/100</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="action-btn-main" onclick="startTraining()" style="flex:1">开始训练</button>
+      </div>
+    </div>
+
+    <!-- 画质提升 -->
+    <div id="page-enhance" class="page">
+      <div class="tool-container">
+        <div class="form-block">
+          <div class="form-label">上传待提升图片</div>
+          <div class="upload-box" onclick="document.getElementById('enhanceInput').click()">
+            <input type="file" id="enhanceInput" accept="image/*" style="display:none" onchange="previewEnhance(this)">
+            <div id="enhancePH">
+              <div class="upload-icon">📷</div>
+              <p>点击上传图片</p>
+              <span>支持 JPG、PNG，最大 10MB</span>
+            </div>
+            <img id="enhancePreview" style="display:none;max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;">
+          </div>
+        </div>
+
+        <div class="form-block">
+          <div class="form-label">放大倍数</div>
+          <div class="count-btns">
+            <button class="count-btn active" onclick="selectEnhance(this,'2x')">2x</button>
+            <button class="count-btn" onclick="selectEnhance(this,'4x')">4x</button>
+          </div>
+        </div>
+
+        <div class="result-box" id="enhance-result">
+          <div class="result-empty">
+            <div class="re-icon">✨</div>
             <p>提升后的图片将显示在这里</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- 风格广场 -->
-  <div id="page-gallery" class="page">
-    <div class="gallery-page">
-      <h2>风格广场</h2>
-      <p>探索丰富的艺术风格，一键套用到你的作品</p>
-      <div class="style-tags" style="margin:24px 0">
-        <span class="tag active">全部</span>
-        <span class="tag">国画</span>
-        <span class="tag">油画</span>
-        <span class="tag">版画</span>
-        <span class="tag">水彩粉画</span>
-        <span class="tag">综合创意</span>
-      </div>
-      <div class="styles-grid">
-        <div class="style-card" onclick="useStyle('清明上河图风格', '国画')">
-          <img src="https://picsum.photos/seed/s1/300/200" alt="">
-          <div class="style-card-info">
-            <h4>清明上河图风格</h4>
-            <p>宋代工笔画，精细写实</p>
-            <span class="style-tag-label">国画</span>
-            <button class="use-style-btn">立即使用</button>
-          </div>
-        </div>
-        <div class="style-card" onclick="useStyle('印象派油画风格，莫奈光影', '油画')">
-          <img src="https://picsum.photos/seed/s2/300/200" alt="">
-          <div class="style-card-info">
-            <h4>印象派油画</h4>
-            <p>莫奈风格，光影交织</p>
-            <span class="style-tag-label">油画</span>
-            <button class="use-style-btn">立即使用</button>
-          </div>
-        </div>
-        <div class="style-card" onclick="useStyle('日式浮世绘风格，线条细腻', '版画')">
-          <img src="https://picsum.photos/seed/s3/300/200" alt="">
-          <div class="style-card-info">
-            <h4>日式浮世绘</h4>
-            <p>线条细腻，色彩鲜明</p>
-            <span class="style-tag-label">版画</span>
-            <button class="use-style-btn">立即使用</button>
-          </div>
-        </div>
-        <div class="style-card" onclick="useStyle('水墨山水，泼墨写意', '国画')">
-          <img src="https://picsum.photos/seed/s4/300/200" alt="">
-          <div class="style-card-info">
-            <h4>水墨山水</h4>
-            <p>泼墨写意，意境深远</p>
-            <span class="style-tag-label">国画</span>
-            <button class="use-style-btn">立即使用</button>
-          </div>
-        </div>
-        <div class="style-card" onclick="useStyle('欧洲水彩画风格，通透淡雅', '水彩')">
-          <img src="https://picsum.photos/seed/s5/300/200" alt="">
-          <div class="style-card-info">
-            <h4>欧洲水彩</h4>
-            <p>通透淡雅，清新自然</p>
-            <span class="style-tag-label">水彩</span>
-            <button class="use-style-btn">立即使用</button>
-          </div>
-        </div>
-        <div class="style-card" onclick="useStyle('赛博朋克风格，霓虹未来', '综合创意')">
-          <img src="https://picsum.photos/seed/s6/300/200" alt="">
-          <div class="style-card-info">
-            <h4>赛博朋克</h4>
-            <p>霓虹未来，科技感十足</p>
-            <span class="style-tag-label">综合创意</span>
-            <button class="use-style-btn">立即使用</button>
-          </div>
-        </div>
+      <div class="bottom-actions">
+        <button class="action-btn-main" onclick="generateEnhance()" style="flex:1">✨ 开始提升（消耗30算力）</button>
       </div>
     </div>
-  </div>
 
-  <!-- 历史记录页面 -->
-  <div id="page-history" class="page">
-    <div class="gallery-page">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
-        <button class="back-btn" onclick="showPage('home')">← 返回首页</button>
-        <h2 style="margin:0">历史记录</h2>
-        <button class="btn-clear" onclick="clearHistory()">清空记录</button>
-      </div>
-      <p>你生成过的所有图片</p>
-      <div class="gallery-grid" id="historyGrid" style="margin-top:24px">
-        <div class="history-empty" id="historyEmpty">
-          <div style="font-size:48px;opacity:0.3">🖼️</div>
-          <p style="color:#666;margin-top:12px">还没有生成过图片</p>
+    <!-- 风格广场 -->
+    <div id="page-gallery" class="page">
+      <div class="tool-container">
+        <div class="style-tabs" style="margin-bottom:16px">
+          <span class="stab active">全部</span>
+          <span class="stab">国画</span>
+          <span class="stab">油画</span>
+          <span class="stab">版画</span>
+          <span class="stab">水彩</span>
+          <span class="stab">综合</span>
+        </div>
+
+        <div class="gallery-grid2">
+          <div class="gc2" onclick="applyStyle('清明上河图风格，宋代工笔画','国画')">
+            <img src="https://picsum.photos/seed/g1/300/200" alt="">
+            <div class="gc2-info">
+              <div class="gc2-name">清明上河图风格</div>
+              <div class="gc2-tag">国画</div>
+              <button class="gc2-btn">立即使用</button>
+            </div>
+          </div>
+          <div class="gc2" onclick="applyStyle('印象派油画，莫奈光影风格','油画')">
+            <img src="https://picsum.photos/seed/g2/300/200" alt="">
+            <div class="gc2-info">
+              <div class="gc2-name">印象派油画</div>
+              <div class="gc2-tag">油画</div>
+              <button class="gc2-btn">立即使用</button>
+            </div>
+          </div>
+          <div class="gc2" onclick="applyStyle('日式浮世绘，线条细腻','版画')">
+            <img src="https://picsum.photos/seed/g3/300/200" alt="">
+            <div class="gc2-info">
+              <div class="gc2-name">日式浮世绘</div>
+              <div class="gc2-tag">版画</div>
+              <button class="gc2-btn">立即使用</button>
+            </div>
+          </div>
+          <div class="gc2" onclick="applyStyle('水墨山水，泼墨写意','国画')">
+            <img src="https://picsum.photos/seed/g4/300/200" alt="">
+            <div class="gc2-info">
+              <div class="gc2-name">水墨山水</div>
+              <div class="gc2-tag">国画</div>
+              <button class="gc2-btn">立即使用</button>
+            </div>
+          </div>
+          <div class="gc2" onclick="applyStyle('欧洲水彩，通透淡雅','水彩')">
+            <img src="https://picsum.photos/seed/g5/300/200" alt="">
+            <div class="gc2-info">
+              <div class="gc2-name">欧洲水彩</div>
+              <div class="gc2-tag">水彩</div>
+              <button class="gc2-btn">立即使用</button>
+            </div>
+          </div>
+          <div class="gc2" onclick="applyStyle('赛博朋克，霓虹未来城市','综合')">
+            <img src="https://picsum.photos/seed/g6/300/200" alt="">
+            <div class="gc2-info">
+              <div class="gc2-name">赛博朋克</div>
+              <div class="gc2-tag">综合</div>
+              <button class="gc2-btn">立即使用</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- 历史记录 -->
+    <div id="page-history" class="page">
+      <div class="tool-container">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <span class="form-label" style="margin:0">共 <span id="historyCount">0</span> 张</span>
+          <button class="clear-btn" onclick="clearHistory()">清空</button>
+        </div>
+        <div class="waterfall" id="historyWaterfall">
+          <div class="wf-col" id="histCol1"></div>
+          <div class="wf-col" id="histCol2"></div>
+        </div>
+        <div id="historyEmpty" class="result-empty" style="padding:60px 0">
+          <div class="re-icon">🖼️</div>
+          <p>还没有生成过图片</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 我的 -->
+    <div id="page-mine" class="page">
+      <div class="mine-page">
+        <!-- 用户信息 -->
+        <div class="mine-header">
+          <div class="mine-avatar">👤</div>
+          <div class="mine-name">去登录</div>
+        </div>
+
+        <!-- 数据统计 -->
+        <div class="mine-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="statCredits">100</div>
+            <div class="stat-label">算力余额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">9</div>
+            <div class="stat-label">风格数量</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statCount">0</div>
+            <div class="stat-label">累计作图次数</div>
+          </div>
+        </div>
+
+        <!-- 菜单列表 -->
+        <div class="mine-menu">
+          <div class="menu-item" onclick="showRecharge()">
+            <span class="menu-icon">💎</span>
+            <span class="menu-name">会员充值</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showPage('gallery')">
+            <span class="menu-icon">🎨</span>
+            <span class="menu-name">我的风格</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showPage('history')">
+            <span class="menu-icon">🖼️</span>
+            <span class="menu-name">我的收藏</span>
+            <span class="menu-arrow">›</span>
+          </div>
+        </div>
+
+        <div class="mine-menu" style="margin-top:12px">
+          <div class="menu-item" onclick="showPage('history')">
+            <span class="menu-icon">📊</span>
+            <span class="menu-name">算力变动明细</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('客服微信：yichuang_ai')">
+            <span class="menu-icon">💬</span>
+            <span class="menu-name">联系客服</span>
+            <span class="menu-arrow">›</span>
+          </div>
+        </div>
+
+        <div class="mine-menu" style="margin-top:12px">
+          <div class="menu-item gold-item" onclick="showToast('邀请功能开发中')">
+            <span class="menu-icon">🎁</span>
+            <span class="menu-name" style="color:var(--gold)">邀请赢奖励</span>
+            <span class="menu-arrow" style="color:var(--gold)">›</span>
+          </div>
+        </div>
+
+        <button class="login-btn" onclick="showToast('登录功能开发中，敬请期待')">登录</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 底部导航 -->
+  <nav class="bottom-nav">
+    <div class="bnav-item active" onclick="switchNav(this,'home')">
+      <div class="bnav-icon">🏠</div>
+      <div class="bnav-label">首页</div>
+    </div>
+    <div class="bnav-item" onclick="switchNav(this,'text2img')">
+      <div class="bnav-icon">🎨</div>
+      <div class="bnav-label">文生图</div>
+    </div>
+    <div class="bnav-item" onclick="switchNav(this,'train')">
+      <div class="bnav-icon">🧠</div>
+      <div class="bnav-label">训练</div>
+    </div>
+    <div class="bnav-item" onclick="switchNav(this,'img2img')">
+      <div class="bnav-icon">🖼️</div>
+      <div class="bnav-label">图生图</div>
+    </div>
+    <div class="bnav-item" onclick="switchNav(this,'mine')">
+      <div class="bnav-icon">👤</div>
+      <div class="bnav-label">我的</div>
+    </div>
+  </nav>
 
   <!-- 充值弹窗 -->
   <div class="modal-overlay" id="rechargeModal" onclick="hideRecharge()">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3>积分充值</h3>
-      <p class="modal-sub">当前积分：<b id="modalCredits">100</b></p>
-      <div class="recharge-options">
-        <div class="recharge-item" onclick="selectRecharge(this, 6, 100)">
-          <div class="recharge-credits">100 积分</div>
-          <div class="recharge-price">¥ 6</div>
-          <div class="recharge-desc">约可生成 10 张图</div>
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-title">算力充值</div>
+      <div class="modal-sub">当前算力：<b id="modalCredits">100</b></div>
+      <div class="recharge-grid">
+        <div class="rg-item" onclick="selectPkg(this,6,100)">
+          <div class="rg-credits">100 算力</div>
+          <div class="rg-price">¥6</div>
+          <div class="rg-desc">约生成10张</div>
         </div>
-        <div class="recharge-item popular" onclick="selectRecharge(this, 28, 500)">
-          <div class="recharge-badge">热门</div>
-          <div class="recharge-credits">500 积分</div>
-          <div class="recharge-price">¥ 28</div>
-          <div class="recharge-desc">约可生成 50 张图</div>
+        <div class="rg-item hot" onclick="selectPkg(this,28,500)">
+          <div class="rg-hot">热门</div>
+          <div class="rg-credits">500 算力</div>
+          <div class="rg-price">¥28</div>
+          <div class="rg-desc">约生成50张</div>
         </div>
-        <div class="recharge-item" onclick="selectRecharge(this, 68, 1500)">
-          <div class="recharge-credits">1500 积分</div>
-          <div class="recharge-price">¥ 68</div>
-          <div class="recharge-desc">约可生成 150 张图</div>
+        <div class="rg-item" onclick="selectPkg(this,68,1500)">
+          <div class="rg-credits">1500 算力</div>
+          <div class="rg-price">¥68</div>
+          <div class="rg-desc">约生成150张</div>
         </div>
-        <div class="recharge-item" onclick="selectRecharge(this, 128, 3500)">
-          <div class="recharge-credits">3500 积分</div>
-          <div class="recharge-price">¥ 128</div>
-          <div class="recharge-desc">约可生成 350 张图</div>
+        <div class="rg-item" onclick="selectPkg(this,128,3500)">
+          <div class="rg-credits">3500 算力</div>
+          <div class="rg-price">¥128</div>
+          <div class="rg-desc">约生成350张</div>
         </div>
       </div>
-      <button class="btn-pay" id="payBtn" onclick="mockPay()">立即支付</button>
-      <p class="pay-note">* 支付功能接入中，敬请期待</p>
+      <button class="pay-btn" id="payBtn" onclick="mockPay()">立即支付 ¥28</button>
+      <div class="pay-note">支付功能接入中，敬请期待</div>
       <button class="modal-close" onclick="hideRecharge()">✕</button>
     </div>
   </div>
 
-  <!-- Toast 提示 -->
+  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>

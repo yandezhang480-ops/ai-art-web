@@ -1,146 +1,172 @@
 let userCredits = 100;
-let selectedRechargePrice = 28;
-let selectedRechargeCredits = 500;
+let selectedCount = 4;
+let selectedSize = '1:1';
+let selectedEnhanceScale = '2x';
+let selectedPkgPrice = 28;
+let selectedPkgCredits = 500;
+let trainImages = [];
+let pageHistory = [];
 
-// 页面切换
+// ===== 页面切换 =====
+const pageTitles = {
+  home: '首页', text2img: '文生图', img2img: '图生图',
+  train: '模型训练', enhance: '画质提升', gallery: '风格广场',
+  history: '历史记录', mine: '我的'
+};
+
+const navPages = ['home', 'text2img', 'train', 'img2img', 'mine'];
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const map = { home: 0, text2img: 1, img2img: 2, enhance: 3, gallery: 4, history: 5 };
-  const links = document.querySelectorAll('.nav-link');
-  if (links[map[name]]) links[map[name]].classList.add('active');
+  document.getElementById('topbarTitle').textContent = pageTitles[name] || name;
+
+  const isNav = navPages.includes(name);
+  document.getElementById('backBtn').style.display = isNav ? 'none' : 'block';
+
+  if (!isNav) pageHistory.push(name);
+
+  // 底部导航高亮
+  document.querySelectorAll('.bnav-item').forEach((el, i) => {
+    el.classList.toggle('active', navPages[i] === name);
+  });
+
   if (name === 'history') loadHistory();
+  if (name === 'mine') {
+    document.getElementById('statCredits').textContent = userCredits;
+    const hist = JSON.parse(localStorage.getItem('aiHistory') || '[]');
+    document.getElementById('statCount').textContent = hist.length;
+  }
+
   window.scrollTo(0, 0);
 }
 
-// 风格选择
-function selectStyle(el) {
-  el.closest('.style-select').querySelectorAll('.style-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
+function switchNav(el, name) {
+  showPage(name);
 }
 
-// 风格广场套用
-function useStyle(styleName, styleType) {
-  showPage('text2img');
-  document.getElementById('t2i-prompt').value = styleName + '，';
-  // 自动选中对应风格
-  if (styleType) {
-    const styleMap = { '国画': '国画', '油画': '油画', '水彩': '水彩', '版画': '版画', '动漫': '动漫', '综合创意': '写实' };
-    const target = styleMap[styleType];
-    if (target) {
-      document.querySelectorAll('#page-text2img .style-option').forEach(el => {
-        el.classList.toggle('selected', el.dataset.style === target);
-      });
-    }
+function goBack() {
+  if (pageHistory.length > 0) {
+    pageHistory.pop();
+    const prev = pageHistory.pop() || 'home';
+    showPage(prev);
+  } else {
+    showPage('home');
   }
-  showToast('已套用风格：' + styleName);
 }
 
-// 图片预览
-function previewImage(input) {
-  if (!input.files[0]) return;
-  const preview = document.getElementById('uploadPreview');
-  const placeholder = document.getElementById('uploadPlaceholder');
-  preview.src = URL.createObjectURL(input.files[0]);
-  preview.style.display = 'block';
-  placeholder.style.display = 'none';
+// ===== 首页 =====
+function switchTab(el) {
+  el.closest('.style-tabs').querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
 }
 
-function previewEnhance(input) {
-  if (!input.files[0]) return;
-  const preview = document.getElementById('enhancePreview');
-  const placeholder = document.getElementById('enhancePlaceholder');
-  preview.src = URL.createObjectURL(input.files[0]);
-  preview.style.display = 'block';
-  placeholder.style.display = 'none';
+function quickCreate(prompt) {
+  showPage('text2img');
+  document.getElementById('t2i-prompt').value = prompt;
+  showToast('已填入描述，点击生成');
 }
 
-// 文生图生成
-async function generateText2Img() {
+// ===== 文生图 =====
+function toggleStyleCard(el) {
+  const active = el.classList.contains('active');
+  const activeCards = document.querySelectorAll('.style-card-s.active');
+  if (!active && activeCards.length >= 5) { showToast('最多选择5个风格'); return; }
+  el.classList.toggle('active');
+}
+
+function selectCount(el, n) {
+  el.closest('.count-btns').querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedCount = n;
+  const costs = { 1: 80, 2: 150, 3: 210, 4: 280 };
+  document.getElementById('t2i-btn-text').textContent = `AI生成（消耗${costs[n] || 80}算力）`;
+}
+
+function selectSize(el, size) {
+  el.closest('.size-btns').querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedSize = size;
+}
+
+async function generateT2I() {
   const prompt = document.getElementById('t2i-prompt').value.trim();
   if (!prompt) { showToast('请输入画面描述'); return; }
 
-  const count = parseInt(document.getElementById('t2i-count').value);
-  const cost = count === 1 ? 10 : count === 2 ? 18 : 32;
+  const costs = { 1: 80, 2: 150, 3: 210, 4: 280 };
+  const cost = costs[selectedCount] || 80;
 
-  if (userCredits < cost) {
-    showToast('积分不足，请先充值');
-    showRecharge();
-    return;
-  }
+  if (userCredits < cost) { showToast('算力不足，请先充值'); showRecharge(); return; }
 
-  const btn = document.getElementById('t2i-btn-text');
-  const resultArea = document.getElementById('t2i-result');
+  const styles = [...document.querySelectorAll('.style-card-s.active')].map(el => el.dataset.style);
+  const styleText = styles.length > 0 ? styles.join('、') + '风格，' : '';
 
-  btn.textContent = '生成中...';
-  document.querySelector('#page-text2img .btn-generate').disabled = true;
+  const btn = document.querySelector('#page-text2img .action-btn-main');
+  btn.disabled = true;
 
-  resultArea.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <div class="loading-text">AI 正在创作中...</div>
-      <div class="loading-progress" id="progressText">预计需要 10-30 秒</div>
-    </div>`;
-
-  // 模拟进度
-  const steps = ['分析描述中...', '生成构图...', '渲染细节...', '优化画质...', '即将完成...'];
-  let step = 0;
-  const interval = setInterval(() => {
-    if (step < steps.length) {
-      document.getElementById('progressText').textContent = steps[step++];
-    }
-  }, 1800);
+  const resultBox = document.getElementById('t2i-result');
+  resultBox.innerHTML = `<div class="result-empty"><div class="spinner" style="margin:0 auto 12px"></div><p style="color:#888">AI 正在创作中...</p></div>`;
 
   try {
-    const style = document.querySelector('#page-text2img .style-option.selected')?.dataset?.style || '';
     const response = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, style, type: 'text2img' }),
+      body: JSON.stringify({ prompt: styleText + prompt, style: styles[0] || '' }),
     });
-    clearInterval(interval);
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || '生成失败');
+    if (!response.ok || !data.url) throw new Error(data.error || '生成失败');
 
     userCredits -= cost;
     updateCredits();
-    showResults(resultArea, [data.url], 1);
     saveHistory(data.url, '文生图', prompt);
-    showToast(`生成成功！消耗 ${cost} 积分`);
+
+    resultBox.innerHTML = `<div class="result-images c1">
+      <div class="ri-wrap">
+        <img src="${data.url}" alt="生成结果">
+        <div class="ri-actions">
+          <button class="ri-btn" onclick="downloadImg('${data.url}')">下载</button>
+          <button class="ri-btn" onclick="saveHistory('${data.url}','收藏','${prompt}');showToast('已收藏')">收藏</button>
+        </div>
+      </div>
+    </div>`;
+    showToast(`生成成功！消耗 ${cost} 算力`);
   } catch (err) {
-    clearInterval(interval);
-    resultArea.innerHTML = `<div class="result-placeholder"><div class="placeholder-icon">❌</div><p>${err.message}</p></div>`;
+    resultBox.innerHTML = `<div class="result-empty"><div class="re-icon">❌</div><p>${err.message}</p></div>`;
   }
 
-  btn.textContent = '🎨 开始生成';
-  document.querySelector('#page-text2img .btn-generate').disabled = false;
+  btn.disabled = false;
+  document.getElementById('t2i-btn-text').textContent = `AI生成（消耗${cost}算力）`;
 }
 
-// 图生图 - 一键生成全部6种风格
-async function generateImg2ImgAll() {
-  const input = document.getElementById('imgInput');
-  if (!input.files[0]) { showToast('请先上传参考图片'); return; }
+// ===== 图生图 =====
+function previewUpload(input) {
+  if (!input.files[0]) return;
+  document.getElementById('uploadPH').style.display = 'none';
+  const preview = document.getElementById('uploadPreview');
+  preview.src = URL.createObjectURL(input.files[0]);
+  preview.style.display = 'block';
+}
+
+async function generateI2IAll() {
+  const file = document.getElementById('imgInput').files[0];
+  if (!file) { showToast('请先上传参考图片'); return; }
 
   const cost = 60;
-  if (userCredits < cost) { showToast('积分不足，请先充值'); showRecharge(); return; }
+  if (userCredits < cost) { showToast('算力不足，请先充值'); showRecharge(); return; }
 
-  const btn = document.getElementById('i2i-btn-text');
-  btn.textContent = '生成中，请稍候...';
-  document.querySelector('#page-img2img .btn-generate').disabled = true;
+  const btn = document.querySelector('#page-img2img .action-btn-main');
+  btn.disabled = true;
+  document.getElementById('i2i-btn-text').textContent = '生成中，请稍候...';
 
   const styles = ['国画', '油画', '水彩', '版画', '动漫', '写实'];
   const prompt = document.getElementById('i2i-prompt').value.trim();
-  const file = document.getElementById('imgInput').files[0];
   const imageBase64 = await toBase64(file);
 
-  // 每个风格卡片显示加载状态
-  styles.forEach(style => {
-    const card = document.querySelector(`#i2i-${style} .i2i-style-result`);
-    card.innerHTML = `<div class="i2i-loading"><div class="spinner"></div><span>生成中...</span></div>`;
+  styles.forEach(s => {
+    document.querySelector(`#sp-${s} .sp-img`).innerHTML =
+      `<div class="sp-loading"><div class="spinner" style="width:24px;height:24px;border-width:2px"></div><span>生成中</span></div>`;
   });
 
-  // 并行请求全部6种风格
   const results = await Promise.allSettled(
     styles.map(style =>
       fetch('/api/img2img', {
@@ -154,84 +180,153 @@ async function generateImg2ImgAll() {
   userCredits -= cost;
   updateCredits();
 
-  results.forEach((result, i) => {
+  results.forEach((res, i) => {
     const style = styles[i];
-    const card = document.querySelector(`#i2i-${style} .i2i-style-result`);
-    if (result.status === 'fulfilled' && result.value.url) {
-      const url = result.value.url;
-      card.innerHTML = `
-        <img src="${url}" alt="${style}">
-        <div class="i2i-done-actions">
-          <button class="img-action-btn" onclick="downloadImg('${url}', '${style}')">下载</button>
-        </div>`;
+    const box = document.querySelector(`#sp-${style} .sp-img`);
+    if (res.status === 'fulfilled' && res.value?.url) {
+      const url = res.value.url;
+      box.innerHTML = `<img src="${url}" alt="${style}" onclick="downloadImg('${url}')">`;
       saveHistory(url, `图生图-${style}`, prompt);
     } else {
-      card.innerHTML = `<div class="i2i-placeholder">❌ 生成失败</div>`;
+      box.innerHTML = `<div class="sp-ph">❌ 失败</div>`;
     }
   });
 
-  btn.textContent = '🎨 一键生成全部风格（消耗 60 积分）';
-  document.querySelector('#page-img2img .btn-generate').disabled = false;
-  showToast('全部风格生成完成！消耗 60 积分');
+  btn.disabled = false;
+  document.getElementById('i2i-btn-text').textContent = '🎨 一键生成全部风格（消耗60算力）';
+  showToast('全部风格生成完成！');
 }
 
-// 画质提升
+// ===== 画质提升 =====
+function previewEnhance(input) {
+  if (!input.files[0]) return;
+  document.getElementById('enhancePH').style.display = 'none';
+  const preview = document.getElementById('enhancePreview');
+  preview.src = URL.createObjectURL(input.files[0]);
+  preview.style.display = 'block';
+}
+
+function selectEnhance(el, scale) {
+  el.closest('.count-btns').querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedEnhanceScale = scale;
+}
+
 async function generateEnhance() {
-  const input = document.getElementById('enhanceInput');
-  if (!input.files[0]) { showToast('请先上传图片'); return; }
+  const file = document.getElementById('enhanceInput').files[0];
+  if (!file) { showToast('请先上传图片'); return; }
 
-  const cost = 8;
-  if (userCredits < cost) { showToast('积分不足，请先充值'); showRecharge(); return; }
+  const cost = 30;
+  if (userCredits < cost) { showToast('算力不足，请先充值'); showRecharge(); return; }
 
-  const resultArea = document.getElementById('enhance-result');
+  const btn = document.querySelector('#page-enhance .action-btn-main');
+  btn.disabled = true;
 
-  resultArea.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <div class="loading-text">AI 正在提升画质...</div>
-      <div class="loading-progress">预计需要 10-20 秒</div>
-    </div>`;
+  const resultBox = document.getElementById('enhance-result');
+  resultBox.innerHTML = `<div class="result-empty"><div class="spinner" style="margin:0 auto 12px"></div><p style="color:#888">AI 正在提升画质...</p></div>`;
 
-  await sleep(Math.random() * 1500 + 2000);
+  await sleep(2000);
 
+  const preview = document.getElementById('enhancePreview').src;
   userCredits -= cost;
   updateCredits();
 
-  const preview = document.getElementById('enhancePreview').src;
-  showResults(resultArea, [preview], 1);
-
-  showToast(`提升完成！消耗 ${cost} 积分`);
-}
-
-// 展示结果图片
-function showResults(container, imgs, count) {
-  container.innerHTML = `<div class="result-images count-${count}">
-    ${imgs.map((src, i) => `
-      <div class="result-img-wrap">
-        <img src="${src}" alt="生成结果 ${i+1}">
-        <div class="result-img-actions">
-          <button class="img-action-btn" onclick="downloadImg('${src}', ${i})">下载</button>
-          <button class="img-action-btn" onclick="shareImg(${i})">分享</button>
-        </div>
-      </div>`).join('')}
+  resultBox.innerHTML = `<div class="result-images c1">
+    <div class="ri-wrap">
+      <img src="${preview}" alt="提升结果">
+      <div class="ri-actions">
+        <button class="ri-btn" onclick="downloadImg('${preview}')">下载</button>
+      </div>
+    </div>
   </div>`;
+
+  btn.disabled = false;
+  showToast(`提升完成！消耗 ${cost} 算力`);
 }
 
-// 下载图片
-function downloadImg(src, index) {
-  const a = document.createElement('a');
-  a.href = src;
-  a.download = `ai-art-${Date.now()}-${index + 1}.jpg`;
-  a.target = '_blank';
-  a.click();
-  showToast('开始下载');
+// ===== 风格广场 =====
+function applyStyle(prompt, styleType) {
+  showPage('text2img');
+  document.getElementById('t2i-prompt').value = prompt + '，';
+  showToast('已套用风格，请补充描述后生成');
 }
 
-function shareImg(index) {
-  showToast('分享功能开发中');
+// ===== 模型训练 =====
+function addTrainImages(input) {
+  const files = Array.from(input.files);
+  const remaining = 100 - trainImages.length;
+  const toAdd = files.slice(0, remaining);
+  trainImages.push(...toAdd);
+  document.getElementById('trainCount').textContent = `${trainImages.length}/100`;
+
+  const grid = document.getElementById('trainGrid');
+  toAdd.forEach(f => {
+    const img = document.createElement('img');
+    img.className = 'train-thumb';
+    img.src = URL.createObjectURL(f);
+    grid.insertBefore(img, grid.firstChild);
+  });
+
+  showToast(`已添加 ${toAdd.length} 张图片`);
 }
 
-// 充值弹窗
+function startTraining() {
+  if (trainImages.length < 10) { showToast('请至少上传10张图片'); return; }
+  const cost = 3000;
+  if (userCredits < cost) { showToast('算力不足，需要3000算力'); showRecharge(); return; }
+  showToast('训练功能开发中，敬请期待');
+}
+
+function showModelPicker() {
+  showToast('模型选择功能开发中');
+}
+
+// ===== 历史记录 =====
+function saveHistory(url, type, prompt) {
+  const hist = JSON.parse(localStorage.getItem('aiHistory') || '[]');
+  hist.unshift({ url, type, prompt: prompt || '', time: Date.now() });
+  if (hist.length > 100) hist.pop();
+  localStorage.setItem('aiHistory', JSON.stringify(hist));
+}
+
+function loadHistory() {
+  const hist = JSON.parse(localStorage.getItem('aiHistory') || '[]');
+  const empty = document.getElementById('historyEmpty');
+  const col1 = document.getElementById('histCol1');
+  const col2 = document.getElementById('histCol2');
+
+  if (hist.length === 0) {
+    empty.style.display = 'block';
+    col1.innerHTML = '';
+    col2.innerHTML = '';
+    document.getElementById('historyCount').textContent = '0';
+    return;
+  }
+
+  empty.style.display = 'none';
+  document.getElementById('historyCount').textContent = hist.length;
+  col1.innerHTML = '';
+  col2.innerHTML = '';
+
+  hist.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'wf-item';
+    div.innerHTML = `<img src="${item.url}" alt="${item.type}" loading="lazy">
+      <div class="wf-label">${item.type} · ${new Date(item.time).toLocaleDateString()}</div>`;
+    div.onclick = () => downloadImg(item.url);
+    if (i % 2 === 0) col1.appendChild(div);
+    else col2.appendChild(div);
+  });
+}
+
+function clearHistory() {
+  if (!confirm('确定清空所有历史记录？')) return;
+  localStorage.removeItem('aiHistory');
+  loadHistory();
+  showToast('已清空');
+}
+
+// ===== 充值 =====
 function showRecharge() {
   document.getElementById('modalCredits').textContent = userCredits;
   document.getElementById('rechargeModal').classList.add('show');
@@ -241,11 +336,11 @@ function hideRecharge() {
   document.getElementById('rechargeModal').classList.remove('show');
 }
 
-function selectRecharge(el, price, credits) {
-  document.querySelectorAll('.recharge-item').forEach(i => i.classList.remove('selected'));
+function selectPkg(el, price, credits) {
+  document.querySelectorAll('.rg-item').forEach(i => i.classList.remove('selected'));
   el.classList.add('selected');
-  selectedRechargePrice = price;
-  selectedRechargeCredits = credits;
+  selectedPkgPrice = price;
+  selectedPkgCredits = credits;
   document.getElementById('payBtn').textContent = `立即支付 ¥${price}`;
 }
 
@@ -253,61 +348,19 @@ function mockPay() {
   showToast('支付功能接入中，敬请期待');
 }
 
-// 更新积分显示
+// ===== 工具函数 =====
 function updateCredits() {
   document.getElementById('userCredits').textContent = userCredits;
   document.getElementById('modalCredits').textContent = userCredits;
 }
 
-// 首页风格筛选（示意）
-function filterGallery(style) {
-  showToast('筛选：' + style);
-}
-
-// Toast
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// 历史记录
-function saveHistory(url, type, prompt) {
-  const history = JSON.parse(localStorage.getItem('aiHistory') || '[]');
-  history.unshift({ url, type, prompt, time: Date.now() });
-  if (history.length > 50) history.pop();
-  localStorage.setItem('aiHistory', JSON.stringify(history));
-}
-
-function loadHistory() {
-  const history = JSON.parse(localStorage.getItem('aiHistory') || '[]');
-  const grid = document.getElementById('historyGrid');
-  const empty = document.getElementById('historyEmpty');
-  if (history.length === 0) {
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-  grid.innerHTML = history.map((item, i) => `
-    <div class="gallery-item">
-      <img src="${item.url}" alt="历史图片${i+1}">
-      <div class="gallery-overlay">
-        <span>${item.type} · ${new Date(item.time).toLocaleDateString()}</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-function clearHistory() {
-  if (!confirm('确定清空所有历史记录？')) return;
-  localStorage.removeItem('aiHistory');
-  loadHistory();
-  showToast('已清空历史记录');
+function downloadImg(url) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `yichuang-ai-${Date.now()}.jpg`;
+  a.target = '_blank';
+  a.click();
+  showToast('开始下载');
 }
 
 function toBase64(file) {
@@ -317,4 +370,13 @@ function toBase64(file) {
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
