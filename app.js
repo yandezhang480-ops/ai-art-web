@@ -301,14 +301,42 @@ async function generateEnhance() {
 
 // ===== 风格广场筛选 =====
 const galleryItems = [
-  { prompt: '清明上河图风格，宋代工笔画', style: '国画', name: '清明上河图风格', seed: 'g1', cat: '国画' },
-  { prompt: '印象派油画，莫奈光影风格', style: '油画', name: '印象派油画', seed: 'g2', cat: '油画' },
-  { prompt: '日式浮世绘，线条细腻', style: '版画', name: '日式浮世绘', seed: 'g3', cat: '版画' },
-  { prompt: '水墨山水，泼墨写意', style: '国画', name: '水墨山水', seed: 'g4', cat: '国画' },
-  { prompt: '欧洲水彩，通透淡雅', style: '水彩', name: '欧洲水彩', seed: 'g5', cat: '水彩' },
-  { prompt: '赛博朋克，霓虹未来城市', style: '综合', name: '赛博朋克', seed: 'g6', cat: '综合' },
-  { prompt: '工笔人物，精细写实', style: '国画', name: '工笔人物', seed: 'g7', cat: '国画' },
-  { prompt: '抽象油画，色彩浓烈', style: '油画', name: '抽象油画', seed: 'g8', cat: '油画' },
+  // 国画
+  { prompt: '清明上河图风格，宋代工笔画，热闹街市，古典建筑', name: '清明上河图', seed: 'g1', cat: '国画' },
+  { prompt: '水墨山水，泼墨写意，高山云雾，意境深远', name: '水墨山水', seed: 'g4', cat: '国画' },
+  { prompt: '工笔花鸟，精细笔触，牡丹锦鸡，华丽典雅', name: '工笔花鸟', seed: 'g7', cat: '国画' },
+  { prompt: '仕女图，唐代美人，古典服饰，宫廷意境', name: '仕女写意', seed: 'g11', cat: '国画' },
+  { prompt: '泼墨荷花，中国水墨，荷叶田田，夏日意境', name: '泼墨荷花', seed: 'g12', cat: '国画' },
+  { prompt: '国画墨竹，文人画风格，墨竹挺拔，高洁品性', name: '墨竹文人', seed: 'g13', cat: '国画' },
+  { prompt: '宋代工笔花卉，海棠芙蓉，精致细腻，宋人审美', name: '宋代花卉', seed: 'g14', cat: '国画' },
+  // 油画
+  { prompt: '印象派油画，莫奈睡莲，光影斑驳，色彩柔和', name: '莫奈印象', seed: 'g2', cat: '油画' },
+  { prompt: '梵高星空风格，旋转笔触，浓烈色彩，表现主义', name: '梵高星空', seed: 'g8', cat: '油画' },
+  { prompt: '巴洛克古典人物油画，伦勃朗光影，深色背景，戏剧感', name: '巴洛克肖像', seed: 'g15', cat: '油画' },
+  { prompt: '写实油画风景，欧洲田野，黄金麦田，阳光温暖', name: '田野写实', seed: 'g16', cat: '油画' },
+  { prompt: '超写实静物油画，花卉玻璃瓶，光线细腻，质感丰富', name: '超写实静物', seed: 'g17', cat: '油画' },
+  { prompt: '塞尚风格后印象派，几何感构图，苹果桌布，厚重色彩', name: '塞尚风格', seed: 'g29', cat: '油画' },
+  // 版画
+  { prompt: '日式浮世绘，神奈川冲浪里，葛饰北斋风格，波浪壮阔', name: '浮世绘巨浪', seed: 'g3', cat: '版画' },
+  { prompt: '木刻版画，黑白线条，民间故事，朴拙有力', name: '民间木刻', seed: 'g18', cat: '版画' },
+  { prompt: '铜版画风格，精细线条，欧洲古典建筑，艺术感', name: '欧式铜版', seed: 'g19', cat: '版画' },
+  { prompt: '波普艺术版画，安迪沃霍尔风格，鲜艳重复，现代感', name: '波普版画', seed: 'g20', cat: '版画' },
+  { prompt: '苏联宣传画风格，强烈色块，简洁构图，力量感', name: '构成主义', seed: 'g30', cat: '版画' },
+  // 水彩
+  { prompt: '欧洲小镇水彩，通透淡雅，晴天阳光，温馨生活', name: '欧洲小镇', seed: 'g5', cat: '水彩' },
+  { prompt: '水彩玫瑰牡丹，柔和晕染，花瓣细腻，少女感', name: '水彩花卉', seed: 'g21', cat: '水彩' },
+  { prompt: '水彩人像，晕染效果，半抽象艺术风格', name: '水彩人像', seed: 'g22', cat: '水彩' },
+  { prompt: '日系水彩插画，清新风景，温柔色调，治愈系', name: '日系治愈', seed: 'g23', cat: '水彩' },
+  { prompt: '水彩城市速写，建筑线稿加晕染，旅行日记风格', name: '城市速写', seed: 'g31', cat: '水彩' },
+  // 综合
+  { prompt: '赛博朋克城市，霓虹灯光，雨夜反射，未来感十足', name: '赛博朋克', seed: 'g6', cat: '综合' },
+  { prompt: '奇幻森林，精灵世界，发光蘑菇，梦幻光效', name: '奇幻精灵', seed: 'g24', cat: '综合' },
+  { prompt: '新海诚动漫风格，唯美天空，光线通透，日系治愈', name: '新海诚风', seed: 'g25', cat: '综合' },
+  { prompt: '像素艺术风格，复古游戏感，8bit色彩，怀旧情怀', name: '像素复古', seed: 'g26', cat: '综合' },
+  { prompt: '极简主义几何抽象，莫兰迪色调，高级感设计', name: '极简抽象', seed: 'g27', cat: '综合' },
+  { prompt: '蒸汽朋克机械，齿轮管道，维多利亚风格，工业美学', name: '蒸汽朋克', seed: 'g28', cat: '综合' },
+  { prompt: '洛可可风格，宫廷奢华，粉金配色，华丽装饰', name: '洛可可宫廷', seed: 'g32', cat: '综合' },
+  { prompt: '中国风概念插画，国潮美学，龙凤图腾，金红配色', name: '国潮插画', seed: 'g33', cat: '综合' },
 ];
 
 function filterGallery(el, cat) {
