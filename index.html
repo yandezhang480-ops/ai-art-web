@@ -221,8 +221,12 @@
       <div id="ct-train" style="display:none">
         <div class="tool">
           <div class="note"><span class="note-icon">🖌</span><p>上传 10-100 张同类风格作品，训练你的<b>专属国画模型</b>。以工笔、写意、国展创作为主，训练约需 3-4 小时，完成后在「我的风格」调用。每次消耗 <b>3000 算力</b>。</p></div>
+          <div class="fblock" id="myModelsBlock" style="display:none">
+            <span class="flabel">我的风格模型</span>
+            <div id="myModels"></div>
+          </div>
           <div class="fblock">
-            <div class="sel-row"><span class="flabel" style="margin:0">模型命名</span><input class="inline-input" placeholder="如：我的工笔花鸟"></div>
+            <div class="sel-row"><span class="flabel" style="margin:0">模型命名</span><input id="trainName" class="inline-input" placeholder="如：我的工笔花鸟"></div>
           </div>
           <div class="fblock">
             <span class="flabel">创作方向</span>

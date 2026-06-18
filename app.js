@@ -402,7 +402,14 @@ async function genEnh() {
 }
 
 // ===== 历史 =====
-function saveHist(url,type,prompt) { const h=JSON.parse(localStorage.getItem('dqHist')||'[]'); h.unshift({url,type,prompt:prompt||'',time:Date.now()}); if(h.length>200)h.pop(); localStorage.setItem('dqHist',JSON.stringify(h)); }
+function saveHist(url,type,prompt) {
+  const h=JSON.parse(localStorage.getItem('dqHist')||'[]');
+  h.unshift({url,type,prompt:prompt||'',time:Date.now()});
+  // base64(OpenAI)图体积大，限制总数；超出本地存储配额时丢弃最旧的重试
+  while(h.length>60) h.pop();
+  try { localStorage.setItem('dqHist',JSON.stringify(h)); }
+  catch(e){ while(h.length>10){ h.pop(); try{ localStorage.setItem('dqHist',JSON.stringify(h)); return; }catch(_){} } }
+}
 function loadHistory() {
   const h=JSON.parse(localStorage.getItem('dqHist')||'[]');
   document.getElementById('histCount').textContent=h.length;

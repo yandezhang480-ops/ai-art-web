@@ -21,6 +21,8 @@ export default async function handler(req, res) {
   const imageSize = sizeMap[ratio] || '1024x1024';
 
   const API_KEY = 'sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj';
+  // OpenAI 接入留位：在 Vercel 环境变量配置 OPENAI_API_KEY 即自动切换为 gpt-image-1（更高画质）
+  const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
   const styleMap = {
     '国画': 'traditional Chinese ink painting, brush strokes, elegant, masterpiece',
@@ -44,6 +46,26 @@ export default async function handler(req, res) {
   const fullPrompt = stylePrompt ? `${prompt}, ${stylePrompt}, high quality artwork` : `${prompt}, high quality artwork`;
 
   try {
+    // ===== 优先走 OpenAI gpt-image-1（已配置密钥时）=====
+    if (OPENAI_KEY) {
+      // gpt-image-1 仅支持这几种尺寸，按画幅就近映射
+      const aiSize = { '1:1':'1024x1024', '3:4':'1024x1536', '9:16':'1024x1536', '4:3':'1536x1024', '16:9':'1536x1024' }[ratio] || '1024x1024';
+      const aiReqs = Array.from({ length: Math.min(count, 4) }, () =>
+        fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_KEY}` },
+          body: JSON.stringify({ model: 'gpt-image-1', prompt: fullPrompt, n: 1, size: aiSize, quality: 'medium' }),
+        }).then(r => r.json())
+      );
+      const aiRes = await Promise.allSettled(aiReqs);
+      const aiUrls = aiRes
+        .filter(r => r.status === 'fulfilled')
+        .map(r => { const b = r.value?.data?.[0]?.b64_json; return b ? `data:image/png;base64,${b}` : null; })
+        .filter(Boolean);
+      if (aiUrls.length) return res.status(200).json({ urls: aiUrls, url: aiUrls[0], provider: 'openai' });
+      // OpenAI 失败 → 自动降级到国内接口（下方）
+    }
+
     // 并行生成多张
     const requests = Array.from({ length: Math.min(count, 4) }, () =>
       fetch('https://api.siliconflow.cn/v1/images/generations', {
