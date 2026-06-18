@@ -435,12 +435,25 @@ function mockPay(){ showToast('支付接入中，敬请期待'); }
 //   cat  分类：'范画图库' / '视频教程' / '线稿素材'
 //   title 标题   desc 简介   link 网盘分享链接   code 提取码   cover 封面图URL(可选，留空用色块)
 const RESOURCES = [
-  { cat:'范画图库', title:'宋代工笔花鸟高清范画（30幅）', desc:'故宫藏宋画4K高清大图，可临摹', link:'https://pan.quark.cn/your-link', code:'gh01', cover:'' },
-  { cat:'范画图库', title:'历代仕女工笔范画集', desc:'唐宋元明清仕女图高清合集', link:'https://pan.quark.cn/your-link', code:'gh02', cover:'' },
-  { cat:'范画图库', title:'国展获奖花鸟范作精选', desc:'近年国展花鸟优秀作品高清图', link:'https://pan.quark.cn/your-link', code:'gh03', cover:'' },
-  { cat:'视频教程', title:'工笔牡丹从起稿到完成', desc:'2小时全程高清教程，分步讲解', link:'https://pan.baidu.com/your-link', code:'sp01', cover:'' },
-  { cat:'视频教程', title:'写意山水技法精讲', desc:'泼墨、皴法、留白详解', link:'https://pan.baidu.com/your-link', code:'sp02', cover:'' },
-  { cat:'线稿素材', title:'工笔白描线稿100张', desc:'可打印拷贝，含花鸟人物', link:'https://pan.quark.cn/your-link', code:'xg01', cover:'' },
+  // —— 范画图库 ——
+  { cat:'范画图库', title:'宋代工笔花鸟高清范画·30幅', desc:'故宫藏宋画4K高清，丝缕毕现，临摹首选', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'范画图库', title:'历代仕女工笔范画集', desc:'唐宋元明清仕女图高清合集，线条可拷', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'范画图库', title:'国展获奖花鸟范作精选', desc:'近年全国美展花鸟优秀作品高清图', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'范画图库', title:'宋人小品册页·团扇精品', desc:'两宋册页团扇高清，构图设色范本', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'范画图库', title:'八大山人·徐渭大写意精品', desc:'明清大写意花鸟，笔墨气韵研习', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'范画图库', title:'任伯年人物花鸟范画', desc:'海派巨匠精品，雅俗共赏', link:'REPLACE_ME', code:'', cover:'' },
+  // —— 视频教程 ——
+  { cat:'视频教程', title:'工笔牡丹·从起稿到完成', desc:'2小时全程高清，分步详解勾染', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'视频教程', title:'写意山水技法精讲', desc:'皴擦点染、泼墨留白，由浅入深', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'视频教程', title:'工笔花鸟设色技法详解', desc:'分染、罩染、统染，设色全流程', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'视频教程', title:'四君子·梅兰竹菊写意入门', desc:'零基础上手，笔法运墨示范', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'视频教程', title:'国展创作·构图与立意', desc:'主题创作思路、章法布局指导', link:'REPLACE_ME', code:'', cover:'' },
+  // —— 线稿素材 ——
+  { cat:'线稿素材', title:'工笔白描线稿·100张', desc:'高清可打印拷贝，花鸟人物齐全', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'线稿素材', title:'历代花鸟工笔线稿合集', desc:'经典花鸟白描，直接拷贝起稿', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'线稿素材', title:'仕女人物白描线稿集', desc:'唐宋仕女、古装人物线稿', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'线稿素材', title:'山水皴法步骤图解', desc:'披麻皴、斧劈皴等步骤分解素材', link:'REPLACE_ME', code:'', cover:'' },
+  { cat:'线稿素材', title:'印章·题款素材包', desc:'常用闲章、落款格式参考', link:'REPLACE_ME', code:'', cover:'' },
 ];
 // 【会员兑换码】卖出会员后，把其中一个码发给客户；客户输入即解锁（可自行增删）
 const REDEEM_CODES = ['DANQING2024', 'GUOHUA888', 'VIP666'];
@@ -492,8 +505,10 @@ function renderVipList(cat){
 }
 function openRes(idx){
   const r = RESOURCES[idx];
-  try { navigator.clipboard?.writeText(r.code); } catch(e){}
-  showToast(`提取码 ${r.code} 已复制，正在打开网盘…`);
+  // 还没填真实网盘链接时，友好提示（不跳错误页）
+  if (!r.link || r.link === 'REPLACE_ME') { showToast('该资料整理上传中，即将开放'); return; }
+  if (r.code) { try { navigator.clipboard?.writeText(r.code); } catch(e){} showToast(`提取码 ${r.code} 已复制，正在打开网盘…`); }
+  else showToast('正在打开网盘…');
   window.open(r.link, '_blank');
 }
 
