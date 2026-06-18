@@ -98,7 +98,7 @@ function libTab(el, t) {
   el.classList.add('active');
   renderLib(t, '全部');
   // 切换子分类
-  const chips = { guozhan:['全部','人物','花鸟','山水','书法'], masters:['全部','宋元','明清','近现代'], world:['全部','文艺复兴','印象派','后印象','浮世绘'] };
+  const chips = { guozhan:['全部','人物','花鸟','山水','书法'], masters:['全部','古代','明清','近现代'], world:['全部','文艺复兴','古典油画','印象派','后印象','浮世绘','现代'] };
   const row = document.getElementById('libChips');
   row.innerHTML = chips[t].map((c,i)=>`<span class="chip ${i===0?'active':''}" onclick="libChip(this,'${t}','${c}')">${c}</span>`).join('');
 }
@@ -109,34 +109,89 @@ function libChip(el, t, c) {
 }
 
 // 画库数据（file=真实名画文件名，art=回退SVG）
+// 真实名画文件名（维基共享资源，全部已验证可加载）
+const F = {
+  cranes:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg',
+  fankuan:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg',
+  qingming:'清明上河图.jpg',
+  qianli:'Wang Ximeng. A Thousand Li of Rivers and Mountains. (Complete, 51,3x1191,5 cm). 1113. Palace museum, Beijing.jpg',
+  yeyan:'Night Revels of Han Xizai pipa player.jpg',
+  bunian:'Emperor Taizong Receiving the Tibetan Envoy(Bunian Tu).jpg',
+  luoshen:'B Gu Kaizhi. Nymph of the Luo River. (section) Southern Song Copy. Liaoning Provincial museum.jpg',
+  wuniu:'韩滉五牛图卷.png',
+  zanhua:'唐周昉簪花仕女图.jpg',
+  zhuban:'郑燮竹兰石图轴.jpg',
+  fuchun:'沈周仿黄公望富春山居图卷.png',
+  xia:'墨蝦圖.jpg',
+  nianyu:'八大山人 鲶鱼图.jpg',
+  lanting:'神龍蘭亭序全.JPG',
+  mona:'Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg',
+  pearl:'1665 Girl with a Pearl Earring.jpg',
+  readletter:'Johannes Vermeer - Girl Reading a Letter by an Open Window - Google Art Project.jpg',
+  adam:'Michelangelo - Creation of Adam (cropped).jpg',
+  nightwatch:'The Nightwatch by Rembrandt - Rijksmuseum.jpg',
+  liberty:'Eugène Delacroix - La liberté guidant le peuple.jpg',
+  starry:'Van Gogh - Starry Night - Google Art Project.jpg',
+  sunflower:'Vincent van Gogh - Sunflowers - VGM F458.jpg',
+  scream:'Edvard Munch, 1893, The Scream, oil, tempera and pastel on cardboard, 91 x 73 cm, National Gallery of Norway.jpg',
+  lily:'Claude Monet 044.jpg',
+  kiss:'The Kiss - Gustav Klimt - Google Cultural Institute.jpg',
+  gothic:'Grant Wood - American Gothic - Google Art Project.jpg',
+  wave:'Great Wave off Kanagawa2.jpg',
+  shower:'Hiroshige, Sudden shower over Shin-Ōhashi bridge and Atake, 1857.jpg',
+  redfuji:'Red Fuji southern wind clear morning.jpg',
+};
 const LIB = {
+  // 经典范作（按题材浏览）
   guozhan: [
-    { name:'簪花仕女图', artist:'唐 · 工笔人物', art:'shinv', file:'唐周昉簪花仕女图.jpg', cat:'人物', prompt:'工笔仕女，唐代簪花仕女，丰腴华贵，线条圆润，精细描绘' },
-    { name:'瑞鹤图', artist:'宋徽宗 · 工笔花鸟', art:'ruihe', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', cat:'花鸟', prompt:'工笔仙鹤，瑞鹤呈祥，祥云缭绕，工整富丽，皇家气象' },
-    { name:'溪山行旅图', artist:'范宽 · 写意山水', art:'shanshui', file:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg', cat:'山水', prompt:'范宽溪山行旅，全景山水，高远构图，雄强浑厚，崇山峻岭' },
-    { name:'竹兰石图', artist:'郑板桥 · 写意花鸟', art:'zhu', file:'郑燮竹兰石图轴.jpg', cat:'花鸟', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节，书画一体，水墨淋漓' },
-    { name:'墨虾图', artist:'齐白石 · 写意花鸟', art:'lotus', file:'QiBaishiGarnelen.jpg', cat:'花鸟', prompt:'齐白石写意虾趣，简练生动，妙趣横生，水墨淋漓' },
-    { name:'兰亭序', artist:'王羲之 · 书法', art:'shufa', file:'神龍蘭亭序全.JPG', cat:'书法', prompt:'王羲之兰亭序行书，飘逸俊秀，遒媚劲健，天下第一行书' },
-    { name:'富春山居图', artist:'黄公望 · 写意山水', art:'shanshui', file:'沈周仿黄公望富春山居图卷.png', cat:'山水', prompt:'黄公望富春山居图，元代文人山水，平淡天真，烟云供养' },
-    { name:'红白芙蓉', artist:'宋人 · 工笔花鸟', art:'gongbi', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', cat:'花鸟', prompt:'宋代工笔花卉，芙蓉锦鸡，精致细腻，宋人审美' },
+    { name:'簪花仕女图', artist:'周昉 · 工笔人物', art:'shinv', file:F.zanhua, cat:'人物', prompt:'工笔仕女，唐代簪花仕女，丰腴华贵，线条圆润，精细描绘' },
+    { name:'韩熙载夜宴图', artist:'顾闳中 · 工笔人物', art:'shinv', file:F.yeyan, cat:'人物', prompt:'工笔人物，夜宴场景，设色典雅，构图精妙，五代风格' },
+    { name:'步辇图', artist:'阎立本 · 工笔人物', art:'shinv', file:F.bunian, cat:'人物', prompt:'工笔人物，唐代宫廷，帝王仪仗，庄重典雅' },
+    { name:'洛神赋图', artist:'顾恺之 · 工笔人物', art:'shinv', file:F.luoshen, cat:'人物', prompt:'工笔人物，洛神飘逸，高古游丝描，魏晋风韵' },
+    { name:'瑞鹤图', artist:'宋徽宗 · 工笔花鸟', art:'ruihe', file:F.cranes, cat:'花鸟', prompt:'工笔仙鹤，瑞鹤呈祥，祥云缭绕，工整富丽' },
+    { name:'五牛图', artist:'韩滉 · 工笔花鸟', art:'gongbi', file:F.wuniu, cat:'花鸟', prompt:'工笔耕牛，神态各异，线条遒劲，唐代写实' },
+    { name:'竹兰石图', artist:'郑板桥 · 写意花鸟', art:'zhu', file:F.zhuban, cat:'花鸟', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节，书画一体' },
+    { name:'鲶鱼图', artist:'八大山人 · 写意花鸟', art:'lotus', file:F.nianyu, cat:'花鸟', prompt:'八大山人写意，水墨简逸，冷峻奇崛，留白空灵' },
+    { name:'墨虾图', artist:'齐白石 · 写意花鸟', art:'lotus', file:F.xia, cat:'花鸟', prompt:'齐白石写意虾趣，简练生动，妙趣横生，水墨淋漓' },
+    { name:'溪山行旅图', artist:'范宽 · 写意山水', art:'shanshui', file:F.fankuan, cat:'山水', prompt:'范宽溪山行旅，全景山水，高远构图，雄强浑厚' },
+    { name:'千里江山图', artist:'王希孟 · 青绿山水', art:'shanshui', file:F.qianli, cat:'山水', prompt:'青绿山水，千里江山，石青石绿，富丽堂皇，北宋气象' },
+    { name:'清明上河图', artist:'张择端 · 风俗长卷', art:'shanshui', file:F.qingming, cat:'山水', prompt:'清明上河图风格，市井繁华，界画精细，长卷构图' },
+    { name:'富春山居图', artist:'黄公望 · 写意山水', art:'shanshui', file:F.fuchun, cat:'山水', prompt:'黄公望富春山居，元代文人山水，平淡天真，烟云供养' },
+    { name:'兰亭序', artist:'王羲之 · 行书', art:'shufa', file:F.lanting, cat:'书法', prompt:'王羲之兰亭序行书，飘逸俊秀，遒媚劲健，天下第一行书' },
   ],
+  // 中国名家（按朝代）
   masters: [
-    { name:'溪山行旅图', artist:'范宽 · 北宋', art:'shanshui', file:'谿山行旅图轴.溪山行旅图.宋.范宽.绢本浅设色.台北故宫博物院藏.jpg', cat:'宋元', prompt:'范宽溪山行旅图，北宋全景山水，高远构图，雄强浑厚' },
-    { name:'瑞鹤图', artist:'赵佶 · 北宋', art:'ruihe', file:'Emperor Huizong (1101-1125) Painting of Auspicious Cranes, Copy.jpg', cat:'宋元', prompt:'宋徽宗瑞鹤图，工笔重彩，群鹤翔空，皇家气象' },
-    { name:'簪花仕女图', artist:'周昉 · 唐', art:'shinv', file:'唐周昉簪花仕女图.jpg', cat:'宋元', prompt:'周昉簪花仕女图，唐代工笔人物，丰腴华贵，线条圆润' },
-    { name:'竹兰石图', artist:'郑板桥 · 清', art:'zhu', file:'郑燮竹兰石图轴.jpg', cat:'明清', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节，书画一体' },
-    { name:'富春山居图', artist:'黄公望 · 元', art:'shanshui', file:'沈周仿黄公望富春山居图卷.png', cat:'明清', prompt:'黄公望富春山居图，元代文人山水，平淡天真' },
-    { name:'墨虾图', artist:'齐白石 · 近现代', art:'lotus', file:'QiBaishiGarnelen.jpg', cat:'近现代', prompt:'齐白石写意虾趣，简练生动，妙趣横生' },
-    { name:'兰亭序', artist:'王羲之 · 东晋', art:'shufa', file:'神龍蘭亭序全.JPG', cat:'近现代', prompt:'王羲之兰亭序行书，飘逸俊秀，遒媚劲健' },
+    { name:'洛神赋图', artist:'顾恺之 · 东晋', art:'shinv', file:F.luoshen, cat:'古代', prompt:'顾恺之洛神赋图，高古游丝描，飘逸传神' },
+    { name:'步辇图', artist:'阎立本 · 唐', art:'shinv', file:F.bunian, cat:'古代', prompt:'阎立本步辇图，唐代人物，庄重典雅' },
+    { name:'簪花仕女图', artist:'周昉 · 唐', art:'shinv', file:F.zanhua, cat:'古代', prompt:'周昉簪花仕女图，唐代工笔人物，丰腴华贵' },
+    { name:'五牛图', artist:'韩滉 · 唐', art:'gongbi', file:F.wuniu, cat:'古代', prompt:'韩滉五牛图，唐代写实，线条遒劲' },
+    { name:'韩熙载夜宴图', artist:'顾闳中 · 五代', art:'shinv', file:F.yeyan, cat:'古代', prompt:'顾闳中夜宴图，设色典雅，构图精妙' },
+    { name:'溪山行旅图', artist:'范宽 · 北宋', art:'shanshui', file:F.fankuan, cat:'古代', prompt:'范宽溪山行旅图，雄强浑厚，全景山水' },
+    { name:'千里江山图', artist:'王希孟 · 北宋', art:'shanshui', file:F.qianli, cat:'古代', prompt:'王希孟千里江山图，青绿山水，富丽堂皇' },
+    { name:'清明上河图', artist:'张择端 · 北宋', art:'shanshui', file:F.qingming, cat:'古代', prompt:'张择端清明上河图，市井繁华，界画精细' },
+    { name:'瑞鹤图', artist:'赵佶 · 北宋', art:'ruihe', file:F.cranes, cat:'古代', prompt:'宋徽宗瑞鹤图，工笔重彩，群鹤翔空' },
+    { name:'富春山居图', artist:'黄公望 · 元', art:'shanshui', file:F.fuchun, cat:'明清', prompt:'黄公望富春山居图，文人山水，平淡天真' },
+    { name:'竹兰石图', artist:'郑板桥 · 清', art:'zhu', file:F.zhuban, cat:'明清', prompt:'郑板桥墨竹，瘦劲挺拔，清瘦有节' },
+    { name:'鲶鱼图', artist:'八大山人 · 清', art:'lotus', file:F.nianyu, cat:'明清', prompt:'八大山人写意，冷峻奇崛，留白空灵' },
+    { name:'墨虾图', artist:'齐白石 · 近现代', art:'lotus', file:F.xia, cat:'近现代', prompt:'齐白石写意虾趣，简练生动，妙趣横生' },
   ],
+  // 世界名画（按流派）
   world: [
-    { name:'蒙娜丽莎', artist:'达·芬奇 · 文艺复兴', art:'mona', file:'Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg', cat:'文艺复兴', prompt:'达芬奇蒙娜丽莎，文艺复兴肖像，神秘微笑，晕涂技法' },
-    { name:'戴珍珠耳环的少女', artist:'维米尔 · 巴洛克', art:'pearl', file:'1665 Girl with a Pearl Earring.jpg', cat:'文艺复兴', prompt:'维米尔戴珍珠耳环少女，黄金分割光影，神秘回眸' },
-    { name:'星月夜', artist:'梵·高 · 后印象', art:'starry', file:'Van Gogh - Starry Night - Google Art Project.jpg', cat:'后印象', prompt:'梵高星月夜，旋转笔触，浓烈深蓝，表现主义' },
-    { name:'向日葵', artist:'梵·高 · 后印象', art:'sunflower', file:'Vincent van Gogh - Sunflowers - VGM F458.jpg', cat:'后印象', prompt:'梵高向日葵，厚涂笔触，灿烂明黄，生命礼赞' },
-    { name:'睡莲', artist:'莫奈 · 印象派', art:'monet', file:'Claude Monet 044.jpg', cat:'印象派', prompt:'莫奈睡莲，印象派光色，朦胧水波，柔和笔触' },
-    { name:'神奈川冲浪里', artist:'葛饰北斋 · 浮世绘', art:'hokusai', file:'Great Wave off Kanagawa2.jpg', cat:'浮世绘', prompt:'葛饰北斋神奈川冲浪里，浮世绘版画，巨浪富士' },
-    { name:'凯风快晴·赤富士', artist:'葛饰北斋 · 浮世绘', art:'hokusai', file:'Red Fuji southern wind clear morning.jpg', cat:'浮世绘', prompt:'葛饰北斋赤富士，浮世绘，晴空红富士，简约壮丽' },
+    { name:'蒙娜丽莎', artist:'达·芬奇 · 文艺复兴', art:'mona', file:F.mona, cat:'文艺复兴', prompt:'达芬奇蒙娜丽莎，文艺复兴肖像，神秘微笑，晕涂技法' },
+    { name:'创造亚当', artist:'米开朗基罗 · 文艺复兴', art:'mona', file:F.adam, cat:'文艺复兴', prompt:'米开朗基罗创造亚当，文艺复兴壁画，人体雄健，宗教题材' },
+    { name:'戴珍珠耳环的少女', artist:'维米尔 · 荷兰', art:'pearl', file:F.pearl, cat:'古典油画', prompt:'维米尔戴珍珠耳环少女，黄金分割光影，神秘回眸' },
+    { name:'读信的少女', artist:'维米尔 · 荷兰', art:'pearl', file:F.readletter, cat:'古典油画', prompt:'维米尔读信少女，窗边柔光，静谧氛围，室内场景' },
+    { name:'夜巡', artist:'伦勃朗 · 荷兰', art:'pearl', file:F.nightwatch, cat:'古典油画', prompt:'伦勃朗夜巡，强烈明暗对比，群像构图，戏剧光影' },
+    { name:'自由引导人民', artist:'德拉克洛瓦 · 法国', art:'mona', file:F.liberty, cat:'古典油画', prompt:'德拉克洛瓦自由引导人民，浪漫主义，激昂场面，三角构图' },
+    { name:'睡莲', artist:'莫奈 · 印象派', art:'monet', file:F.lily, cat:'印象派', prompt:'莫奈睡莲，印象派光色，朦胧水波，柔和笔触' },
+    { name:'星月夜', artist:'梵·高 · 后印象', art:'starry', file:F.starry, cat:'后印象', prompt:'梵高星月夜，旋转笔触，浓烈深蓝，表现主义' },
+    { name:'向日葵', artist:'梵·高 · 后印象', art:'sunflower', file:F.sunflower, cat:'后印象', prompt:'梵高向日葵，厚涂笔触，灿烂明黄，生命礼赞' },
+    { name:'呐喊', artist:'蒙克 · 表现主义', art:'starry', file:F.scream, cat:'现代', prompt:'蒙克呐喊，表现主义，扭曲线条，强烈情绪，血色天空' },
+    { name:'吻', artist:'克里姆特 · 象征主义', art:'mona', file:F.kiss, cat:'现代', prompt:'克里姆特吻，金箔装饰，象征主义，华丽图案' },
+    { name:'美国哥特', artist:'格兰特·伍德 · 现代', art:'pearl', file:F.gothic, cat:'现代', prompt:'美国哥特，写实人物，质朴乡土，现代主义肖像' },
+    { name:'神奈川冲浪里', artist:'葛饰北斋 · 浮世绘', art:'hokusai', file:F.wave, cat:'浮世绘', prompt:'葛饰北斋神奈川冲浪里，浮世绘版画，巨浪富士' },
+    { name:'凯风快晴·赤富士', artist:'葛饰北斋 · 浮世绘', art:'hokusai', file:F.redfuji, cat:'浮世绘', prompt:'葛饰北斋赤富士，浮世绘，晴空红富士，简约壮丽' },
+    { name:'骤雨大桥', artist:'歌川广重 · 浮世绘', art:'hokusai', file:F.shower, cat:'浮世绘', prompt:'歌川广重骤雨大桥，浮世绘，斜雨线条，江户风情' },
   ],
 };
 
