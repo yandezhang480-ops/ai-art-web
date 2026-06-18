@@ -78,6 +78,11 @@
             <div class="fcard-name">算力充值</div>
             <div class="fcard-desc">会员特惠</div>
           </div>
+          <div class="fcard span2" onclick="showPage('vip')">
+            <svg class="fcard-svg" viewBox="0 0 48 48" fill="none"><rect x="8" y="12" width="32" height="26" rx="2" fill="#f3ecd8" stroke="#b23a2c" stroke-width="2"/><path d="M8 20h32" stroke="#b23a2c" stroke-width="2"/><circle cx="24" cy="29" r="4" fill="none" stroke="#b23a2c" stroke-width="2"/></svg>
+            <div><div class="fcard-name">会员资料库</div><div class="fcard-desc">范画 · 视频教程 · 线稿素材，会员专享</div></div>
+            <span class="fcard-tag">VIP</span>
+          </div>
         </div>
       </div>
 
@@ -300,6 +305,21 @@
       </div>
     </div>
 
+    <!-- ============ 会员资料库 ============ -->
+    <div id="page-vip" class="page">
+      <div class="tool" style="padding-bottom:0">
+        <div id="vipStatus"></div>
+      </div>
+      <div class="chip-row" id="vipChips">
+        <span class="chip active" onclick="vipTab(this,'全部')">全部</span>
+        <span class="chip" onclick="vipTab(this,'范画图库')">范画图库</span>
+        <span class="chip" onclick="vipTab(this,'视频教程')">视频教程</span>
+        <span class="chip" onclick="vipTab(this,'线稿素材')">线稿素材</span>
+      </div>
+      <div class="res-grid" id="vipGrid"></div>
+      <div style="height:20px"></div>
+    </div>
+
     <!-- ============ 画质提升 ============ -->
     <div id="page-enhance" class="page">
       <div class="tool">
@@ -360,6 +380,7 @@
       <div class="mine-menu">
         <div class="mitem" onclick="showRecharge()"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#b23a2c" stroke-width="1.8"><path d="M4 9l8-5 8 5-2 11H6z"/></svg><span class="mitem-name">算力充值</span><span class="mitem-badge">特惠</span><span class="mitem-arrow">›</span></div>
         <div class="mitem" onclick="showPage('history')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 14l4-4 4 4 4-5 4 4"/></svg><span class="mitem-name">我的作品</span><span class="mitem-arrow">›</span></div>
+        <div class="mitem" onclick="showPage('vip')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#b23a2c" stroke-width="1.8"><rect x="4" y="6" width="16" height="13" rx="1"/><path d="M4 10h16"/><circle cx="12" cy="14" r="2"/></svg><span class="mitem-name">会员资料库</span><span class="mitem-badge">VIP</span><span class="mitem-arrow">›</span></div>
         <div class="mitem" onclick="showPage('create')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg><span class="mitem-name">我的风格模型</span><span class="mitem-arrow">›</span></div>
         <div class="mitem" onclick="showPage('library')"><svg class="mitem-icon" viewBox="0 0 24 24" fill="none" stroke="#41382f" stroke-width="1.8"><path d="M12 4l2.4 5 5.6.5-4 4 1 5.5L12 16l-5 3 1-5.5-4-4 5.6-.5z"/></svg><span class="mitem-name">我的收藏</span><span class="mitem-arrow">›</span></div>
       </div>

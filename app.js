@@ -62,7 +62,7 @@ function pic(file, art, fit) {
 }
 
 const navPages = ['home', 'create', 'library', 'draft', 'mine'];
-const titles = { home:'丹青坊', create:'创作', library:'画库', draft:'画稿', mine:'我的', enhance:'画质提升', history:'我的作品' };
+const titles = { home:'丹青坊', create:'创作', library:'画库', draft:'画稿', mine:'我的', enhance:'画质提升', history:'我的作品', vip:'会员资料库' };
 
 // ===== 路由 =====
 function showPage(name) {
@@ -83,6 +83,7 @@ function showPage(name) {
   document.querySelectorAll('.bnav').forEach((el, i) => el.classList.toggle('active', navPages[i] === name));
   if (name === 'history') loadHistory();
   if (name === 'mine') updateMine();
+  if (name === 'vip') renderVip();
   window.scrollTo(0, 0);
 }
 function switchNav(n) { showPage(n); }
@@ -428,6 +429,73 @@ function showRecharge(){ document.getElementById('modalCredits').textContent=cre
 function hideRecharge(){ document.getElementById('rechargeModal').classList.remove('show'); }
 function selPkg(el,p,c){ document.querySelectorAll('.rg').forEach(i=>i.classList.remove('selected')); el.classList.add('selected'); pkgPrice=p;pkgCredits=c; document.getElementById('payBtn').textContent=`立即支付 ¥${p}`; }
 function mockPay(){ showToast('支付接入中，敬请期待'); }
+
+// ===== 会员资料库 =====
+// 【导入接口】把你的国画资料填进这个数组即可：
+//   cat  分类：'范画图库' / '视频教程' / '线稿素材'
+//   title 标题   desc 简介   link 网盘分享链接   code 提取码   cover 封面图URL(可选，留空用色块)
+const RESOURCES = [
+  { cat:'范画图库', title:'宋代工笔花鸟高清范画（30幅）', desc:'故宫藏宋画4K高清大图，可临摹', link:'https://pan.quark.cn/your-link', code:'gh01', cover:'' },
+  { cat:'范画图库', title:'历代仕女工笔范画集', desc:'唐宋元明清仕女图高清合集', link:'https://pan.quark.cn/your-link', code:'gh02', cover:'' },
+  { cat:'范画图库', title:'国展获奖花鸟范作精选', desc:'近年国展花鸟优秀作品高清图', link:'https://pan.quark.cn/your-link', code:'gh03', cover:'' },
+  { cat:'视频教程', title:'工笔牡丹从起稿到完成', desc:'2小时全程高清教程，分步讲解', link:'https://pan.baidu.com/your-link', code:'sp01', cover:'' },
+  { cat:'视频教程', title:'写意山水技法精讲', desc:'泼墨、皴法、留白详解', link:'https://pan.baidu.com/your-link', code:'sp02', cover:'' },
+  { cat:'线稿素材', title:'工笔白描线稿100张', desc:'可打印拷贝，含花鸟人物', link:'https://pan.quark.cn/your-link', code:'xg01', cover:'' },
+];
+// 【会员兑换码】卖出会员后，把其中一个码发给客户；客户输入即解锁（可自行增删）
+const REDEEM_CODES = ['DANQING2024', 'GUOHUA888', 'VIP666'];
+
+function isMember(){ return localStorage.getItem('dqMember')==='1'; }
+function redeem(){
+  const v = (document.getElementById('redeemInput')?.value || '').trim().toUpperCase();
+  if (!v) { showToast('请输入兑换码'); return; }
+  if (REDEEM_CODES.map(c=>c.toUpperCase()).includes(v)) {
+    localStorage.setItem('dqMember','1');
+    showToast('🎉 会员解锁成功，资料已开放');
+    renderVip();
+  } else showToast('兑换码无效，请联系客服');
+}
+function vipTab(el, cat){
+  el.closest('.chip-row').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderVipList(cat==='全部'?null:cat);
+}
+function renderVip(){
+  const member = isMember();
+  document.getElementById('vipStatus').innerHTML = member
+    ? `<div class="vip-on">✓ 您已是会员 · 全部资料已解锁</div>`
+    : `<div class="vip-off"><div class="vo-title">🔒 开通会员，解锁全部国画资料</div>
+        <div class="redeem-row"><input id="redeemInput" placeholder="输入会员兑换码"><button onclick="redeem()">解锁</button></div>
+        <div class="redeem-tip">购买会员请 <b onclick="showRecharge()">点此充值</b>，或联系客服微信 <b>danqing_ai</b> 获取兑换码</div></div>`;
+  renderVipList(null);
+}
+function renderVipList(cat){
+  const member = isMember();
+  const items = cat ? RESOURCES.filter(r=>r.cat===cat) : RESOURCES;
+  const icon = c => c==='视频教程'?'▶':c==='线稿素材'?'✎':'🖼';
+  const cls = c => c==='视频教程'?'c-v':c==='线稿素材'?'c-x':'c-h';
+  document.getElementById('vipGrid').innerHTML = items.map(r=>{
+    const idx = RESOURCES.indexOf(r);
+    const cover = r.cover ? `<img src="${r.cover}" style="width:100%;height:100%;object-fit:cover">` : `<span class="res-ic">${icon(r.cat)}</span>`;
+    return `<div class="res-card">
+      <div class="res-cover ${cls(r.cat)}">${cover}${member?'':'<div class="res-lock">🔒</div>'}</div>
+      <div class="res-info">
+        <div class="res-cat">${r.cat}</div>
+        <div class="res-title">${r.title}</div>
+        <div class="res-desc">${r.desc}</div>
+        ${member
+          ? `<button class="res-btn" onclick="openRes(${idx})">前往下载</button>`
+          : `<button class="res-btn locked" onclick="showToast('开通会员后可查看下载')">🔒 会员可见</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+function openRes(idx){
+  const r = RESOURCES[idx];
+  try { navigator.clipboard?.writeText(r.code); } catch(e){}
+  showToast(`提取码 ${r.code} 已复制，正在打开网盘…`);
+  window.open(r.link, '_blank');
+}
 
 // ===== 工具 =====
 function updateCredits(){ localStorage.setItem('dqCredits', credits); document.getElementById('userCredits').textContent=credits; const m=document.getElementById('modalCredits'); if(m)m.textContent=credits; }
