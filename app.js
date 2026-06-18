@@ -51,6 +51,9 @@ const ICON = {
   mine: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
 };
 
+// 落款印章（朱文方印「丹青」，叠在生成结果右上角）
+const SEAL = `<div class="r-seal"><svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="4" fill="#b23a2c"/><rect x="5" y="5" width="40" height="40" rx="2" fill="none" stroke="#f6f0e2" stroke-width="1.5"/><text x="25" y="22" text-anchor="middle" font-size="16" fill="#f6f0e2" font-family="'Songti SC',serif" font-weight="700">丹</text><text x="25" y="41" text-anchor="middle" font-size="16" fill="#f6f0e2" font-family="'Songti SC',serif" font-weight="700">青</text></svg></div>`;
+
 // ===== 真实名画图片（维基共享资源稳定接口，失败自动回退SVG）=====
 const WIKI = f => 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(f) + '?width=600';
 function pic(file, art, fit) {
@@ -297,12 +300,12 @@ async function genT2I() {
   const box = document.getElementById('t2i-result');
   box.innerHTML = `<div class="result-empty"><div class="spinner" style="margin:0 auto 14px"></div><p>运笔挥毫中…</p><p style="font-size:12px;margin-top:6px;color:#9a8e78">约 10-30 秒</p></div>`;
   try {
-    const r = await fetch('/api/generate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ prompt, style: styles[0]||'', count: cnt }) });
+    const r = await fetch('/api/generate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ prompt, styles, count: cnt, ratio }) });
     const d = await r.json();
     if (!r.ok || !d.urls?.length) throw new Error(d.error||'生成失败');
     credits -= cost; updateCredits();
     d.urls.forEach(u => saveHist(u,'文生图',prompt));
-    box.innerHTML = `<div class="r-imgs c${d.urls.length}">${d.urls.map(u=>`<div class="r-wrap"><img src="${u}" loading="lazy"><div class="r-acts"><button class="r-btn" onclick="dl('${u}')">下载</button><button class="r-btn" onclick="saveHist('${u}','收藏','${prompt.replace(/'/g,"\\'")}');showToast('已收藏')">收藏</button></div></div>`).join('')}</div>`;
+    box.innerHTML = `<div class="r-imgs c${d.urls.length}">${d.urls.map(u=>`<div class="r-wrap"><img src="${u}" loading="lazy">${SEAL}<div class="r-acts"><button class="r-btn" onclick="dl('${u}')">下载</button><button class="r-btn" onclick="saveHist('${u}','收藏','${prompt.replace(/'/g,"\\'")}');showToast('已收藏')">收藏</button></div></div>`).join('')}</div>`;
     showToast(`生成成功 · 耗${cost}算力`);
   } catch(e) {
     box.innerHTML = `<div class="result-empty"><p>${e.message}</p><button class="r-btn" style="margin-top:14px;padding:8px 20px;background:#b23a2c;border-color:#b23a2c" onclick="genT2I()">重试</button></div>`;
@@ -392,7 +395,7 @@ async function genEnh() {
     const r=await fetch('/api/enhance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64,scale:enhanceScale})});
     const d=await r.json(); if(!r.ok||!d.url)throw new Error(d.error||'提升失败');
     credits-=cost; updateCredits(); saveHist(d.url,'画质提升','');
-    box.innerHTML=`<div class="r-imgs c1"><div class="r-wrap"><img src="${d.url}"><div class="r-acts"><button class="r-btn" onclick="dl('${d.url}')">下载</button></div></div></div>`;
+    box.innerHTML=`<div class="r-imgs c1"><div class="r-wrap"><img src="${d.url}">${SEAL}<div class="r-acts"><button class="r-btn" onclick="dl('${d.url}')">下载</button></div></div></div>`;
     showToast(`提升完成 · 耗${cost}算力`);
   } catch(e){ box.innerHTML=`<div class="result-empty"><p>${e.message}</p></div>`; }
   btn.disabled=false;

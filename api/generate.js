@@ -3,12 +3,22 @@ import { checkContent } from './_filter.js';
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { prompt, style, count = 1 } = req.body;
+  const { prompt, style, styles, count = 1, ratio = '1:1' } = req.body;
   if (!prompt) return res.status(400).json({ error: '请输入描述' });
 
+  // 风格：支持多选（styles数组）或单个（style）
+  const styleList = Array.isArray(styles) && styles.length ? styles : (style ? [style] : []);
+
   // 内容安全过滤：拦截色情/暴力/政治敏感内容（合规必备）
-  const chk = checkContent(prompt + ' ' + (style || ''));
+  const chk = checkContent(prompt + ' ' + styleList.join(' '));
   if (!chk.ok) return res.status(400).json({ error: `内容含${chk.category}信息，已被拦截，请修改后重试` });
+
+  // 画幅比例 → 实际像素尺寸（备注：硅基流动 Z-Image 支持的常用尺寸）
+  const sizeMap = {
+    '1:1': '1024x1024', '3:4': '768x1024', '4:3': '1024x768',
+    '9:16': '720x1280', '16:9': '1280x720',
+  };
+  const imageSize = sizeMap[ratio] || '1024x1024';
 
   const API_KEY = 'sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj';
 
@@ -27,7 +37,10 @@ export default async function handler(req, res) {
     '泼墨山水': 'Chinese splashed ink landscape, bold and free brushwork',
   };
 
-  const stylePrompt = styleMap[style] || (style ? `${style} art style` : '');
+  // 多风格叠加：逐个映射后拼接
+  const stylePrompt = styleList
+    .map(s => styleMap[s] || `${s} art style`)
+    .join(', ');
   const fullPrompt = stylePrompt ? `${prompt}, ${stylePrompt}, high quality artwork` : `${prompt}, high quality artwork`;
 
   try {
@@ -39,7 +52,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: 'Tongyi-MAI/Z-Image-Turbo',
           prompt: fullPrompt,
-          image_size: '1024x1024',
+          image_size: imageSize,
           n: 1,
         }),
       }).then(r => r.json())

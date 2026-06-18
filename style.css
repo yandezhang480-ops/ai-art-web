@@ -254,6 +254,8 @@ body::before {
 .r-imgs.c3 { grid-template-columns: 1fr 1fr 1fr; }
 .r-wrap { position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line2); }
 .r-wrap img { width: 100%; display: block; }
+.r-seal { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; opacity: 0.92; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25)); pointer-events: none; }
+.r-seal svg { width: 100%; height: 100%; }
 .r-acts {
   position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 8px 8px;
   background: linear-gradient(transparent, rgba(33,28,24,0.85));
