@@ -3,7 +3,7 @@
    ============================================================ */
 
 // ===== 状态 =====
-let credits = 100;
+let credits = parseInt(localStorage.getItem('dqCredits') ?? '100', 10);
 let cnt = 1, ratio = '3:4', enhanceScale = '2x';
 let pkgPrice = 28, pkgCredits = 500;
 let trainImgs = [], trainType = '写意';
@@ -430,7 +430,7 @@ function selPkg(el,p,c){ document.querySelectorAll('.rg').forEach(i=>i.classList
 function mockPay(){ showToast('支付接入中，敬请期待'); }
 
 // ===== 工具 =====
-function updateCredits(){ document.getElementById('userCredits').textContent=credits; const m=document.getElementById('modalCredits'); if(m)m.textContent=credits; }
+function updateCredits(){ localStorage.setItem('dqCredits', credits); document.getElementById('userCredits').textContent=credits; const m=document.getElementById('modalCredits'); if(m)m.textContent=credits; }
 function dl(url){ const a=document.createElement('a'); a.href=url; a.download=`danqing-${Date.now()}.jpg`; a.target='_blank'; a.click(); showToast('开始下载'); }
 function toB64(file){ return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file);}); }
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2800); }
@@ -461,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>`).join('');
   // 创作页风格卡缩略图
   STYLE_THUMBS.forEach((k,i) => { const el = document.getElementById('st'+(i+1)); if(el) el.innerHTML = ART[k]; });
+  updateCredits();
   renderHome(null);
   renderLib('guozhan','全部');
 });
