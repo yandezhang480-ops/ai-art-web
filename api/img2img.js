@@ -1,9 +1,15 @@
+import { checkContent } from './_filter.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { imageBase64, prompt, style } = req.body;
+
+  // 内容安全过滤：拦截补充描述里的违规内容（合规必备）
+  const chk = checkContent(prompt || '');
+  if (!chk.ok) return res.status(400).json({ error: `内容含${chk.category}信息，已被拦截，请修改后重试` });
 
   if (!imageBase64) {
     return res.status(400).json({ error: '请上传图片' });

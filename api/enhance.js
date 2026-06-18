@@ -4,6 +4,9 @@ export default async function handler(req, res) {
   const { imageBase64, scale } = req.body;
   if (!imageBase64) return res.status(400).json({ error: '请上传图片' });
 
+  // 备注：画质提升仅对用户上传图片重绘，无文字输入；
+  //       内容安全主要由文生图/图生图入口的 checkContent 把关。
+
   const API_KEY = 'sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj';
 
   try {

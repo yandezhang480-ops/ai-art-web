@@ -1,8 +1,14 @@
+import { checkContent } from './_filter.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { prompt, style, count = 1 } = req.body;
   if (!prompt) return res.status(400).json({ error: '请输入描述' });
+
+  // 内容安全过滤：拦截色情/暴力/政治敏感内容（合规必备）
+  const chk = checkContent(prompt + ' ' + (style || ''));
+  if (!chk.ok) return res.status(400).json({ error: `内容含${chk.category}信息，已被拦截，请修改后重试` });
 
   const API_KEY = 'sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj';
 

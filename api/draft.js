@@ -1,10 +1,15 @@
 // 画稿生成：把一张作品拆解成 线描稿 / 黑白灰稿 / 色彩稿
 // 用于学习大师与优秀作品的创作思路
+import { checkContent } from './_filter.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { imageBase64, mode } = req.body;
   if (!imageBase64) return res.status(400).json({ error: '请上传图片' });
+
+  // 备注：画稿基于用户上传图片，视觉模型描述后再生成；
+  //       若后续开放文字输入，需在此调用 checkContent 过滤违规内容。
 
   const API_KEY = process.env.SILICONFLOW_KEY || 'sk-dsgeyrbsptrqzswdxpgnvnvpudmhzlrxkeepryjjdjdfvgrj';
 
